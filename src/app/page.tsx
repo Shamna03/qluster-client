@@ -1,12 +1,11 @@
-import Image from "next/image";
+import { Landingpage } from "@/Components/Landingpage";
+import Navbar from "@/Components/Navbar/Navbar";
 
 export default function Home() {
   return (
-    <div className="flex justify-center items-center h-screen ">
-
-     <h1 className="text-red-300 ">Weolcome to qluster</h1>
-      
-    </div>
+    <>
+      <Navbar />
+      <Landingpage />
+    </>
   );
 }
- 
