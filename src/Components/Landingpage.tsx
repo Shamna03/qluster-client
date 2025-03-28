@@ -1,10 +1,10 @@
 import React from "react";
 
+
 export const Landingpage = () => {
   return (
-    <div className="bg-blue-950 w-full h-[36.1em]">
-      <hr className="border-amber-50" />
-      <div className="flex flex-col items-center justify-center w-full h-full bg-blue-950">
+    <div className=" w-full min-h-screen border-amber-50 border-t-1"> 
+      <div className="flex flex-col items-center justify-center w-full h-96 bg-[#000000]">
         <h1 className="font-bold text-amber-50 text-3xl">
           Discover and share your innovative project
         </h1>
@@ -20,6 +20,57 @@ export const Landingpage = () => {
           <button className="px-6 py-2 bg-white text-blue-600 border border-blue-600 rounded-full hover:bg-blue-100 transition">
             Join Project
           </button>
+          
+          </div>
+      </div>
+      <div className="flex flex-row  w-[68em] ml-32 h- bg-[#8d1387]  p-9 justify-around ">
+        <div className="bg-amber-950 w-80 h-72 rounded-2xl ">
+          <div className="p-5">
+            <div className=" w-56 h-36 rounded-2xl ">
+              {" "}
+              <img
+                className="rounded-2xl"
+                src="https://www.theforage.com/blog/wp-content/uploads/2023/12/coding-vs-programming.jpg"
+                alt=""
+              />{" "}
+            </div>
+            <div className="font-bold text-white p-2 mt-2">Project alpha</div>
+            <div className="p-2 text-white ">
+              an innotive ai-driven platform for smarter decision making
+            </div>
+          </div>
+        </div>
+        <div className="bg-amber-950 w-80 h-72 rounded-2xl ">
+          <div className="p-5">
+            <div className=" w-56 h-36 rounded-2xl ">
+              {" "}
+              <img
+                className="rounded-2xl"
+                src="https://www.theforage.com/blog/wp-content/uploads/2023/12/coding-vs-programming.jpg"
+                alt=""
+              />{" "}
+            </div>
+            <div className="font-bold text-white p-2 mt-2">Project alpha</div>
+            <div className="p-2 text-white ">
+              an innotive ai-driven platform for smarter decision making
+            </div>
+          </div>
+        </div>
+        <div className="bg-amber-950 w-80 h-72 rounded-2xl ">
+          <div className="p-5">
+            <div className=" w-56 h-36 rounded-2xl ">
+              {" "}
+              <img 
+                className="rounded-2xl"
+                src="https://www.theforage.com/blog/wp-content/uploads/2023/12/coding-vs-programming.jpg"
+                alt=""
+              />{" "}
+            </div>
+            <div className="font-bold text-white p-2 mt-2">Project alpha</div>
+            <div className="p-2 text-white ">
+              an innotive ai-driven platform for smarter decision making
+            </div>
+          </div>
         </div>
       </div>
     </div>
