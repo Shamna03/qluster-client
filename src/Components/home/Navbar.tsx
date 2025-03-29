@@ -20,14 +20,14 @@ const Navbar: React.FC = () => {
   }, []);
 
   return (
-    <div
-      className={`fixed top-0 left-1/2 transform -translate-x-1/2 bg-black px-10 transition-all duration-700 ease-in-out flex items-center ${
-        isScrolled ? "h-12 py-2 w-2/3 scale-x-90 rounded-2xl border-1 border-gray-700" : "h-16 py-4 w-full rounded-none "
+    <div   
+      className={`fixed top-0 left-1/2 transform -translate-x-1/2 backdrop-blur-xs px-10 transition-all duration-700 ease-in-out flex items-center ${
+        isScrolled ? "h-12 py-2 w-2/3 scale-x-90 rounded-2xl border-1 border-gray-700" : "h-16 py-4 w-full rounded-none border-none "
       }`}
     >
       {/* Logo - Moves to center smoothly */}
       <h1
-        className={`text-fuchsia-400 font-extrabold text-xl transition-all duration-700 ease-in-out ${
+        className={`text-fuchsia-400 font-extrabold text-xl transition-all duration-700 ease-in-out ml-32 ${
           isScrolled ? "mx-auto" : "ml-4"
         }`}
       >
@@ -43,7 +43,7 @@ const Navbar: React.FC = () => {
 
       {/* Profile Image - Moves to center smoothly */}
       <img
-        className={`rounded-full w-10 h-10 object-cover transition-all duration-700 ease-in-out ${
+        className={`rounded-full w-10 h-10 object-cover transition-all duration-700 ease-in-out mr-32 ${
           isScrolled ? "mx-auto" : "mr-4"
         }`}
         src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIS4VuIKs3YjObiyW8M0NzDAkx8BEhLzLhEA&s"
