@@ -2,16 +2,24 @@ import React from "react";
 
 export const Techstacks = () => {
   return (
-    <div className="w-[80em] ml-[42px] h-[20rem] border-l border-r border-gray-600 grid grid-cols-4 grid-rows-2  p-4">
-      <div className="h-full w-full flex items-center justify-center text-white font-bold border border-gray-600">React</div>
-      <div className="h-full w-full flex items-center justify-center text-white font-bold border border-gray-600">Next.js</div>
-      <div className="h-full w-full flex items-center justify-center text-white font-bold border border-gray-600">MongoDB</div>
-      <div className="h-full w-full flex items-center justify-center text-white font-bold border border-gray-600">Express</div>
-
-      <div className="h-full w-full flex items-center justify-center text-white font-bold border border-gray-600">TypeScript</div>
-      <div className="h-full w-full flex items-center justify-center text-white font-bold border border-gray-600">JavaScript</div>
-      <div className="h-full w-full flex items-center justify-center text-white font-bold border border-gray-600">Tailwind</div>
-      <div className="h-full w-full flex items-center justify-center text-white font-bold border border-gray-600">Redux</div>
-    </div>
+ 
+            <div className="flex justify-center my-[450px]">
+            <table className="w-[70em] h-[12rem] text-black border dark:text-white  ">
+                <tbody>
+                    <tr className="border   text-center font-bold ">
+                        <td className="p-4  border ">React</td>
+                        <td className="p-4  border ">Next.js</td>
+                        <td className="p-4  border ">MongoDB</td>
+                        <td className="p-4 border ">Express</td>
+                    </tr>
+                    <tr className="border text-center  font-bold">
+                        <td className="p-4  border ">TypeScript</td>
+                        <td className="p-4  border ">JavaScript</td>
+                        <td className="p-4   border ">Tailwind</td>
+                        <td className="p-4   border">Redux</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
   );
 };
