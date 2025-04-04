@@ -1,11 +1,21 @@
-import Image from "next/image";
+import { Animatedtheme } from "@/Components/home/Animatedtheme";
+import { Techstacks } from "@/Components/home/Techstacks";
+import { Landingpage } from "@/Components/home/Landingpage";
+import Navbar from "@/Components/home/Navbar";
+import { Feturescard } from "@/Components/home/Futeres";
+import Footer from "@/Components/home/Footer";
+
 
 export default function Home() {
   return (
-    <div className="flex justify-center items-center h-screen ">
-     <h1 className="text-red-300 ">Weolcome to qluster</h1>
-      
+    <div className="bg-white dark:bg-[#18181b]">
+      <Navbar />
+      <Landingpage />
+       <Animatedtheme/>
+       <Techstacks/>
+       {/* <Feturescard/> */}
+       <Footer/>
+    
     </div>
   );
 }
- 
