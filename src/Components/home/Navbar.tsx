@@ -55,24 +55,24 @@ const Navbar: React.FC = () => {
   })
   return (
     <div   
-      className={`fixed h-14 top-4 left-1/2 transform -translate-x-1/2 backdrop-blur-xs px-10  transition-all duration-200 ease-in-out flex  items-center   text-[#5e5e5e] dark:text-[#c2c2c2] font-serif   z-50 ${
-        isScrolled ? " py-2 w-3/4 scale-x-90 rounded-2xl  bg-transparent shadow-sm shadow-[#621f6975]  dark:bg-transparent  dark:shadow-none dark:border" : "h-16 py-4 w-3/4 rounded-none border-none "
+      className={`fixed h-14 top-4 left-1/2 transform -translate-x-1/2 backdrop-blur-xs px-10  transition-all duration-200 ease-in-out flex  items-center    text-[#5e5e5e] dark:text-[#c2c2c2]    z-50 ${
+        isScrolled ? " py-2 w-3/4 scale-x-90 rounded-2xl  bg-background/40 shadow-sm shadow-[#621f6975]    dark:shadow-none dark:border dark:bg-background/40" : "h-16 py-4 w-3/4 rounded-none border-none "
       }`}
     >
-      {/* Logo - Moves to center smoothly */}
-      <Link href="/">
-      <h1 className={`font-extrabold text-xl transition-all duration-200 ease-in-out ml-32 ${
-          isScrolled ? "mx-auto" : "ml-4"
-        }`}>CLUSTER</h1>
+      <Link href="/" className="flex items-center">
+        <h1 className={`font-extrabold text-xl transition-all duration-300 ease-in-out ${isScrolled ? "mx-auto" : "ml-4"}`} >
+          QLUSTER</h1>
       </Link>
 
       {/* Navigation Links - Stays centered */}
       <div className="flex items-center space-x-16 mx-auto">
-       <div className='flex items-center cursor-pointer'> <h1 className="">Use cases</h1> <ChevronDown /></div>
-        <h1 className="cursor-pointer">Projects</h1>
-        <h1 className="cursor-pointer">Developers</h1>
-        <h1 className="cursor-pointer">Contact Us</h1>
-
+        <div className="flex items-center cursor-pointer group">
+          <h1 className="group-hover:text-primary transition-colors">Use cases</h1>
+          <ChevronDown className="ml-1 w-4 h-4 group-hover:text-primary transition-colors" />
+        </div>
+        <h1 className="cursor-pointer hover:text-primary transition-colors">Projects</h1>
+        <h1 className="cursor-pointer hover:text-primary transition-colors">Developers</h1>
+        <h1 className="cursor-pointer hover:text-primary transition-colors">Contact Us</h1>
       </div>
 
       <button
@@ -93,9 +93,7 @@ const Navbar: React.FC = () => {
             </Link>
 
             </div>:
-    
-       <DropDown/>
-}
+       <DropDown/>}
     </div>
   );
 };
