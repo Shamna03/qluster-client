@@ -13,7 +13,7 @@ export default function Home() {
       <Landingpage />
        <Animatedtheme/>
        <Techstacks/>
-       {/* <Feturescard/> */}
+       <Feturescard/>
        <Footer/>
     
     </div>

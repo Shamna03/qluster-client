@@ -2,7 +2,7 @@ import React from 'react'
 
 const Footer = () => {
   return (
-   <footer className="bg-[#611f69] text-white py-12">
+   <footer className="bg-[#37113cdf] text-white py-12">
   <div className="max-w-7xl mx-auto px-6 lg:px-8">
     {/* CTA Section */}
     <div className="text-center mb-8">
@@ -19,7 +19,6 @@ const Footer = () => {
 
     {/* Navigation Links */}
     <div className="flex justify-center space-x-6 mb-8">
-      <a href="#" className="hover:underline">Home</a>
       <a href="#" className="hover:underline">About</a>
       <a href="#" className="hover:underline">Services</a>
       <a href="#" className="hover:underline">Portfolio</a>
@@ -43,6 +42,7 @@ const Footer = () => {
       </div>
       <p>© {new Date().getFullYear()} Qluster . All rights reserved.</p>
     </div>
+    
   </div>
 </footer>
 
