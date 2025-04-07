@@ -6,7 +6,7 @@ import React from "react";
 
 const DropDown = () => {
   const queryClient =useQueryClient()
-  const {setUser, user,isAuthenticated} = useAuthStore()
+  const {setUser, user} = useAuthStore()
   const router = useRouter()
 
 
@@ -32,14 +32,14 @@ const DropDown = () => {
 
   }
   return (
-    <div className="relative inline-block text-base leading-relaxed text-black font-sans ">
+    <div className="relative inline-block text-base leading-relaxed text-black font-sans mr-1 ">
       <div className="relative group inline-block">
         <a
           href="#"
           className="relative flex items-center justify-center gap-3 px-2 py-1 rounded-2xl overflow-hidden transition-all duration-[480ms] ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:text-white"
         >
              <img
-                  className={`rounded-full w-10 h-10 object-cover transition-all duration-200 ease-in-out mr-32 
+                  className={`rounded-full w-10 h-10 object-cover transition-all duration-200 ease-in-out mr-24
                     
                     // isScrolled ? "mx-auto" : "mr-4"`}
                   src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIS4VuIKs3YjObiyW8M0NzDAkx8BEhLzLhEA&s"
