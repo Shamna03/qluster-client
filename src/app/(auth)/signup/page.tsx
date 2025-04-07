@@ -8,6 +8,7 @@ import * as Yup from "yup"
 import { useMutation } from "@tanstack/react-query"
 import axiosInstance from "../../../api/axiosInstance"
 import { useRouter } from "next/navigation"
+import GoogleSignIn from "@/Components/googleButton/GoogleButton"
 
 // Validation schema
 const SignupSchema = Yup.object({
@@ -289,7 +290,7 @@ export default function Page() {
                 </div>
 
                 {/* Social login buttons */}
-                <div className="mt-6 flex justify-center">
+                {/* <div className="mt-6 flex justify-center">
                   <button
                     type="button"
                     className="group w-full relative flex justify-center items-center py-2.5 px-4 border border-white/20 rounded-lg bg-white/10 hover:bg-white/15 text-white transition-all"
@@ -314,7 +315,8 @@ export default function Page() {
                       />
                     </svg>
                   </button>
-                </div>
+                </div> */}
+                <GoogleSignIn />
               </div>
 
               {/* Card footer */}
