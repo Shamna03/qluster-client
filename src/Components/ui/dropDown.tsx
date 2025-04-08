@@ -42,7 +42,8 @@ const DropDown = () => {
                   className={`rounded-full w-10 h-10 object-cover transition-all duration-200 ease-in-out mr-24
                     
                     // isScrolled ? "mx-auto" : "mr-4"`}
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIS4VuIKs3YjObiyW8M0NzDAkx8BEhLzLhEA&s"
+                    src={user?.profilePicture ||"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIS4VuIKs3YjObiyW8M0NzDAkx8BEhLzLhEA&s"}
+                  // src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIS4VuIKs3YjObiyW8M0NzDAkx8BEhLzLhEA&s"
                   alt="Profile"
                 /> 
           <svg
