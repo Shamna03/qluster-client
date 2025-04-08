@@ -33,10 +33,10 @@ export default function RootLayout({
     <html lang="en">
       <head>
         {/* Google Identity Script */}
-        <Script
+        {/* <Script
           src="https://accounts.google.com/gsi/client"
           strategy="beforeInteractive"
-        />
+        /> */}
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
