@@ -13,6 +13,8 @@ import axiosInstance from '@/api/axiosInstance';
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const {user,setUser} = useAuthStore()
+  console.log(user);
+  
   const isAuthenticated = localStorage.getItem("isAuthenticated")
   
 
@@ -45,9 +47,8 @@ const Navbar: React.FC = () => {
   const {data:logedUser,isLoading} = useQuery({
     queryKey:["fetchUser",user?._id],
     queryFn:async ()=>{
-      const {data} = await axiosInstance.get ("/user/userin")
-      setUser(data)
-
+      const {data} = await axiosInstance.get ("/user/userin")      
+      setUser(data.data)
       return data
     },
     enabled: !!isAuthenticated
@@ -83,7 +84,7 @@ const Navbar: React.FC = () => {
 
       {/* Profile Image - Moves to center smoothly */}
       {!isAuthenticated ? 
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-4 mr-2">
             <Link href='/signup'>
             <button className="px-4 py-2   bg-[#611f69] border border-[#611f69] text-white text-[14px]  rounded-md hover:bg-[#621f69dd] cursor-pointer" >Sign Up</button>
             </Link>  
