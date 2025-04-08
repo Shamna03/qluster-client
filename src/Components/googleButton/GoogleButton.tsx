@@ -10,7 +10,6 @@ declare global {
     google?: any;
   }
 }
-
             
 export default function GoogleSignIn() {
     const router = useRouter()
@@ -18,9 +17,7 @@ export default function GoogleSignIn() {
 
   useEffect(() => {
     console.log(window.google)
-    if (window.google) {
-        console.log("true");
-        
+    if (window.google) {        
       window.google.accounts.id.initialize({
         client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
         callback: handleCredentialResponse,
@@ -42,10 +39,9 @@ export default function GoogleSignIn() {
     },
     onSuccess :(data)=>{
         router.replace("/")
-            setUser(data?.user)
-            localStorage.setItem("isAuthenticated","true")
+        setUser(data?.user)
+        localStorage.setItem("isAuthenticated","true")
     }
-        
         })
 
   const handleCredentialResponse = async (response: any) => {
