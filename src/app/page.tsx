@@ -4,6 +4,7 @@ import { Landingpage } from "@/Components/home/Landingpage";
 import Navbar from "@/Components/home/Navbar";
 import { Feturescard } from "@/Components/home/Futeres";
 import Footer from "@/Components/home/Footer";
+import { FeaturesSection } from "@/Components/home/Features";
 
 
 export default function Home() {
@@ -13,7 +14,7 @@ export default function Home() {
       <Landingpage />
        <Animatedtheme/>
        <Techstacks/>
-       {/* <Feturescard/> */}
+       <FeaturesSection/>
        <Footer/>
     
     </div>

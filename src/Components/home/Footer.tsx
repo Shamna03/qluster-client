@@ -1,53 +1,157 @@
-import React from 'react'
+import Link from "next/link"
+import { Github, Twitter, Linkedin, Mail, Heart } from "lucide-react"
 
 const Footer = () => {
   return (
-   <footer className="bg-[#611f69] text-white py-12">
-  <div className="max-w-7xl mx-auto px-6 lg:px-8">
-    {/* CTA Section */}
-    <div className="text-center mb-8">
-      <h2 className="text-2xl font-bold">Let's collaborate on something innovative</h2>
-      <p className="mt-2 text-sm">Have a project in mind? Reach out to us.</p>
-    </div>
+    <footer className="bg-gradient-to-br from-[#37113c] to-[#611f69] text-white py-16">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        {/* CTA Section */}
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold mb-4">Let's collaborate on something innovative</h2>
+          <p className="text-lg opacity-90 max-w-2xl mx-auto mb-8">
+            Have a project in mind? Join our community of developers and bring your ideas to life.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link
+              href="#"
+              className="px-6 py-3 bg-white text-[#611f69] font-medium rounded-full hover:bg-opacity-90 transition-all"
+            >
+              Start Collaborating
+            </Link>
+            <Link
+              href="#"
+              className="px-6 py-3 bg-transparent border border-white text-white font-medium rounded-full hover:bg-white/10 transition-all"
+            >
+              Contact Us
+            </Link>
+          </div>
+        </div>
 
-    {/* Contact Information */}
-    <div className="text-center mb-8">
-      <p className="text-sm">Contact us at:</p>
-      <p className="text-lg font-semibold">+44 (0) 2920 090 505</p>
-      <p className="text-lg font-semibold">hi@qluster.com</p>
-    </div>
+        {/* Main Footer Content */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+          <div>
+            <h3 className="text-xl font-bold mb-4">CLUSTER</h3>
+            <p className="text-sm opacity-80 mb-4">
+              The platform for developers to connect, collaborate, and create amazing projects together.
+            </p>
+            <div className="flex space-x-4">
+              <Link href="#" className="text-white hover:text-gray-300 transition-colors">
+                <Github size={20} />
+              </Link>
+              <Link href="#" className="text-white hover:text-gray-300 transition-colors">
+                <Twitter size={20} />
+              </Link>
+              <Link href="#" className="text-white hover:text-gray-300 transition-colors">
+                <Linkedin size={20} />
+              </Link>
+              <Link href="#" className="text-white hover:text-gray-300 transition-colors">
+                <Mail size={20} />
+              </Link>
+            </div>
+          </div>
 
-    {/* Navigation Links */}
-    <div className="flex justify-center space-x-6 mb-8">
-      <a href="#" className="hover:underline">Home</a>
-      <a href="#" className="hover:underline">About</a>
-      <a href="#" className="hover:underline">Services</a>
-      <a href="#" className="hover:underline">Portfolio</a>
-      <a href="#" className="hover:underline">Journal</a>
-      <a href="#" className="hover:underline">Contact</a>
-    </div>
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Platform</h3>
+            <ul className="space-y-2">
+              <li>
+                <Link href="#" className="text-sm opacity-80 hover:opacity-100 transition-opacity">
+                  Features
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-sm opacity-80 hover:opacity-100 transition-opacity">
+                  Projects
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-sm opacity-80 hover:opacity-100 transition-opacity">
+                  Developers
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-sm opacity-80 hover:opacity-100 transition-opacity">
+                  Pricing
+                </Link>
+              </li>
+            </ul>
+          </div>
 
-    {/* Social Media Icons */}
-    <div className="flex justify-center space-x-4 mb-8">
-      <a href="#" className="hover:text-gray-300"><i className="fab fa-facebook-f"></i></a>
-      <a href="#" className="hover:text-gray-300"><i className="fab fa-twitter"></i></a>
-      <a href="#" className="hover:text-gray-300"><i className="fab fa-instagram"></i></a>
-    </div>
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Resources</h3>
+            <ul className="space-y-2">
+              <li>
+                <Link href="#" className="text-sm opacity-80 hover:opacity-100 transition-opacity">
+                  Documentation
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-sm opacity-80 hover:opacity-100 transition-opacity">
+                  API Reference
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-sm opacity-80 hover:opacity-100 transition-opacity">
+                  Blog
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-sm opacity-80 hover:opacity-100 transition-opacity">
+                  Community
+                </Link>
+              </li>
+            </ul>
+          </div>
 
-    {/* Legal Links and Copyright */}
-    <div className="text-center text-sm opacity-80">
-      <div className="flex justify-center space-x-4 mb-2">
-        <a href="#" className="hover:underline">Terms of Use</a>
-        <a href="#" className="hover:underline">Privacy Notice</a>
-        <a href="#" className="hover:underline">Cookie Policy</a>
+          <div>
+            <h3 className="text-lg font-semibold mb-4">Company</h3>
+            <ul className="space-y-2">
+              <li>
+                <Link href="#" className="text-sm opacity-80 hover:opacity-100 transition-opacity">
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-sm opacity-80 hover:opacity-100 transition-opacity">
+                  Careers
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-sm opacity-80 hover:opacity-100 transition-opacity">
+                  Contact
+                </Link>
+              </li>
+              <li>
+                <Link href="#" className="text-sm opacity-80 hover:opacity-100 transition-opacity">
+                  Partners
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom Footer */}
+        <div className="pt-8 border-t border-white/20 flex flex-col md:flex-row justify-between items-center">
+          <p className="text-sm opacity-80 mb-4 md:mb-0">© {new Date().getFullYear()} CLUSTER. All rights reserved.</p>
+          <div className="flex flex-wrap justify-center gap-6">
+            <Link href="#" className="text-sm opacity-80 hover:opacity-100 transition-opacity">
+              Terms of Service
+            </Link>
+            <Link href="#" className="text-sm opacity-80 hover:opacity-100 transition-opacity">
+              Privacy Policy
+            </Link>
+            <Link href="#" className="text-sm opacity-80 hover:opacity-100 transition-opacity">
+              Cookie Policy
+            </Link>
+          </div>
+        </div>
+
+        <div className="text-center mt-8 text-sm opacity-70 flex items-center justify-center">
+          Made with <Heart className="w-4 h-4 mx-1 text-red-400" /> for developers worldwide
+        </div>
       </div>
-      <p>© {new Date().getFullYear()} Qluster . All rights reserved.</p>
-    </div>
-  </div>
-</footer>
-
-
+    </footer>
   )
 }
 
 export default Footer
+

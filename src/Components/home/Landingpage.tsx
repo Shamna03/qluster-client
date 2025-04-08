@@ -1,40 +1,46 @@
-"use client";
-import React from "react";
-import ReactPlayer from "react-player";
+"use client"
+import { Button } from "@/Components/ui/button"
+import HeroVideoDialog from "../magicui/hero-video-dialog"
+import { ArrowRight, Code, Users } from "lucide-react"
 
 export const Landingpage = () => {
   return (
-    <div className="w-full min-h-screen">
-    <div className="flex flex-col text-black dark:text-white bg-white dark:bg-[#18181b] text-center items-center justify-center h-screen border-l border-r border-gray-600 bottom-corner-gradient">
-      <h1 className="font-bold text-3xl">Discover and share your innovative project</h1>
-      <h1 className="font-light mt-2">
-        Join our vibrant community of developers and contributors to <br />
-        <span>collaborate on exciting projects that shape the future.</span>
-      </h1>
-  
-      <div className="mt-6 space-x-4">
-        <button className="px-6 py-2 bg-[#611f69] text-white rounded-full hover:bg-[#621f69e9] transition">
-          Explore Projects
-        </button>
-        <button className="px-6 py-2 bg-white text-[#611f69] border border-[#611f69] rounded-full hover:bg-slate-100 transition">
-          Join Project
-        </button>
+    <div className="w-full h-full">
+      <div className="flex flex-col text-foreground bg-background text-center items-center justify-center  px-4 relative bottom-corner-gradient pb-32 h-full">
+        {/* Content */}
+        <div className="relative z-10 max-w-4xl pt-56">
+          <h1 className="font-bold text-3xl md:text-5xl lg:text-6xl mb-6 text-primary ">
+            Discover and Share Innovative Projects
+          </h1>
+          <p className="font-light text-lg md:text-xl mb-8 text-muted-foreground">
+            Join our vibrant community of developers and contributors to <br />
+            <span className="font-medium">collaborate on exciting projects that shape the future.</span>
+          </p>
+
+          <div className="flex flex-col sm:flex-row justify-center gap-4 mb-12">
+            <Button className="bg-primary text-primary-foreground hover:bg-primary/90 px-10 py-6 rounded-full flex items-center gap-2 text-base">
+              Explore Projects
+              <ArrowRight className="w-4 h-4 ml-1" />
+            </Button>
+            <Button
+              variant="outline"
+              className="border-primary text-primary hover:bg-primary/10 px-8 py-6 rounded-full flex items-center gap-2 text-base"
+            >
+              <Users className="w-5 h-5" />
+              Join Project
+            </Button>
+          </div>
+
+          <div className="relative w-full max-w-3xl  mx-auto pt-20">
+            <HeroVideoDialog
+              videoSrc="/videos/landing.mp4"
+              thumbnailSrc="/placeholder.svg?height=600&width=1000"
+              className="w-full rounded-lg shadow-xl border-2 border-primary/20"
+            />
+          </div>
+        </div>
       </div>
     </div>
-  
-    <div className="flex justify-center items-center absolute top-[750px] left-64 z-10">
-      <div className="w-[90%] h-[60vh] rounded-md shadow shadow-[#621f6975] overflow-hidden">
-        <ReactPlayer
-          url="/videos/landing.mp4"
-          width="100%"
-          height="100%"
-          playing
-          loop
-          muted
-          controls
-        />
-      </div>
-    </div>
-  </div>
-  );
-};
+  )
+}
+

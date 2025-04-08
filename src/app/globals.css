@@ -122,8 +122,12 @@
 
 .bottom-corner-gradient {
   background: 
-    radial-gradient(circle at bottom left,   #621f69d9, transparent 35%),
-    radial-gradient(circle at top right, #621f69a8, transparent 15%),
+    radial-gradient(circle at center left,   #621f69d9, transparent 35%),
+    radial-gradient(circle at bottom right,   #621f69d9, transparent 35%)
+    ,
+    /* radial-gradient(circle at top right, #621f69a8, transparent 15%), */
 }
 
- 
+body{
+  scroll-behavior: smooth;
+}
