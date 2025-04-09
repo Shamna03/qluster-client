@@ -25,7 +25,7 @@ export default function GoogleSignIn() {
         client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
         callback: handleCredentialResponse,
       });
-
+      
       window.google.accounts.id.renderButton(
           document.getElementById("google-btn")!,
           { theme: "outline", size: "large" }
