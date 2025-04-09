@@ -138,7 +138,7 @@ const userData = {
   })
 
   return (
-    <div className="min-h-screen bg-background ptt-20 pb-16 ">
+    <div className="min-h-screen bg-background ptt-20 pb-16  ">
       {/* Cover Image with Gradient Overlay */}
       <div className="relative h-64 md:h-80 w-full overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/30 to-primary/10 z-10"></div>

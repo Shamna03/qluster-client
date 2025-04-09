@@ -69,7 +69,7 @@ export default function GoogleSignIn() {
         ux_mode: "popup", // Add this line
 
       });
-
+      
       window.google.accounts.id.renderButton(
         document.getElementById("google-btn")!,
         { theme: "outline", size: "large" }

@@ -9,11 +9,9 @@ import { FeaturesSection } from "@/Components/home/Features";
 export default function Home() {
   return (
     <div className="bg-white dark:bg-[#18181b]">
-      <Navbar />
       <Landingpage />
        <Techstacks/>
        <FeaturesSection/>
-       <Footer/>
     
     </div>
   );
