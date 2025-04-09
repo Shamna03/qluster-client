@@ -1,4 +1,3 @@
-import { Animatedtheme } from "@/Components/home/Animatedtheme";
 import { Techstacks } from "@/Components/home/Techstacks";
 import { Landingpage } from "@/Components/home/Landingpage";
 import Navbar from "@/Components/home/Navbar";
@@ -12,7 +11,6 @@ export default function Home() {
     <div className="bg-white dark:bg-[#18181b]">
       <Navbar />
       <Landingpage />
-       <Animatedtheme/>
        <Techstacks/>
        <FeaturesSection/>
        <Footer/>
