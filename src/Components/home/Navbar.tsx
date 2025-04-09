@@ -56,7 +56,7 @@ const Navbar: React.FC = () => {
   return (
     <div   
       className={`fixed h-14 top-4 left-1/2 transform -translate-x-1/2 backdrop-blur-xs pl-10  transition-all duration-200 ease-in-out flex  items-center    text-[#5e5e5e] dark:text-[#c2c2c2]    z-50 ${
-        isScrolled ? " py-2   w-3/4 scale-x-90 rounded-2xl  bg-background/40 shadow-sm shadow-[#621f6975]    dark:shadow-none dark:border dark:bg-background/40" : "h-16 py-4 w-3/4 rounded-none border-none "
+        isScrolled ? " py-2   w-3/4 scale-x-95 rounded-2xl  bg-background/40 shadow-sm shadow-[#621f6975]    dark:shadow-none dark:border dark:bg-background/40" : "h-16 py-4 w-3/4 rounded-none border-none "
       }`}
     >
       <Link href="/" className="flex items-center">
@@ -93,7 +93,7 @@ const Navbar: React.FC = () => {
             </Link>
 
             </div>:
-       <DropDown/>}
+       <DropDown isScrolled={isScrolled}/>}
     </div>
   );
 };
