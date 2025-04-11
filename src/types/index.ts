@@ -7,7 +7,7 @@ export interface Endorsement {
     _id?: string;
     name: string;
     email: string;
-    password?: string; // Optional when fetching data
+    password?: string; 
     profilePicture?: string;
     converImage?: string;
     bio?: string;
@@ -22,5 +22,6 @@ export interface Endorsement {
     isVerified: boolean;
     createdAt?: string;
     updatedAt?: string;
+    profession:string
   }
   

@@ -17,8 +17,7 @@ export default function GoogleSignIn() {
 
   const { mutate } = useMutation({
     mutationFn: async (response: any) => {
-      const { data } = await axios.post(
-        "http://localhost:5001/api/user/google-login",
+      const { data } = await axios.post( "http://localhost:5001/api/user/google-login",
         { token: response.credential },
         { withCredentials: true }
       );
