@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ReactQueryProvider from "@/Providers/QueryProvider";
 import Script from "next/script";
+import Navbar from "@/Components/home/Navbar";
+import Footer from "@/Components/home/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,7 +20,7 @@ export const metadata: Metadata = {
   title: "Qluster",
   description: "Qluster",
   icons: {
-    icon: "/favicon.ico", // Standard favicon
+    icon: "/qluster-log.png", // Standard favicon
     shortcut: "/favicon.ico", // Shortcut icon
     apple: "/apple-touch-icon.png", // Apple touch icon
   },
@@ -41,8 +43,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
           <ReactQueryProvider>
+            <Navbar/>
            {children}
+           <Footer/>
           </ReactQueryProvider>
+
       </body>
     </html>
   );
