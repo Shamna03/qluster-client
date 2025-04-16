@@ -114,7 +114,7 @@ const KanbanBoard = () => {
     <div className="flex min-h-screen bg-[#37113c] text-white dark:bg-white dark:text-black">
       {/* Sidebar */}
       <div className="w-64 bg-[#37113c] dark:bg-[#f4f4f5] p-6 border-r border-[#611f69] dark:border-gray-300 flex flex-col">
-        <h2 className="text-2xl font-bold mb-8 text-white dark:text-black">qluster</h2>
+        <h2 className="text-2xl font-bold mb-8 text-white dark:text-black">Qluster</h2>
         <nav className="flex flex-col gap-4 text-sm">
           <a href="#" className="hover:text-[#c084fc] flex items-center gap-2 text-white dark:text-black dark:hover:text-[#7c3aed]">
             <House className="h-4 w-4" /> Dashboard
@@ -125,14 +125,12 @@ const KanbanBoard = () => {
           <a href="#" className="hover:text-[#c084fc] flex items-center gap-2 text-white dark:text-black dark:hover:text-[#7c3aed]">
             <Settings className="h-4 w-4" /> Settings
           </a>
-          <a href="#" className="hover:text-[#c084fc] flex items-center gap-2 text-white dark:text-black dark:hover:text-[#7c3aed]">
-            <LogOut className="h-4 w-4" /> Logout
-          </a>
+        
         </nav>
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 p-6 overflow-x-auto mt-14">
+      <div className="flex-1 p-6 overflow-x-auto ">
         <h1 className="text-3xl font-bold mb-6 text-white dark:text-black">Kanban Board</h1>
         <DragDropContext onDragEnd={onDragEnd}>
           <div className="flex gap-6 overflow-x-auto pb-4">
