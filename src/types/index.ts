@@ -9,7 +9,7 @@ export interface Endorsement {
     email: string;
     password?: string; 
     profilePicture?: string;
-    converImage?: string;
+    coverImage?: string;
     bio?: string;
     skills: string[];
     role: "admin" | "user";
@@ -19,9 +19,10 @@ export interface Endorsement {
     projectsOwned: string[]; // Array of Project IDs
     projectsContributed: string[]; // Array of Project IDs
     endorsements: Endorsement[];
+    profession:string;
     isVerified: boolean;
     createdAt?: string;
     updatedAt?: string;
-    profession:string
+    location:string
   }
   

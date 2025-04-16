@@ -77,7 +77,6 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen w-full flex flex-col relative overflow-hidden">
-      {/* Dynamic background with parallax effect */}
       <div
         className="absolute inset-0 bg-[#611f69]"
         style={{
