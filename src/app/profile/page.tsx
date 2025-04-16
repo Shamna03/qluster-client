@@ -1,7 +1,7 @@
 import React from 'react';
 import { Globe, Briefcase, MapPin, Mail, ExternalLink, Twitter, Linkedin } from 'lucide-react';
 
-const Page = () => {
+const UserProfile = () => {
   return (
     <div className="bg-gradient-to-br from-blue-50 to-indigo-100 w-full min-h-screen p-4 md:p-8 lg:p-16 flex justify-center items-center">
       <div className="max-w-4xl w-full bg-white rounded-2xl shadow-xl overflow-hidden">
@@ -116,4 +116,4 @@ const Page = () => {
   );
 }
 
-export default Page;
+export default UserProfile;

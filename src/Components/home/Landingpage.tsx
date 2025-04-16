@@ -22,13 +22,13 @@ export const Landingpage = () => {
               Explore Projects
               <ArrowRight className="w-4 h-4 ml-1" />
             </Button>
-            <Button
+            {/* <Button
               variant="outline"
               className="border-primary text-primary hover:bg-primary/10 px-8 py-6 rounded-full flex items-center gap-2 text-base"
             >
               <Users className="w-5 h-5" />
               Join Project
-            </Button>
+            </Button> */}
           </div>
 
           <div className="relative w-full max-w-3xl  mx-auto pt-20">
