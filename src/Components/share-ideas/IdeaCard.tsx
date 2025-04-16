@@ -6,13 +6,16 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar"
 import { Button } from "@/Components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/Components/ui/card"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/Components/ui/tooltip"
+import { useRouter } from "next/navigation"
 
 export default function IdeaCard({ idea }) {
   const [liked, setLiked] = useState(false)
   const [saved, setSaved] = useState(false)
   const [likeCount, setLikeCount] = useState(idea.likes)
+  const router = useRouter()
 
-  const handleLike = () => {
+  const handleLike = (e) => {
+    e.stopPropagation() 
     if (liked) {
       setLikeCount(likeCount - 1)
     } else {
@@ -21,7 +24,26 @@ export default function IdeaCard({ idea }) {
     setLiked(!liked)
   }
 
-  // Format date to relative time (e.g., "2 days ago")
+  const handleSave = (e) => {
+    e.stopPropagation() 
+    setSaved(!saved)
+  }
+
+  const handleShare = (e) => {
+    e.stopPropagation() 
+    
+  }
+
+  const handleComment = (e) => {
+    e.stopPropagation() 
+    router.push(`/share-ideas/${idea.id}#comments`)
+  }
+
+  const handleCardClick = () => {
+    router.push(`/share-ideas/${idea.id}`)
+  }
+
+ 
   const formatRelativeTime = (dateString) => {
     const date = new Date(dateString)
     const now = new Date()
@@ -36,10 +58,13 @@ export default function IdeaCard({ idea }) {
   }
 
   return (
-    <Card className="h-full flex flex-col border-purple-100 dark:border-purple-900/50 hover:shadow-lg transition-shadow duration-300 overflow-hidden group">
+    <Card
+      className="h-full flex flex-col border-purple-100 dark:border-purple-900/50 hover:shadow-lg transition-shadow duration-300 overflow-hidden group cursor-pointer"
+      onClick={handleCardClick}
+    >
       <CardHeader className="pb-2 flex flex-row items-center space-y-0 gap-2">
         <Avatar className="h-8 w-8 ring-2 ring-purple-100 dark:ring-purple-900/50">
-          <AvatarImage src={idea.author.avatar} alt={idea.author.name} />
+          <AvatarImage src={idea.author.avatar || "/placeholder.svg"} alt={idea.author.name} />
           <AvatarFallback className="bg-gradient-to-br from-[#37113c] to-[#611f69] text-white">
             {idea.author.name.charAt(0)}
           </AvatarFallback>
@@ -49,7 +74,12 @@ export default function IdeaCard({ idea }) {
           <span className="text-xs text-muted-foreground">{formatRelativeTime(idea.createdAt)}</span>
         </div>
 
-        <Button variant="ghost" size="icon" className="h-8 w-8 ml-auto">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-8 w-8 ml-auto"
+          onClick={(e) => e.stopPropagation()} 
+        >
           <MoreHorizontal className="h-4 w-4" />
           <span className="sr-only">More options</span>
         </Button>
@@ -118,7 +148,7 @@ export default function IdeaCard({ idea }) {
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button variant="ghost" size="icon" className="h-8 w-8">
+                  <Button variant="ghost" size="icon" className="h-8 w-8" onClick={handleComment}>
                     <MessageSquare className="h-4 w-4" />
                     <span className="sr-only">Comment</span>
                   </Button>
@@ -135,7 +165,7 @@ export default function IdeaCard({ idea }) {
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button variant="ghost" size="icon" className="h-8 w-8">
+                  <Button variant="ghost" size="icon" className="h-8 w-8" onClick={handleShare}>
                     <Share2 className="h-4 w-4" />
                     <span className="sr-only">Share</span>
                   </Button>
@@ -149,7 +179,7 @@ export default function IdeaCard({ idea }) {
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setSaved(!saved)}>
+                  <Button variant="ghost" size="icon" className="h-8 w-8" onClick={handleSave}>
                     <Bookmark className={`h-4 w-4 ${saved ? "fill-current" : ""}`} />
                     <span className="sr-only">Save</span>
                   </Button>
