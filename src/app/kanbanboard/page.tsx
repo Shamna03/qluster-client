@@ -123,7 +123,7 @@ const KanbanBoard = () => {
             <ClipboardList className="h-4 w-4" /> My Boards
           </a>
           <a href="#" className="hover:text-[#c084fc] flex items-center gap-2 text-white dark:text-black dark:hover:text-[#7c3aed]">
-            <Settings className="h-4 w-4" /> Settings
+            <Settings className="h-4 w-4" /> Settings 
           </a>
         
         </nav>
