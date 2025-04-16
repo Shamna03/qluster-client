@@ -111,7 +111,7 @@ const KanbanBoard = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-[#37113c] text-white dark:bg-white dark:text-black">
+    <div className="flex min-h-screen dark:bg-[#37113c] text-white d:bg-white dark:text-black">
       {/* Sidebar */}
       <div className="w-64 bg-[#37113c] dark:bg-[#f4f4f5] p-6 border-r border-[#611f69] dark:border-gray-300 flex flex-col">
         <h2 className="text-2xl font-bold mb-8 text-white dark:text-black">Qluster</h2>
@@ -123,7 +123,7 @@ const KanbanBoard = () => {
             <ClipboardList className="h-4 w-4" /> My Boards
           </a>
           <a href="#" className="hover:text-[#c084fc] flex items-center gap-2 text-white dark:text-black dark:hover:text-[#7c3aed]">
-            <Settings className="h-4 w-4" /> Settings 
+            <Settings className="h-4 w-4" /> Settings
           </a>
         
         </nav>
