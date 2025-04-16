@@ -25,6 +25,8 @@ import { Progress } from "@/Components/ui/progress"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/Components/ui/tooltip"
 import ProjectCard from "../profile/ProjectCard"
 import SkillBadge from "../profile/SkillBadge"
+import EditProfile from "./EditProfile"
+import useAuthStore from "@/store/useAuthStore"
 
 // Mock data - in a real app, this would come from your API
 const userData = {
@@ -124,6 +126,12 @@ const userData = {
  const  ProfileView =()=> {
   const [mounted, setMounted] = useState(false)
   const [activeTab, setActiveTab] = useState("overview")
+const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+const {user,setUser} = useAuthStore()
+const [userDataState, setUserDataState] = useState(user)
+// console.log(userDataState);
+
+
 
   useEffect(() => {
     setMounted(true)
@@ -137,12 +145,19 @@ const userData = {
     return { skill, count }
   })
 
+ // ===============================================================================================
+const handleSaveProfile = (updatedUserData :any) => {
+  setUserDataState(updatedUserData)
+  console.log("Profile updated:", updatedUserData)
+}
+// ===============================================================================================
+
   return (
     <div className="min-h-screen bg-background ptt-20 pb-16  ">
       {/* Cover Image with Gradient Overlay */}
       <div className="relative h-64 md:h-80 w-full overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/30 to-primary/10 z-10"></div>
-        <img src={userData.coverImage || "Screenshot (2).png"} 
+        <img src={user?.converImage || "Screenshot (2).png"} 
         alt="Cover" className="w-full h-full object-cover" />
       </div>
 
@@ -158,8 +173,8 @@ const userData = {
           >
             <div className="w-32 h-32 md:w-40 md:h-40 rounded-full border-4e border-backgroundw overflow-hidden bg-card shadow-xl">
               <img
-                src={userData.profilePicture ||"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIS4VuIKs3YjObiyW8M0NzDAkx8BEhLzLhEA&s"}
-                alt={userData.name}
+                src={user?.profilePicture ||"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIS4VuIKs3YjObiyW8M0NzDAkx8BEhLzLhEA&s"}
+                alt={user?.name}
                 className="w-full h-full object-cover"
               />
               {/* {userData.isVerified && (
@@ -180,7 +195,7 @@ const userData = {
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2">
-                  <h1 className="text-3xl font-bold text-foreground">{userData.name}</h1>
+                  <h1 className="text-3xl font-bold text-muted-foreground">{user?.name || userData?.name}</h1>
                   {/* {userData.isVerified && (
                     <TooltipProvider>
                       <Tooltip>
@@ -198,13 +213,13 @@ const userData = {
                   <MapPin size={16} />
                   <span>{userData.location}</span>
                 </div>
-                <p className="mt-8 text-muted-foreground line-clamp-2 md:line-clamp-none">{userData.bio}</p>
+                <p className="mt-8 text-muted-foreground line-clamp-2 md:line-clamp-none">{user?.profession ||userData.bio}</p>
               </div>
               <div className="flex gap-2 mb-14">
-                <Button variant="outline" size="sm" className="gap-2 dark:bg-gray-200 dark:text-black">
-                  <Edit size={16} />
-                  Edit Profile
-                </Button>
+                  <Button variant="outline" size="sm" className="gap-2" onClick={() => setIsEditModalOpen(true)}>
+                    <Edit size={16} />
+                    Edit Profile
+                  </Button>
                 <Button size="sm" className="gap-2 ">
                   <PlusCircle size={16} />
                   Follow
@@ -214,9 +229,9 @@ const userData = {
 
             {/* Social Links */}
             <div className="flex flex-wrap gap-4 mt-4">
-              {userData.github && (
+              {user?.github && (
                 <a
-                  href={userData.github}
+                  href={user?.github}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
@@ -225,9 +240,9 @@ const userData = {
                   <span>GitHub</span>
                 </a>
               )}
-              {userData.linkedin && (
+              {user?.linkedin && (
                 <a
-                  href={userData.linkedin}
+                  href={user?.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
@@ -236,9 +251,9 @@ const userData = {
                   <span>LinkedIn</span>
                 </a>
               )}
-              {userData.portfolio && (
+              {user?.portfolio && (
                 <a
-                  href={userData.portfolio}
+                  href={user?.portfolio}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
@@ -247,13 +262,13 @@ const userData = {
                   <span>Portfolio</span>
                 </a>
               )}
-              <a
+              {/* <a
                 href={`mailto:${userData.email}`}
                 className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
               >
                 <Mail size={18} />
                 <span>Email</span>
-              </a>
+              </a> */}
             </div>
           </motion.div>
         </div>
@@ -456,7 +471,16 @@ const userData = {
           </Tabs>
         </motion.div>
       </div>
+          <EditProfile
+            isOpen={isEditModalOpen}
+            onClose={() => setIsEditModalOpen(false)}
+            userData={userDataState}
+            onSave={handleSaveProfile} />
+
     </div>
   )
 }
 export default ProfileView
+
+
+// ===============================================================================================

@@ -240,7 +240,7 @@ export default function LoginPage() {
                 </div>
 
                 {/* Social login buttons */}
-                <GoogleSignIn/>
+                <GoogleSignIn />
               </div>
 
               {/* Card footer */}

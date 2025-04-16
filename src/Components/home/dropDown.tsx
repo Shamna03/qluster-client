@@ -38,8 +38,8 @@ const DropDown = ({isScrolled }:{isScrolled:Boolean}) => {
           href="#"
           className="relative flex items-center justify-center gap-3 px-2 py-1 rounded-2xl overflow-hidden transition-all duration-[480ms] ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:text-white"
         >
-          <img
-            className={`rounded-full w-10 h-10 object-cover transition-all duration-200 ease-in-out mr-24
+          <img 
+            className={`rounded-full w-10 h-10 object-cover transition-all duration-200 ease-in-out mr-24 
              ${isScrolled ? "" : "mr-4"}`}
                    
                     src={user?.profilePicture && user?.profilePicture ||"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIS4VuIKs3YjObiyW8M0NzDAkx8BEhLzLhEA&s"}

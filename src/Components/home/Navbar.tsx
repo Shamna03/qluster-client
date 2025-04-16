@@ -3,7 +3,7 @@ import { ChevronDown, Moon, Sun } from 'lucide-react';
 import React, { useState, useEffect } from "react";
 import Link from "next/link"
 import useAuthStore from '@/store/useAuthStore';
-import DropDown from '../ui/dropDown';
+import DropDown from './dropDown';
 import { useRouter } from 'next/router';
 import { useQuery } from '@tanstack/react-query';
 import axiosInstance from '@/api/axiosInstance';
