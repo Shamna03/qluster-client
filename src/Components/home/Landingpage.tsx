@@ -2,7 +2,6 @@
 import { Button } from "@/Components/ui/button"
 import HeroVideoDialog from "../magicui/hero-video-dialog"
 import { ArrowRight, Code, Users } from "lucide-react"
-import Link from "next/link"
 
 export const Landingpage = () => {
   return (
@@ -19,10 +18,10 @@ export const Landingpage = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row justify-center gap-4 mb-12">
-            <Link href="/share-ideas" className="bg-primary text-primary-foreground hover:bg-primary/90 px-10 py-6 rounded-full flex items-center gap-2 text-base">
+            <Button className="bg-primary text-primary-foreground hover:bg-primary/90 px-10 py-6 rounded-full flex items-center gap-2 text-base">
               Share your ideas
               <ArrowRight className="w-4 h-4 ml-1" />
-            </Link>
+            </Button>
             <Button
               variant="outline"
               className="border-primary text-primary hover:bg-primary/10 px-8 py-6 rounded-full flex items-center gap-2 text-base"
