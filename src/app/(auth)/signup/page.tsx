@@ -78,7 +78,7 @@ export default function Page() {
         style={{
           background: `radial-gradient(circle at ${mousePosition.x * 100}% ${mousePosition.y * 100}%, #7a2d85 0%, #611f69 30%, #4a1850 100%)`,
         }}
-      >
+      > 
         {/* Animated particles */}
         <div className="absolute inset-0 overflow-hidden">
           {Array.from({ length: 20 }).map((_, i) => (
