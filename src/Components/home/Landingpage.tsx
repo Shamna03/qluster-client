@@ -21,7 +21,7 @@ export const Landingpage = () => {
           <div className="flex flex-col sm:flex-row justify-center gap-4 mb-12">
             <Link href="/share-ideas" >
             <Button className="bg-primary text-primary-foreground hover:bg-primary/90 px-10 py-6 rounded-full flex items-center gap-2 text-base">
-              Explore Projects
+              Share your ideas
               <ArrowRight className="w-4 h-4 ml-1" />
             </Button>
             </Link>

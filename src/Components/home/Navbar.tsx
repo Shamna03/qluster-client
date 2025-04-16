@@ -38,7 +38,7 @@ const Navbar: React.FC = () => {
   useEffect(() => {
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
-    } else {
+    } else { 
       document.documentElement.classList.remove('dark');
     }
     localStorage.setItem('theme', theme);
