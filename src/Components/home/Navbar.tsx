@@ -13,7 +13,7 @@ import axiosInstance from '@/api/axiosInstance';
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const {user,setUser} = useAuthStore()
-  console.log(user);
+  // console.log(user);
   
   const isAuthenticated = localStorage.getItem("isAuthenticated")
   
@@ -70,7 +70,7 @@ const Navbar: React.FC = () => {
           <h1 className="group-hover:text-primary transition-colors">Use cases</h1>
           <ChevronDown className="ml-1 w-4 h-4 group-hover:text-primary transition-colors" />
         </div>
-        <h1 className="cursor-pointer hover:text-primary transition-colors">Projects</h1>
+        <Link href="/share-ideas"><h1 className="cursor-pointer hover:text-primary transition-colors">Projects</h1></Link>
         <h1 className="cursor-pointer hover:text-primary transition-colors">Developers</h1>
         <h1 className="cursor-pointer hover:text-primary transition-colors">Contact Us</h1>
       </div>

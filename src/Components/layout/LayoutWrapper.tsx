@@ -5,11 +5,11 @@ import Navbar from "@/Components/home/Navbar";
 import Footer from "@/Components/home/Footer";
 
   const LayoutWrapper =({ children }: { children: React.ReactNode }) =>{
-  const pathname = usePathname();
-
+    
+    const pathname = usePathname();
   const hideLayout = ["/login", "/signup"];
-
   const shouldHide = hideLayout.includes(pathname);
+
 
   return (
     <>

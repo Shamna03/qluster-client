@@ -2,10 +2,11 @@
 import { Button } from "@/Components/ui/button"
 import HeroVideoDialog from "../magicui/hero-video-dialog"
 import { ArrowRight, Code, Users } from "lucide-react"
+import Link from "next/link"
 
 export const Landingpage = () => {
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full ">
       <div className="flex flex-col text-foreground bg-background text-center items-center justify-center  px-4 relative bottom-corner-gradient pb-32 h-full">
         {/* Content */}
         <div className="relative z-10 max-w-4xl pt-56">
@@ -18,10 +19,12 @@ export const Landingpage = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row justify-center gap-4 mb-12">
+            <Link href="/share-ideas" >
             <Button className="bg-primary text-primary-foreground hover:bg-primary/90 px-10 py-6 rounded-full flex items-center gap-2 text-base">
               Explore Projects
               <ArrowRight className="w-4 h-4 ml-1" />
             </Button>
+            </Link>
             <Button
               variant="outline"
               className="border-primary text-primary hover:bg-primary/10 px-8 py-6 rounded-full flex items-center gap-2 text-base"

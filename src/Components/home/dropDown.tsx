@@ -28,7 +28,6 @@ const DropDown = ({isScrolled }:{isScrolled:Boolean}) => {
     mutate()
     queryClient.clear()
   }
-  console.log(user?.profilePicture );
   
   
   return (
@@ -56,12 +55,15 @@ const DropDown = ({isScrolled }:{isScrolled:Boolean}) => {
 
         {/* Submenu */}
           <div
-          className="absolute left-0 top-full w-full opacity-0 invisible group-hover:opacity-100 group-hover:visible translate-y-[-12px] group-hover:translate-y-0 transition-all duration-[480ms] ease-[cubic-bezier(0.23,1,0.32,1)] border border-[#611f69] border-t-transparent rounded-b-2xl overflow-hidden z-10 pointer-events-none group-hover:pointer-events-auto bg-white"
+          className="absolute left-0 top-full w-full opacity-0 invisible group-hover:opacity-100 group-hover:visible translate-y-[-12px] group-hover:translate-y-0 transition-all duration-[480ms] ease-[cubic-bezier(0.23,1,0.32,1)] border border-[#611f69] border-t-transparent rounded-b-2xl overflow-hidden z-10 pointer-events-none group-hover:pointer-events-auto bg-white/70"
         >
-          {["Logout", "Settings"].map((item) => (
+          {["Profile","Settings","Logout",].map((item) => (
             <div key={item} className="w-full transition-all duration-[480ms] ease-[cubic-bezier(0.23,1,0.32,1)] hover:bg-[#621f6933]  cursor-pointer" onClick={()=>{
               if(item === "Logout"){
                 handleLogout()
+              }
+              if(item == "Profile"){
+                router.push("/profile")
               }
             }}>
               <a
