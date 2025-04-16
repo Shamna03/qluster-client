@@ -111,19 +111,19 @@ const KanbanBoard = () => {
   };
 
   return (
-    <div className="flex min-h-screen dark:bg-[#37113c] text-white d:bg-white dark:text-black">
+    <div className="flex min-h-screen dark:bg-[#200a23] text-white bg-white dark:text-black">
       {/* Sidebar */}
-      <div className="w-64 bg-[#37113c] dark:bg-[#f4f4f5] p-6 border-r border-[#611f69] dark:border-gray-300 flex flex-col">
-        <h2 className="text-2xl font-bold mb-8 text-white dark:text-black">Qluster</h2>
+      <div className="w-64 bg-[#37113c]  p-6 border-r border-[#611f69] dark:border-gray-500 flex flex-col">
+        <h2 className="text-2xl font-bold mb-8 text-white ">Qluster</h2>
         <nav className="flex flex-col gap-4 text-sm">
-          <a href="#" className="hover:text-[#c084fc] flex items-center gap-2 text-white dark:text-black dark:hover:text-[#7c3aed]">
+          <a href="#" className="hover:text-[#c084fc] flex items-center gap-2   text-white dark:hover:text-[#7c3aed]">
             <House className="h-4 w-4" /> Dashboard
           </a>
-          <a href="#" className="hover:text-[#c084fc] flex items-center gap-2 text-white dark:text-black dark:hover:text-[#7c3aed]">
+          <a href="#" className="hover:text-[#c084fc] flex items-center gap-2   text-white dark:hover:text-[#7c3aed]">
             <ClipboardList className="h-4 w-4" /> My Boards
           </a>
-          <a href="#" className="hover:text-[#c084fc] flex items-center gap-2 text-white dark:text-black dark:hover:text-[#7c3aed]">
-            <Settings className="h-4 w-4" /> Settings
+          <a href="#" className="hover:text-[#c084fc] flex items-center gap-2   text-white dark:hover:text-[#7c3aed]">
+            <Settings className="h-4 w-4" /> Settings 
           </a>
         
         </nav>
@@ -131,7 +131,7 @@ const KanbanBoard = () => {
 
       {/* Main Content */}
       <div className="flex-1 p-6 overflow-x-auto ">
-        <h1 className="text-3xl font-bold mb-6 text-white dark:text-black">Kanban Board</h1>
+        <h1 className="text-3xl font-bold mb-6  dark:text-white text-black">Kanban Board</h1>
         <DragDropContext onDragEnd={onDragEnd}>
           <div className="flex gap-6 overflow-x-auto pb-4">
             {Object.entries(columns).map(([columnId, column]) => (
@@ -140,7 +140,7 @@ const KanbanBoard = () => {
                   <div
                     ref={provided.innerRef}
                     {...provided.droppableProps}
-                    className="bg-[#47214e] dark:bg-[#e4e4e7] text-white dark:text-black rounded-2xl shadow-lg p-4 w-72 flex-shrink-0"
+                    className="dark:bg-[#47214e] bg-[#e4e4e7] dark:text-white text-black rounded-xl shadow-lg p-4 w-72 flex-shrink-0"
                   >
                     <h2 className="text-xl font-semibold mb-4 border-b border-[#611f69] dark:border-gray-400 pb-2">
                       {column.title}
@@ -153,7 +153,7 @@ const KanbanBoard = () => {
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
-                            className="bg-[#611f69] dark:bg-[#d1d5db] text-white dark:text-black p-4 mb-4 rounded-lg border border-[#753a84] dark:border-gray-400 shadow-md hover:bg-[#763c8e] dark:hover:bg-gray-300 transition-all duration-200"
+                            className="dark:bg-[#37113c] bg-[#d1d5db] dark:text-white text-black p-4 mb-4 rounded-lg shadow-md dark:hover:bg-[#763c8e] hover:bg-gray-300 transition-all duration-200"
                           >
                             <p className="text-sm">{item.content}</p>
                           </div>
@@ -173,11 +173,11 @@ const KanbanBoard = () => {
                           }))
                         }
                         placeholder="New task"
-                        className="w-full p-2 rounded bg-[#311435] dark:bg-white text-white dark:text-black border border-[#753a84] dark:border-gray-400"
+                        className="w-full p-2 rounded dark:bg-[#311435] bg-white dark:text-white text-black "
                       />
                       <button
                         onClick={() => handleAddTask(columnId)}
-                        className="mt-2 w-full bg-[#c084fc] dark:bg-[#7c3aed] text-black dark:text-white py-1 rounded hover:bg-[#d3a6fd] dark:hover:bg-[#6b21a8] transition"
+                        className="mt-2 w-full dark:bg-[#611f69] bg-[#611f69] text-white py-1 rounded hover:bg-[#d3a6fd] dark:hover:bg-[#6b21a8] transition"
                       >
                         Add Task
                       </button>
