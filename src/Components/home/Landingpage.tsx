@@ -24,12 +24,9 @@ export const Landingpage = () => {
               Share your ideas
               <ArrowRight className="w-4 h-4 ml-1" />
             </Button>
-<<<<<<< HEAD
-            {/* <Button
-=======
             </Link>
+            {/* <Button
             <Button
->>>>>>> 8c0206bbde1144563245aa170aff5dc094667a99
               variant="outline"
               className="border-primary text-primary hover:bg-primary/10 px-8 py-6 rounded-full flex items-center gap-2 text-base"
             >
