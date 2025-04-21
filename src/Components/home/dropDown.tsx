@@ -63,7 +63,7 @@ const DropDown = ({isScrolled }:{isScrolled:Boolean}) => {
                 handleLogout()
               }
               if(item == "Profile"){
-                router.push("/profile")
+                router.push("/my-profile")
               }
             }}>
               <a
