@@ -7,7 +7,8 @@ import {
   Draggable,
   DropResult,
 } from "@hello-pangea/dnd";
-import { ClipboardList, House, LogOut, Settings } from "lucide-react";
+import { ClipboardList, Headphones, House, LogOut, Settings } from "lucide-react";
+import ChatBot from "@/Components/chatBot/ChatBot";
 
 type Task = {
   id: string;
@@ -113,7 +114,7 @@ const KanbanBoard = () => {
   return (
     <div className="flex min-h-screen dark:bg-[#200a23] text-white bg-white dark:text-black">
       {/* Sidebar */}
-      <div className="w-64 bg-[#37113c]  p-6 border-r border-[#611f69] dark:border-gray-500 flex flex-col">
+      <div className="w-64 bg-[#37113c]  p-6  flex flex-col">
         <h2 className="text-2xl font-bold mb-8 text-white ">Qluster</h2>
         <nav className="flex flex-col gap-4 text-sm">
           <a href="#" className="hover:text-[#c084fc] flex items-center gap-2   text-white dark:hover:text-[#7c3aed]">
@@ -123,7 +124,10 @@ const KanbanBoard = () => {
             <ClipboardList className="h-4 w-4" /> My Boards
           </a>
           <a href="#" className="hover:text-[#c084fc] flex items-center gap-2   text-white dark:hover:text-[#7c3aed]">
-            <Settings className="h-4 w-4" /> Settings 
+            <Headphones className="h-4 w-4" /> Huddles
+          </a>
+          <a href="#" className="hover:text-[#c084fc] flex items-center gap-2   text-white dark:hover:text-[#7c3aed]">
+            <ClipboardList className="h-4 w-4" /> Settings 
           </a>
         
         </nav>
@@ -190,6 +194,8 @@ const KanbanBoard = () => {
             ))}
           </div>
         </DragDropContext>
+      
+        <ChatBot/>
       </div>
     </div>
   );

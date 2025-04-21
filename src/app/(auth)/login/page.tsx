@@ -34,7 +34,7 @@ export default function LoginPage() {
   const { mutate } = useMutation({
     mutationFn: async (values:{email:string ,password:string}) => {
       const { data } = await axiosInstance.post("/user/login", values)
-      console.log(values);
+      // console.log(values);
       return data
       
     },
@@ -115,7 +115,6 @@ export default function LoginPage() {
 
           {/* Right side - Login form */}
           <div className="w-full lg:w-1/2 relative">
-            {/* Decorative elements */}
             <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/5 rounded-full blur-3xl"></div>
             <div className="relative backdrop-blur-md bg-white/10 dark:bg-black/20 border border-white/20 dark:border-white/10 rounded-2xl shadow-2xl overflow-hidden">
               {/* Card header with subtle gradient */}
