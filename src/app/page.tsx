@@ -1,22 +1,16 @@
-import { Animatedtheme } from "@/Components/home/Animatedtheme";
 import { Techstacks } from "@/Components/home/Techstacks";
 import { Landingpage } from "@/Components/home/Landingpage";
-import Navbar from "@/Components/home/Navbar";
 import { Feturescard } from "@/Components/home/Futeres";
-import Footer from "@/Components/home/Footer";
 import { FeaturesSection } from "@/Components/home/Features";
 
-
-export default function Home() {
+const Home = () => {
   return (
     <div className="bg-white dark:bg-[#18181b]">
-      <Navbar />
       <Landingpage />
-       <Animatedtheme/>
-       <Techstacks/>
-       <FeaturesSection/>
-       <Footer/>
-    
+      <Techstacks />
+      <FeaturesSection />
+      <Feturescard />
     </div>
   );
-}
+};
+export default Home;

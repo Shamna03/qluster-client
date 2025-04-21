@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation"
 import useAuthStore from "@/store/useAuthStore"
 import GoogleSignIn from "@/Components/googleButton/GoogleButton"
 
-// Validation schema
+
 const LoginSchema = Yup.object({
   email: Yup.string().email('Invalid email').required('Required'),
   password: Yup.string().min(6, 'Password must be at least 6 characters').required('Required')
@@ -51,7 +51,7 @@ export default function LoginPage() {
     },
   })
 
-  // Handle mouse movement for interactive background effect
+ 
   useEffect(() => {
     console.log("run");
     const handleMouseMove = (e: MouseEvent) => {
@@ -77,7 +77,6 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen w-full flex flex-col relative overflow-hidden">
-      {/* Dynamic background with parallax effect */}
       <div
         className="absolute inset-0 bg-[#611f69]"
         style={{
@@ -240,7 +239,7 @@ export default function LoginPage() {
                 </div>
 
                 {/* Social login buttons */}
-                <GoogleSignIn/>
+                <GoogleSignIn />
               </div>
 
               {/* Card footer */}

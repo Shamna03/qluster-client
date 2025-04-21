@@ -1,14 +1,14 @@
 import React from 'react';
 import { Globe, Briefcase, MapPin, Mail, ExternalLink, Twitter, Linkedin } from 'lucide-react';
 
-const UserProfile = () => {
+const Page = () => {
   return (
     <div className="bg-gradient-to-br from-blue-50 to-indigo-100 w-full min-h-screen p-4 md:p-8 lg:p-16 flex justify-center items-center">
       <div className="max-w-4xl w-full bg-white rounded-2xl shadow-xl overflow-hidden">
         
-        {/* Hero Banner */}
-        <div className="w-full h-56 md:h-64 relative overflow-hidden">
-          <img 
+//         {/* Hero Banner */}
+//         <div className="w-full h-56 md:h-64 relative overflow-hidden">
+//           <img 
             src="Screenshot (2).png" 
             className="w-full h-full object-cover"
             alt="Banner background"
@@ -116,4 +116,4 @@ const UserProfile = () => {
   );
 }
 
-export default UserProfile;
+export default Page;

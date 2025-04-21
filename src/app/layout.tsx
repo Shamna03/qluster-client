@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ReactQueryProvider from "@/Providers/QueryProvider";
 import Script from "next/script";
+import LayoutWrapper from "@/Components/layout/LayoutWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,32 +21,32 @@ export const metadata: Metadata = {
   title: "Qluster",
   description: "Qluster",
   icons: {
-    icon: "/favicon.ico", // Standard favicon
-    shortcut: "/favicon.ico", // Shortcut icon
+    icon: "/qluster-log.png", // Standard favicon
+    shortcut: "/qluster-log.png", // Shortcut icon
     apple: "/apple-touch-icon.png", // Apple touch icon
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+const  RootLayout =({children,}: Readonly<{children: React.ReactNode;}>) =>{
   return (
     <html lang="en">
       <head>
         {/* Google Identity Script */}
-        <Script
+        {/* <Script
           src="https://accounts.google.com/gsi/client"
           strategy="beforeInteractive"
-        />
+        /> */}
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-          <ReactQueryProvider>
-           {children}
-          </ReactQueryProvider>
+        <ReactQueryProvider>
+              <LayoutWrapper>
+                {children}
+              </LayoutWrapper>
+        </ReactQueryProvider>
+
       </body>
     </html>
   );
 }
+export default RootLayout

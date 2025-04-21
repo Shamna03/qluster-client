@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import "tw-animate-css";
+
 
 @custom-variant dark (&:is(.dark *));
 
@@ -120,13 +120,17 @@
   }
 }
 
-.bottom-corner-gradient {
-  background: 
-    radial-gradient(circle at center left,   #621f69d9, transparent 35%),
-    radial-gradient(circle at bottom right,   #621f69d9, transparent 35%)
-    ,
-    /* radial-gradient(circle at top right, #621f69a8, transparent 15%), */
+.bottom-corner-gradient::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at center left, #621f69d9, transparent 35%),
+    radial-gradient(circle at bottom right, #621f69d9, transparent 35%);
 }
+
 
 body{
   scroll-behavior: smooth;
