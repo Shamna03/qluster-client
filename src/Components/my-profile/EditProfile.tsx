@@ -361,13 +361,13 @@ const [coverFile, setCoverFile] = useState<File | null>(null)
                         <Badge
                           key={skill}
                           variant="secondary"
-                          className="pl-3 pr-2 py-1.5 flex items-center gap-1 bg-[#611f69]/10 text-[#611f69] dark:bg-[#611f69]/20 dark:text-[#611f69]/90 border-none"
+                          className="pl-3 pr-2 py-1.5 flex items-center gap-1 bg-[#611f69]/20 text-[#611f69] dark:bg-[#611f69]/20 dark:text-[#7c2685] border-none"
                         >
                           {skill}
                           <button
                             type="button"
                             onClick={() => removeSkill(skill, values, setFieldValue)}
-                            className="ml-1 text-[#611f69]/70 hover:text-[#611f69] rounded-full"
+                            className="ml-1 text-[#7c2685] hover:text-[#611f69] rounded-full"
                           >
                             <X className="h-3 w-3" />
                           </button>
