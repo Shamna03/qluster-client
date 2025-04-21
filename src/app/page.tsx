@@ -9,7 +9,7 @@ const Home = () => {
       <Landingpage />
       <Techstacks />
       <FeaturesSection />
-      <Feturescard />
+      {/* <Feturescard /> */}
     </div>
   );
 };

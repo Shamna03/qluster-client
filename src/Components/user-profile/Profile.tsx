@@ -4,7 +4,9 @@ import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import {
   Github,Linkedin,Globe,MapPin,Mail,Award,Code,
-  ChevronRight,Users,CheckCircle,PlusCircle,Edit,X,Pencil,Trash2,
+  ChevronRight,CheckCircle,PlusCircle,Edit,X,Pencil,Trash2,
+  Users,
+  Check,
 } from "lucide-react"
 import { Button } from "@/Components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/Components/ui/tabs"
@@ -12,12 +14,15 @@ import { Badge } from "@/Components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/Components/ui/card"
 import { Progress } from "@/Components/ui/progress"
-import ProjectCard from "./ProjectCard"
-import SkillBadge from "./SkillBadge"
-import EditProfile from "./EditProfile"
+import ProjectCard from "../my-profile/ProjectCard"
+import SkillBadge from "../my-profile/SkillBadge"
+import EditProfile from "../my-profile/EditProfile"
 import useAuthStore from "@/store/useAuthStore"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import axiosInstance from "@/api/axiosInstance"
+import Loading from "@/app/share-ideas/loading"
 
-const userData = {
+const otherUserData = {
   _id: "1",
   name: "Alex Morgan",
   email: "alex.morgan@example.com",
@@ -35,7 +40,7 @@ const userData = {
     "Tailwind CSS",
     "UI/UX Design",
   ],
-  role: "user",
+  role: "otherUser",
   portfolio: "https://",
   github: "https://github.com",
   linkedin: "https://linkedin.com",
@@ -109,36 +114,81 @@ const userData = {
   createdAt: "2023-01-15T00:00:00.000Z",
 }
 
-const ProfileView = () => {
+const Profile= () => {
   const [activeTab, setActiveTab] = useState("overview")
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
-  const { user, setUser } = useAuthStore()
+//   const { user, setUser } = useAuthStore()
   const [imageModal,setImageModal] = useState("")
-  
+  const params = "67f90f6399308f4cfca747d8" ////////////////////////
+
  
+ const {data:otherUser,error:err,isPending,refetch}=useQuery({
+    queryKey:["other-otherUser"],
+    queryFn: async ()=>{
+        const {data} = await axiosInstance.get(`/user/others-profile/${params}`)
+        return data.data
+    }
+ })
+ const {data:endorse,error}= useQuery({
+     queryKey:["getEndorse"],
+     queryFn: async ()=>{
+         const {data} = await axiosInstance.get(`/endorse/endorsements/${otherUser?._id}`)
+         return data
+        },
+        enabled: !!otherUser        
+    })
+    const skillEndorsements = otherUser?.skills?.map((skill:any) => {
+      const count = otherUser?.endorsements.filter((e:any) => e.skill === skill).length
+      return { skill, count }
+    })
+const {mutate} =useMutation({
+    mutationFn : async (skill) =>{
+        const {data} = await axiosInstance.post(`/endorse/endorse/${params}`,{skill})
+        return data
+    },onSuccess:(data,)=>{
+        alert(data.message)
+        refetch()
+    },onError:(err)=>console.log(err)
+})
+const {mutate:removeEndorsed} =useMutation({
+    mutationFn : async (skill) =>{
+        const {data} = await axiosInstance.post(`/endorse/remove-endorsement/${params}`,{skill})
+        return data
+    },onSuccess:(data,)=>{
+        alert(data.message)
+        refetch()
+    },onError:(err)=>console.log(err)
+})
+
+ const handleEndorse = (skill:any) =>{    
+    mutate(skill)    
+ }
+ const handleRemoveEndorsed = (skill:any)=>{
+     removeEndorsed(skill)
+ }
+//   console.log(skillEndorsements)
+//   console.log( endorse);
+//   console.log(error);
+//   console.log(err,"other");
+
+console.log(otherUser);
 
   
-  // Calculate skill endorsement counts
-  const skillEndorsements = userData.skills.map((skill) => {
-    const count = userData.endorsements.filter((e) => e.skill === skill).length
-    return { skill, count }
-  })
-  
-//  console.log(user?.skills);
-  
+
+  if(isPending) return <Loading/>
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-purple-50 dark:from-gray-950 dark:to-[#1a0d1e] pt-20 pb-16">
 
       <div className="relative h-64 md:h-80 w-full overflow-hidden" onClick={()=>setImageModal("coverImage")}>
         {/* <div className="absolute inset-0 bg-gradient-to-r from-[#611f69]/50 to-[#611f69]/20 z-10"></div> */}
-        <img src={user?.coverImage || "Screenshot (2).png"} alt="Cover" className="w-full h-full object-cover" />
+        <img src={otherUser?.coverImage || "Screenshot (2).png"} alt="Cover" className="w-full h-full object-cover" />
       </div> 
 
       {imageModal=== "coverImage"&& (
         <div className="fixed inset-0 bg-black/70 dark:bg-balck-50/80 backdrop-blur-sm flex justify-center z-40 " onClick={() => setImageModal("")}>
           <div className="relative  w-full max-w-6xl h-fit   mt-20  " onClick={(e) =>e.stopPropagation()}>
             <img
-              src={user?.coverImage}
+              src={otherUser?.coverImage}
               alt="Cover Preview"
               className="w-full h-60 object-cover rounded"
             />
@@ -163,27 +213,27 @@ const ProfileView = () => {
             <div className="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-white dark:border-gray-900 overflow-hidden bg-card shadow-xl"  onClick={()=>setImageModal("profilePicture")}>
               <img
                 src={
-                  user?.profilePicture ||
+                  otherUser?.profilePicture ||
                   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIS4VuIKs3YjObiyW8M0NzDAkx8BEhLzLhEA&s" ||
                   "/placeholder.svg"
                 }
-                alt={user?.name}
+                alt={otherUser?.name}
                 className="w-full h-full object-cover "
               />
                 </div>
           </motion.div>
 
               {imageModal==="profilePicture" && (
-              <div className="fixed inset-0 bg-black/70 dark:bg-balck-50/80 backdrop-blur-sm flex justify-center z-40 " onClick={() => setImageModal("")}>
-              <div className="w-1/3 h-2/4 bg-slate-100 dark:bg-gray-900   mt-24  rounded-md flex flex-col  items-center p-5 " onClick={(e)=>e.stopPropagation()}>
+              <div className="fixed inset-0 bg-black/70 dark:bg-balck-50/80 backdrop-blur-sm flex justify-center  z-40 " onClick={() => setImageModal("")}>
+              <div className="w-1/3 h-2/4 bg-slate-100 dark:bg-gray-900   mt-24  rounded-md flex flex-col  items-center  p-5 " onClick={(e)=>e.stopPropagation()}>
               <div className="w-32 h-32 md:w-48 md:h-48 rounded-full overflow-hidden bg-card shadow-xl border "  >
               <img
                 src={
-                  user?.profilePicture ||
+                  otherUser?.profilePicture ||
                   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIS4VuIKs3YjObiyW8M0NzDAkx8BEhLzLhEA&s" ||
                   "/placeholder.svg"
                 }
-                alt={user?.name}
+                alt={otherUser?.name}
                 className="w-full h-full object-cover "
               />
               </div>
@@ -194,12 +244,6 @@ const ProfileView = () => {
                   <X className="h-5 w-5 text-gray-800 dark:text-white" />
                   </button>
 
-               <div className="h-[1px] w-full bg-gray-200 dark:bg-gray-800  mt-auto"></div>
-
-               <div className="w-full flex justify-between mt-4 px-4">
-               <Button  variant="ghost" className="cursor-pointer" onClick={()=>    setIsEditModalOpen(true)} >Edit<Pencil /></Button>
-               <Button  variant="ghost" className="cursor-pointer" >Delete <Trash2 /></Button>
-                </div>
                </div>
               
               </div>
@@ -207,7 +251,7 @@ const ProfileView = () => {
 
 
 
-          {/* User Info */}
+          {/* otherUser Info */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -217,27 +261,19 @@ const ProfileView = () => {
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2">
-                  <h1 className="text-3xl font-bold text-slate-100">{user?.name || userData?.name}</h1>
+                  <h1 className="text-3xl font-bold text-slate-100">{otherUser?.name || otherUserData?.name}</h1>
 
                 </div>
-               { user?.location && <div className="flex items-center gap-2 mt-1 text-gray-500 dark:text-gray-300">
+               { otherUser?.location && <div className="flex items-center gap-2 mt-1 text-gray-500 dark:text-gray-300">
                   <MapPin size={16}  />
-                  <span>{user?.location || ""}</span>
+                  <span>{otherUser?.location || ""}</span>
                 </div>}
                 <p className="mt-4 text-gray-600 dark:text-gray-300 line-clamp-2 md:line-clamp-none">
-                  {user?.profession || ""}
+                  {otherUser?.profession || ""}
                 </p>
               </div>
               <div className="flex gap-2 mb-4 md:mb-0">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="gap-2 border-[#611f69] text-[#611f69] hover:bg-[#611f69]/10 dark:border-[#611f69]/70 dark:text-[#83218e]  "
-                  onClick={() => setIsEditModalOpen(true)}
-                >
-                  <Edit size={16} />
-                  Edit Profile
-                </Button>
+               
                 {/* <Button size="sm" className="gap-2 bg-[#611f69] hover:bg-[#611f69]/90 text-white">
                   <PlusCircle size={16} />
                   Follow
@@ -247,9 +283,9 @@ const ProfileView = () => {
 
             {/* Social Links */}
             <div className="flex flex-wrap gap-4 mt-4">
-              {user?.github && (
+              {otherUser?.github && (
                 <a
-                  href={user?.github}
+                  href={otherUser?.github}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-[#611f69] dark:hover:text-[#611f69] transition-colors"
@@ -258,9 +294,9 @@ const ProfileView = () => {
                   <span>GitHub</span>
                 </a>
               )}
-              {user?.linkedin && (
+              {otherUser?.linkedin && (
                 <a
-                  href={user?.linkedin}
+                  href={otherUser?.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-[#611f69] dark:hover:text-[#611f69] transition-colors"
@@ -269,9 +305,9 @@ const ProfileView = () => {
                   <span>LinkedIn</span>
                 </a>
               )}
-              {user?.portfolio && (
+              {otherUser?.portfolio && (
                 <a
-                  href={user?.portfolio}
+                  href={otherUser?.portfolio}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-[#611f69] dark:hover:text-[#611f69] transition-colors"
@@ -281,7 +317,7 @@ const ProfileView = () => {
                 </a>
               )}
               <a
-                href={`mailto:${user?.email}`}
+                href={`mailto:${otherUser?.email}`}
                 className="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-[#611f69] dark:hover:text-[#611f69] transition-colors"
               >
                 <Mail size={18} />
@@ -305,19 +341,19 @@ const ProfileView = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-3xl font-semibold text-gray-800 dark:text-white">{userData.projectsOwned.length}</p>
+              <p className="text-3xl font-semibold text-gray-800 dark:text-white">{otherUserData.projectsOwned.length}</p>
             </CardContent>
           </Card>
           <Card className="bg-white/80 dark:bg-gray-900/50 backdrop-blur-sm border border-gray-200 dark:border-gray-800 hover:border-[#611f69]/30 dark:hover:border-[#611f69]/30 transition-all">
             <CardHeader className="pb-2">
               <CardTitle className="text-lg flex items-center gap-2">
-                <Users className="text-[#611f69]" size={18} />
-                Contributions
+              <Users className="text-[#611f69]" size={18} />
+              Contributions
               </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-3xl font-semibold text-gray-800 dark:text-white">
-                {user?.projectsContributed.length}
+                {otherUser?.projectsContributed?.length}
               </p>
             </CardContent>
           </Card>
@@ -329,7 +365,7 @@ const ProfileView = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-3xl font-semibold text-gray-800 dark:text-white">{userData.endorsements.length}</p>
+              <p className="text-3xl font-semibold text-gray-800 dark:text-white">{otherUserData.endorsements.length}</p>
             </CardContent>
           </Card>
         </motion.div>
@@ -359,7 +395,7 @@ const ProfileView = () => {
                   <CardTitle className="text-gray-800 dark:text-white">About</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-600 dark:text-gray-300">{user?.bio}</p>
+                  <p className="text-gray-600 dark:text-gray-300">{otherUser?.bio}</p>
                 </CardContent>
               </Card>
 
@@ -378,9 +414,9 @@ const ProfileView = () => {
                 <CardContent>
                   <div className="flex flex-wrap gap-2 ">
                     {skillEndorsements
-                      .sort((a, b) => b.count - a.count)
+                      ?.sort((a:any, b:any) => b.count - a.count)
                       .slice(0, 5)
-                      .map((item) => (
+                      .map((item:any) => (
                         <SkillBadge key={item.skill} skill={item.skill} count={item.count} />
                       ))}
                   </div>
@@ -402,7 +438,7 @@ const ProfileView = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {userData.projectsOwned.slice(0, 2).map((project) => (
+                    {otherUserData.projectsOwned.slice(0, 2).map((project) => (
                       <ProjectCard key={project._id} project={project}  />
                     ))}
                   </div>
@@ -416,12 +452,12 @@ const ProfileView = () => {
                 <CardHeader>
                   <CardTitle className="text-gray-800 dark:text-white">Projects Created</CardTitle>
                   <CardDescription className="text-gray-600 dark:text-gray-400">
-                    Projects that {user?.name} has created
+                    Projects that {otherUser?.name} has created
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {userData.projectsOwned.map((project) => (
+                    {otherUserData.projectsOwned.map((project) => (
                       <ProjectCard key={project._id} project={project} />
                     ))}
                   </div>
@@ -433,32 +469,32 @@ const ProfileView = () => {
                 <CardHeader>
                   <CardTitle className="text-gray-800 dark:text-white">Contributions</CardTitle>
                   <CardDescription className="text-gray-600 dark:text-gray-400">
-                    Projects that {user?.name} has contributed to
+                    Projects that {otherUser?.name} has contributed to
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {userData.projectsContributed.map((project) => (
+                    {otherUserData.projectsContributed.map((project) => (
                       <ProjectCard key={project._id} project={project} />
                     ))}
                   </div>
                 </CardContent>
               </Card>
             </TabsContent>
-
+{/* =================================================================================================================== */}
             <TabsContent value="skills" className="space-y-8">
               <Card className="bg-white/80 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800">
                 <CardHeader>
                   <CardTitle className="text-gray-800 dark:text-white">Skills & Endorsements</CardTitle>
                   <CardDescription className="text-gray-600 dark:text-gray-400">
-                    Skills that {user?.name} has been endorsed for
+                    Skills that {otherUser?.name} has been endorsed for
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-6">
                     {skillEndorsements
-                      .sort((a, b) => b.count - a.count)
-                      .map((item) => (
+                      ?.sort((a:any, b:any) => b.count - a.count)
+                      .map((item:any) => (
                         <div key={item.skill} className="space-y-2">
                           <div className="flex justify-between items-center">
                             <div className="flex items-center gap-2">
@@ -470,46 +506,57 @@ const ProfileView = () => {
                                 {item.count} {item.count === 1 ? "endorsement" : "endorsements"}
                               </Badge>
                             </div>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="text-[#611f69] hover:text-[#611f69]/80 hover:bg-[#611f69]/10 dark:text-[#83218e]"
-                            >
-                              Endorse
-                            </Button>
+                                  {otherUser?.endorsements?.some((val:any)=> val?.endorsedBy == "67f0aaf87dc6110cdccae408"  && val.skill === item.skill)? (
+                                       <Button  variant="ghost"size="sm"
+                                       className="text-[#611f69] hover:text-[#611f69]/80 hover:bg-[#611f69]/10 dark:text-[#83218e]"
+                                       onClick={() => handleRemoveEndorsed(item.skill)}
+                                   ><Check />Endorsed</Button>
+                                  ) :
+                                   
+                                      <Button
+                                          variant="ghost"
+                                          size="sm"
+                                          className="text-[#611f69] hover:text-[#611f69]/80 hover:bg-[#611f69]/10 dark:text-[#83218e]"
+                                          onClick={() => handleEndorse(item.skill)}
+                                      >
+                                          Endorse
+                                      </Button>
+                                   } 
                           </div>
-                          <Progress value={(item.count / 5) * 100} className="h-[6px] bg-gray-200 dark:bg-gray-700">
+                          <Progress value={(item.count / 10) * 100} className="h-[6px] bg-gray-200 dark:bg-gray-700">
                             <div className="h-full bg-[#611f69]" style={{ width: `${(item.count / 5) * 100}%` }}></div>
                           </Progress>
 
                           {/* Endorsers */}
-                          {item.count > 0 && (
+                           {item.count > 0 && (
                             <div className="flex items-center gap-2 mt-2">
                               <span className="text-xs text-gray-600 dark:text-gray-400">Endorsed by:</span>
-                              <div className="flex -space-x-2">
-                                {userData.endorsements
-                                  .filter((e) => e.skill === item.skill)
-                                  .slice(0, 3)
-                                  .map((endorsement) => (
+                                <div className="flex -space-x-2">
+                                {endorse
+                                  ?.filter((e: { skill: string, endorsers: Array<{ _id: string, name: string, profilePicture: string }> }) => e.skill === item.skill)
+                                  ?.flatMap((e: { endorsers: any }) => e.endorsers)
+                                  ?.slice(0, 3)
+                                  .map((endorser: { _id: string, name: string, profilePicture: string }) => (
                                     <Avatar
-                                      key={endorsement.endorsedBy._id}
+                                      key={endorser?._id}
                                       className="h-6 w-6 border-2 border-white dark:border-gray-900"
                                     >
                                       <AvatarImage
-                                        src={endorsement.endorsedBy.profilePicture}
-                                        alt={endorsement.endorsedBy.name}
+                                        src={endorser?.profilePicture}
+                                        alt={endorser?.name}
                                       />
                                       <AvatarFallback className="bg-[#611f69]/10 text-[#611f69]">
-                                        {endorsement.endorsedBy.name.charAt(0)}
+                                        {endorser?.name.charAt(0) }
                                       </AvatarFallback>
                                     </Avatar>
                                   ))}
                                 {item.count > 3 && (
-                                  <div className="h-6 w-6 rounded-full bg-[#611f69]/10 text-[#611f69] flex items-center justify-center text-xs border-2 border-white dark:border-gray-900">
+                                  <div className="h-6 w-6 rounded-full bg-[#611f69]/10 text-[#611f69] flex items-center justify-center text-xs border-2 border-white dark:border-gray-900 ml-1.5">
                                     +{item.count - 3}
                                   </div>
                                 )}
                               </div>
+
                             </div>
                           )}
                         </div>
@@ -517,18 +564,17 @@ const ProfileView = () => {
                   </div>
                 </CardContent>
               </Card>
-            </TabsContent>
+            </TabsContent> 
+            {/* =================================================================================================================== */}
+
 
           </Tabs>
         </motion.div>
       </div>
 
-      <EditProfile
-        isOpen={isEditModalOpen}
-        onClose={() => setIsEditModalOpen(false)}
-      />
+     
     </div>
   )
 }
 
-export default ProfileView
+export default Profile
