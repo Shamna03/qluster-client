@@ -10,6 +10,7 @@ import {
 import { ClipboardList, Headphones, House, LogOut, Settings } from "lucide-react";
 import ChatBot from "@/Components/chatBot/ChatBot";
 
+
 type Task = {
   id: string;
   content: string;
@@ -45,6 +46,7 @@ const initialData: Columns = {
 const KanbanBoard = () => {
   const [columns, setColumns] = useState<Columns>(initialData);
   const [newTaskContent, setNewTaskContent] = useState<{ [key: string]: string }>({});
+  
 
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
@@ -195,7 +197,7 @@ const KanbanBoard = () => {
           </div>
         </DragDropContext>
       
-        <ChatBot/>
+        <ChatBot />
       </div>
     </div>
   );
