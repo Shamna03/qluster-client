@@ -342,38 +342,30 @@ export default function ContactPage() {
 
         {/* Map Section */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          className="mb-16"
-          id="map"
-        >
-          <Card className="border-purple-200 dark:border-purple-900/50 overflow-hidden rounded-xl shadow-lg">
-            <CardContent className="p-0">
-              <div className="aspect-video w-full bg-muted relative">
-                {/* This would be replaced with an actual map component in a real application */}
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-100/50 to-pink-100/50 dark:from-purple-900/30 dark:to-pink-900/30 flex items-center justify-center">
-                  <div className="text-center p-8 max-w-lg">
-                    <div className="relative mx-auto mb-6 w-16 h-16">
-                      <div className="absolute inset-0 bg-[#611f69] rounded-full animate-ping opacity-20"></div>
-                      <div className="relative p-4 bg-gradient-to-r from-[#37113c] to-[#611f69] rounded-full shadow-lg">
-                        <MapPin className="h-8 w-8 text-white" />
-                      </div>
-                    </div>
-                    <h3 className="text-2xl font-semibold text-[#611f69] dark:text-purple-300 mb-2">Our Location</h3>
-                    <p className="text-muted-foreground mb-6">
-                      123 Innovation Street, Tech Hub, CA 94103, United States
-                    </p>
-                    <Button className="bg-gradient-to-r from-[#37113c] to-[#611f69] hover:from-[#4a1751] hover:to-[#7a2785] text-white rounded-full px-6 py-2 shadow-lg">
-                      Get Directions
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
+  initial={{ opacity: 0, y: 30 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.6, delay: 0.8 }}
+  className="mb-16"
+  id="map"
+>
+  <Card className="border-purple-200 dark:border-purple-900/50 overflow-hidden rounded-xl shadow-lg">
+    <CardContent className="p-0">
+      <div className="aspect-video w-full bg-muted relative">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15657.889824898237!2d75.882080832171!3d11.152612476945082!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba6502f41ef4e8b%3A0xf4c653a7548cccd!2sKinfra%20Techno%20Industrial%20Park!5e0!3m2!1sen!2sin!4v1745393085687!5m2!1sen!2sin"
+          width="100%"
+          height="100%"
+          style={{ border: 0 }}
+          allowFullScreen=""
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          className="absolute inset-0 w-full h-full rounded-xl"
+        ></iframe>
+      </div>
+    </CardContent>
+  </Card>
+</motion.div>
+
 
         {/* FAQ Section */}
         <motion.div
