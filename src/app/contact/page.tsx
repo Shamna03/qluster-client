@@ -103,7 +103,8 @@ export default function ContactPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-purple-50 dark:from-gray-950 dark:to-[#1a0d1e] pt-30">
-      {/* Decorative elements */}
+      {/* Decorative elements */}git push origin main
+
       <div className="absolute top-0 left-0 w-full h-64 bg-[url('/grid-pattern.svg')] opacity-5 -z-10"></div>
       <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-gradient-to-b from-purple-100/40 to-transparent dark:from-purple-900/20 rounded-bl-full blur-3xl -z-10"></div>
       <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-gradient-to-t from-purple-100/40 to-transparent dark:from-purple-900/20 rounded-tr-full blur-3xl -z-10"></div>
