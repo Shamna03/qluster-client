@@ -14,13 +14,14 @@ import {
   Lightbulb,
   DoorClosedIcon as CloseIcon,
 } from "lucide-react"
-import IdeaForm from "@/Components/share-ideas/IdeaForm"
+import IdeaForm from "@/Components/share-ideas/IdeaForm/IdeaForm"
 import IdeaCard from "@/Components/share-ideas/IdeaCard"
 import FeaturedIdea from "@/Components/share-ideas/FeaturedIdea"
 import { Button } from "@/Components/ui/button"
 import { Tabs, TabsList, TabsTrigger } from "@/Components/ui/tabs"
 import { Input } from "@/Components/ui/input"
 import { Badge } from "@/Components/ui/badge"
+import projectcreateinstance from "@/api/projectcreateinstance"
 
 // Mock data (same as before)
 const MOCK_IDEAS = [
@@ -214,7 +215,15 @@ export default function ShareIdeasPage() {
   const featuredIdea = ideas.find((idea) => idea.featured)
   const regularIdeas = sortedIdeas.filter((idea) => !idea.featured)
 
-  const handleAddIdea = (newIdea) => {
+  const handleAddIdea = async(newIdea) => {
+    console.log(newIdea)
+try {
+  const res=await projectcreateinstance.post("project/createProject",newIdea)
+  console.log(res.data.data)
+} catch (error) {
+ 
+  console.log(error)
+}
     setIdeas([
       {
         id: (ideas.length + 1).toString(),
@@ -317,7 +326,7 @@ export default function ShareIdeasPage() {
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.4 }}
+                    transition={{ duration: 0.4 }}  
                     className="mt-8"
                   >
                     <IdeaForm onSubmit={handleAddIdea} onCancel={() => setShowForm(false)} />

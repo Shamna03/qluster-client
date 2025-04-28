@@ -9,6 +9,7 @@ import {
 } from "@hello-pangea/dnd";
 import { ClipboardList, Headphones, House, LogOut, Settings } from "lucide-react";
 import ChatBot from "@/Components/chatBot/ChatBot";
+import axiosInstance from "@/api/axiosInstance";
 
 
 type Task = {
@@ -42,6 +43,15 @@ const initialData: Columns = {
     items: [{ id: "task-4", content: "Initial Setup" }],
   },
 };
+
+const getkanbanboarddata=async()=>{
+try{
+  const res=await axiosInstance.get(`/board/getBoard/:projectId`)
+}
+catch(error){
+  console.log(error)
+}
+}
 
 const KanbanBoard = () => {
   const [columns, setColumns] = useState<Columns>(initialData);
@@ -91,7 +101,7 @@ const KanbanBoard = () => {
     }
   };
 
-  const handleAddTask = (columnId: string) => {
+  const handleAddTask = async(columnId: string) => {
     const content = newTaskContent[columnId];
     if (!content || !content.trim()) return;
 
@@ -99,6 +109,11 @@ const KanbanBoard = () => {
       id: `task-${Date.now()}`,
       content: content.trim(),
     };
+    try{
+       const data =await axiosInstance.post(`/api/task/createTask`,{id,content})
+    }catch{
+
+    }
 
     const updatedColumn = {
       ...columns[columnId],

@@ -34,6 +34,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/Components/ui/tabs"
 import { Badge } from "@/Components/ui/badge"
 import { motion, AnimatePresence } from "framer-motion"
 
+
 const categories = [
   "AI/ML",
   "Blockchain",
@@ -86,7 +87,7 @@ export default function IdeaForm({ onSubmit, onCancel }) {
   // Focus the appropriate input when changing steps
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (activeStep === 3) {
+      if (activeStep === 4) {
         if (techInputRef.current) {
           techInputRef.current.focus()
         }
@@ -148,12 +149,13 @@ export default function IdeaForm({ onSubmit, onCancel }) {
     }
   }
 
+  console.log("steps ",activeStep)
   const handleNext = async () => {
     const isValid = await validateCurrentStep()
     if (isValid) {
-      if (!completedSteps.includes(activeStep)) {
-        setCompletedSteps([...completedSteps, activeStep])
-      }
+      // if (!completedSteps.includes(activeStep)) {
+      //   setCompletedSteps([...completedSteps, activeStep])
+      // }
       setActiveStep(Math.min(activeStep + 1, 4))
     }
   }
@@ -168,6 +170,8 @@ export default function IdeaForm({ onSubmit, onCancel }) {
     animate: { opacity: 1, x: 0 },
     exit: { opacity: 0, x: -100 },
   }
+  
+
 
   return (
     <Card className="border border-purple-200 dark:border-purple-900/50 shadow-lg overflow-hidden">
@@ -242,6 +246,7 @@ export default function IdeaForm({ onSubmit, onCancel }) {
           onSubmit={onSubmit}
         >
           {({ values, setFieldValue, isSubmitting, errors, touched }) => (
+          
             <Form className="p-6">
               <AnimatePresence mode="wait">
                 {activeStep === 1 && (
@@ -254,6 +259,7 @@ export default function IdeaForm({ onSubmit, onCancel }) {
                     transition={{ type: "tween", duration: 0.3 }}
                     className="space-y-6"
                   >
+                    
                     <div className="space-y-1">
                       <h3 className="text-lg font-semibold flex items-center gap-2 text-[#611f69] dark:text-purple-300">
                         <Target className="h-5 w-5" />
@@ -855,7 +861,7 @@ export default function IdeaForm({ onSubmit, onCancel }) {
                   </Button>
                 )}
 
-                {activeStep < 4 ? (
+                {activeStep <= 3 && 
                   <Button
                     type="button"
                     onClick={handleNext}
@@ -864,8 +870,8 @@ export default function IdeaForm({ onSubmit, onCancel }) {
                     Next
                     <ArrowRight className="h-4 w-4 ml-2" />
                   </Button>
-                ) : (
-                  <Button
+                }
+                 {activeStep === 4 && <Button
                     type="submit"
                     disabled={isSubmitting}
                     className="bg-gradient-to-r from-[#37113c] to-[#611f69] hover:from-[#4a1751] hover:to-[#7a2785] text-white"
@@ -873,7 +879,7 @@ export default function IdeaForm({ onSubmit, onCancel }) {
                     Submit Idea
                     <Rocket className="h-4 w-4 ml-2" />
                   </Button>
-                )}
+                }
               </div>
             </Form>
           )}
