@@ -1,13 +1,13 @@
 import axios from "axios";
 
-const projectcreateinstance = axios.create({
+const projectaxiosinstance = axios.create({
   baseURL: "http://localhost:5002/api",
   withCredentials: true,     
   headers: { "Content-Type": "application/json" },
 });
 
 
-projectcreateinstance.interceptors.response.use(
+projectaxiosinstance.interceptors.response.use(
   (response) => response,
   async (error) => {
     console.log("inst" , error);
@@ -23,4 +23,6 @@ projectcreateinstance.interceptors.response.use(
   }
 );
 
-export default projectcreateinstance
+export default projectaxiosinstance
+
+

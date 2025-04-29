@@ -21,7 +21,7 @@ import { Button } from "@/Components/ui/button"
 import { Tabs, TabsList, TabsTrigger } from "@/Components/ui/tabs"
 import { Input } from "@/Components/ui/input"
 import { Badge } from "@/Components/ui/badge"
-import projectcreateinstance from "@/api/projectcreateinstance"
+import projectaxiosinstance from "@/api/projectaxiosinstance"
 
 // Mock data (same as before)
 const MOCK_IDEAS = [
@@ -218,7 +218,7 @@ export default function ShareIdeasPage() {
   const handleAddIdea = async(newIdea) => {
     console.log(newIdea)
 try {
-  const res=await projectcreateinstance.post("project/createProject",newIdea)
+  const res=await projectaxiosinstance.post("project/createProject",newIdea)
   console.log(res.data.data)
 } catch (error) {
  
