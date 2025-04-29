@@ -15,7 +15,7 @@ import useAuthStore from "@/store/useAuthStore";
 
 
 
-  const hideLayout = ["/login", "/signup","/kanbanboard",];
+  const hideLayout = ["/login", "/signup","/kanbanboard","/projectdash-board"];
   const shouldHide = hideLayout.includes(pathname);
 
 
