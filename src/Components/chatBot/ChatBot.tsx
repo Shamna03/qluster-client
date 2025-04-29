@@ -49,7 +49,10 @@ const ChatBot = () => {
 
   // Socket.io event listeners
   useEffect(() => {
-    console.log("🧪 socket connected?", socket.connected)
+    if(!socket.connected){
+      console.log("🧪 socket connected?", socket.connected)
+
+    }
 
     // Listen for replies from the AI
     socket.on("reply", (data) => {
