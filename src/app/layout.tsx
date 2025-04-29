@@ -21,9 +21,9 @@ export const metadata: Metadata = {
   title: "Qluster",
   description: "Qluster",
   icons: {
-    icon: "/qluster-log.png", // Standard favicon
-    shortcut: "/qluster-log.png", // Shortcut icon
-    apple: "/apple-touch-icon.png", // Apple touch icon
+    icon: "/favicon.ico", // Standard favicon
+    shortcut: "/favicon.ico", // Shortcut icon
+    apple: "/favicon.ico", // Apple touch icon
   },
 };
 
