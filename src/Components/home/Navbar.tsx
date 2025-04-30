@@ -72,7 +72,7 @@ const Navbar: React.FC = () => {
         </div>
         <Link href="/share-ideas"><h1 className="cursor-pointer hover:text-primary transition-colors">Projects</h1></Link>
         <h1 className="cursor-pointer hover:text-primary transition-colors">Developers</h1>
-        <h1 className="cursor-pointer hover:text-primary transition-colors">Contact Us</h1>
+        <Link href="/contact" className="cursor-pointer hover:text-primary transition-colors">Contact Us</Link>
       </div>
 
       <button
