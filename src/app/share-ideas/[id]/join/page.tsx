@@ -263,7 +263,7 @@ export default function JoinProjectPage() {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-white to-purple-50 dark:from-gray-950 dark:to-[#1a0d1e] py-12">
+      <div className="min-h-screen bg-gradient-to-b from-white to-purple-50 dark:from-gray-950 dark:to-[#1a0d1e] py-12 pt-30">
         <div className="container mx-auto px-4 max-w-4xl text-center">
           <div className="inline-flex items-center justify-center w-20 h-20 bg-green-100 dark:bg-green-900/30 rounded-full mb-6">
             <CheckCircle2 className="h-10 w-10 text-green-600 dark:text-green-400" />

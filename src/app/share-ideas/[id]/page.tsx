@@ -230,6 +230,7 @@ const ProjectDetailPage: React.FC = () => {
   const [showAllUpdates, setShowAllUpdates] = useState<boolean>(false)
   const [showTeamSection, setShowTeamSection] = useState<boolean>(true)
 
+
   useEffect(() => {
     const fetchIdea = async () => {
       setLoading(true)
@@ -445,10 +446,15 @@ const ProjectDetailPage: React.FC = () => {
                   </div>
                 </div>
 
-                <Button className="bg-gradient-to-r from-[#37113c] to-[#611f69] hover:from-[#4a1751] hover:to-[#7a2785] text-white">
-                  <UserPlus className="mr-2 h-4 w-4" />
-                  Join This Project
-                </Button>
+
+                <Link href={`/share-ideas/${params.id}/join`}>
+                  <Button
+                    className="bg-gradient-to-r from-[#37113c] to-[#611f69] hover:from-[#4a1751] hover:to-[#7a2785] text-white"
+                  >
+                    <UserPlus className="mr-2 h-4 w-4" />
+                    Join This Project
+                  </Button>
+                </Link>
 
                 <div className="flex gap-2">
                   <Button variant="outline" className="flex-1" onClick={handleLike}>
