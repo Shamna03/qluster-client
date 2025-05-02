@@ -22,6 +22,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/Components/ui/tabs"
 import { Input } from "@/Components/ui/input"
 import { Badge } from "@/Components/ui/badge"
 import projectaxiosinstance from "@/api/projectaxiosinstance"
+import useAuthStore from "@/store/useAuthStore"
 
 // Mock data (same as before)
 const MOCK_IDEAS = [
@@ -215,7 +216,12 @@ export default function ShareIdeasPage() {
   const featuredIdea = ideas.find((idea) => idea.featured)
   const regularIdeas = sortedIdeas.filter((idea) => !idea.featured)
 
+  const user=useAuthStore((state)=>state.user)
+  console.log(user,"user 220 share idea")
+
+
   const handleAddIdea = async(newIdea) => {
+    newIdea.createdby=user
     console.log(newIdea)
 try {
   const res=await projectaxiosinstance.post("project/createProject",newIdea)
