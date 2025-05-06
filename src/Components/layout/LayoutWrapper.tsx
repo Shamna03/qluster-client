@@ -11,12 +11,14 @@ import useAuthStore from "@/store/useAuthStore";
   const LayoutWrapper =({ children }: { children: React.ReactNode }) =>{
   const pathname = usePathname();
   const {user,setUser} = useAuthStore()
-  const isAuthenticated = localStorage.getItem("isAuthenticated")
+  // const isAuthenticated = localStorage.getItem("isAuthenticated")
+  const isAuthenticated = typeof window !== "undefined" ? localStorage.getItem("isAuthenticated") : null;
 
 
 
   const hideLayout = ["/login", "/signup","/kanbanboard","/projectdash-board"];
-  const shouldHide = hideLayout.includes(pathname);
+  const shouldHide = hideLayout.some(path => pathname.startsWith(path));
+  // const shouldHide = hideLayout.includes(pathname);
 
 
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
