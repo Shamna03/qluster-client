@@ -4,7 +4,7 @@ import type React from "react"
 
 import { useState, useRef, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Send, Bot, User, X, Maximize2, Minimize2, ChevronDown, ChevronUp, Loader2, Ellipsis } from "lucide-react"
+import { Send, Bot, User, X, Maximize2, Minimize2,  Loader2, Ellipsis } from "lucide-react"
 import { Button } from "@/Components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/Components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar"
@@ -12,6 +12,7 @@ import { Badge } from "@/Components/ui/badge"
 import { cn } from "@/lib/utils"
 import { io } from "socket.io-client"
 import useAuthStore from "@/store/useAuthStore"
+import { usePathname } from "next/navigation"
 
 const socket = io("http://localhost:5005",{
   withCredentials:true
@@ -110,6 +111,7 @@ const ChatBot = () => {
     }
   }
 
+  const pathName = usePathname()
   return (
     <>
       {/* Chat button */}
@@ -121,7 +123,7 @@ const ChatBot = () => {
         >
           <Button
             onClick={toggleChat}
-            className="h-14 w-14 rounded-full bg-[#611f69] hover:bg-[#611f69]/90 text-white shadow-lg animate-bounce"
+            className={`h-14 w-14 rounded-full bg-[#611f69] hover:bg-[#611f69]/90 text-white shadow-lg animate-bounce  ${pathName === "/projectdash-board/channels" ? "mb-10" : ""}`}
           >
             <Bot size={24}  className="animate-pulse"/>
           </Button>
@@ -159,14 +161,6 @@ const ChatBot = () => {
                     )}
                   <div>
                     <CardTitle className="text-base text-gray-800 dark:text-white">Qluster AI</CardTitle>
-                    {/* {!isMinimized && (
-                      <Badge
-                        variant="outline"
-                        className="text-xs bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 border-none"
-                      >
-                        Online
-                      </Badge>
-                    )} */}
                   </div>
                 </div>
                 <div className="flex items-center gap-1">
@@ -180,14 +174,6 @@ const ChatBot = () => {
                       {isExpanded ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
                     </Button>
                   )}
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800"
-                    onClick={() => setIsMinimized(!isMinimized)}
-                  >
-                    {isMinimized ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                  </Button>
                   <Button
                     variant="ghost"
                     size="icon"
