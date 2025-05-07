@@ -33,6 +33,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/Components/ui/tabs"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/Components/ui/card"
 import { Progress } from "@/Components/ui/progress"
 import { motion, AnimatePresence } from "framer-motion"
+import projectaxiosinstance from "@/api/projectaxiosinstance"
 
 const Textarea = ({ className, ...props }) => {
   return (
@@ -43,81 +44,81 @@ const Textarea = ({ className, ...props }) => {
   )
 }
 
-const MOCK_IDEAS = [
-  {
-    id: "1",
-    title: "AI-Powered Code Review Assistant",
-    description:
-      "An AI tool that automatically reviews code, suggests improvements, and identifies potential bugs before deployment. The system learns from previous reviews and adapts to team coding standards over time.",
-    problem:
-      "Manual code reviews are time-consuming and can miss subtle issues. Developers need a way to get instant feedback on their code quality and potential bugs.",
-    solution:
-      "Our AI-powered assistant analyzes code against best practices, team standards, and common bug patterns to provide instant, actionable feedback.",
-    techStack: ["Python", "TensorFlow", "React", "Node.js", "Docker", "AWS"],
-    category: "AI/ML",
-    requiredRoles: ["ML Engineer", "Full Stack Developer", "DevOps", "UI/UX Designer"],
-    author: {
-      name: "Alex Johnson",
-      avatar: "/placeholder.svg?height=40&width=40",
-      title: "Senior AI Engineer",
-      company: "TechInnovate",
-      github: "alexj",
-      website: "alexjohnson.dev",
-    },
-    likes: 42,
-    comments: 15,
-    createdAt: "2025-04-05T10:30:00Z",
-    featured: true,
-    progress: 25,
-    status: "Planning",
-    team: [
-      { name: "Sarah Chen", avatar: "/placeholder.svg?height=40&width=40", role: "ML Engineer" },
-      { name: "Michael Rodriguez", avatar: "/placeholder.svg?height=40&width=40", role: "Full Stack Developer" },
-    ],
-    updates: [
-      { date: "2025-04-10", content: "Project kickoff meeting scheduled for next week" },
-      { date: "2025-04-07", content: "Added initial project requirements document" },
-      { date: "2025-04-05", content: "Project idea published" },
-    ],
-    resources: [
-      { type: "document", name: "Project Requirements", url: "#" },
-      { type: "repository", name: "Initial Prototype", url: "#" },
-    ],
-  },
-  {
-    id: "2",
-    title: "Decentralized Developer Marketplace",
-    description:
-      "A blockchain-based platform connecting developers with clients, featuring smart contracts for secure payments and project delivery. Includes reputation system and dispute resolution.",
-    problem:
-      "Traditional freelance platforms charge high fees and don't provide adequate security for both clients and developers.",
-    solution:
-      "Our decentralized marketplace uses blockchain technology and smart contracts to ensure secure, transparent transactions with lower fees.",
-    techStack: ["Solidity", "Ethereum", "React", "GraphQL", "IPFS", "Web3.js"],
-    category: "Blockchain",
-    requiredRoles: ["Blockchain Developer", "Frontend Developer", "Smart Contract Auditor", "UX Researcher"],
-    author: {
-      name: "Sophia Chen",
-      avatar: "/placeholder.svg?height=40&width=40",
-      title: "Blockchain Architect",
-      company: "DAppWorks",
-      github: "sophiac",
-      website: "sophiachen.io",
-    },
-    likes: 38,
-    comments: 21,
-    createdAt: "2025-04-03T14:15:00Z",
-    featured: false,
-    progress: 15,
-    status: "Recruiting",
-    team: [{ name: "James Wilson", avatar: "/placeholder.svg?height=40&width=40", role: "Smart Contract Developer" }],
-    updates: [
-      { date: "2025-04-08", content: "Published initial smart contract design" },
-      { date: "2025-04-03", content: "Project idea published" },
-    ],
-    resources: [{ type: "document", name: "Smart Contract Architecture", url: "#" }],
-  },
-]
+// const MOCK_IDEAS = [
+//   {
+//     id: "1",
+//     title: "AI-Powered Code Review Assistant",
+//     description:
+//       "An AI tool that automatically reviews code, suggests improvements, and identifies potential bugs before deployment. The system learns from previous reviews and adapts to team coding standards over time.",
+//     problem:
+//       "Manual code reviews are time-consuming and can miss subtle issues. Developers need a way to get instant feedback on their code quality and potential bugs.",
+//     solution:
+//       "Our AI-powered assistant analyzes code against best practices, team standards, and common bug patterns to provide instant, actionable feedback.",
+//     techStack: ["Python", "TensorFlow", "React", "Node.js", "Docker", "AWS"],
+//     category: "AI/ML",
+//     requiredRoles: ["ML Engineer", "Full Stack Developer", "DevOps", "UI/UX Designer"],
+//     author: {
+//       name: "Alex Johnson",
+//       avatar: "/placeholder.svg?height=40&width=40",
+//       title: "Senior AI Engineer",
+//       company: "TechInnovate",
+//       github: "alexj",
+//       website: "alexjohnson.dev",
+//     },
+//     likes: 42,
+//     comments: 15,
+//     createdAt: "2025-04-05T10:30:00Z",
+//     featured: true,
+//     progress: 25,
+//     status: "Planning",
+//     team: [
+//       { name: "Sarah Chen", avatar: "/placeholder.svg?height=40&width=40", role: "ML Engineer" },
+//       { name: "Michael Rodriguez", avatar: "/placeholder.svg?height=40&width=40", role: "Full Stack Developer" },
+//     ],
+//     updates: [
+//       { date: "2025-04-10", content: "Project kickoff meeting scheduled for next week" },
+//       { date: "2025-04-07", content: "Added initial project requirements document" },
+//       { date: "2025-04-05", content: "Project idea published" },
+//     ],
+//     resources: [
+//       { type: "document", name: "Project Requirements", url: "#" },
+//       { type: "repository", name: "Initial Prototype", url: "#" },
+//     ],
+//   },
+//   {
+//     id: "2",
+//     title: "Decentralized Developer Marketplace",
+//     description:
+//       "A blockchain-based platform connecting developers with clients, featuring smart contracts for secure payments and project delivery. Includes reputation system and dispute resolution.",
+//     problem:
+//       "Traditional freelance platforms charge high fees and don't provide adequate security for both clients and developers.",
+//     solution:
+//       "Our decentralized marketplace uses blockchain technology and smart contracts to ensure secure, transparent transactions with lower fees.",
+//     techStack: ["Solidity", "Ethereum", "React", "GraphQL", "IPFS", "Web3.js"],
+//     category: "Blockchain",
+//     requiredRoles: ["Blockchain Developer", "Frontend Developer", "Smart Contract Auditor", "UX Researcher"],
+//     author: {
+//       name: "Sophia Chen",
+//       avatar: "/placeholder.svg?height=40&width=40",
+//       title: "Blockchain Architect",
+//       company: "DAppWorks",
+//       github: "sophiac",
+//       website: "sophiachen.io",
+//     },
+//     likes: 38,
+//     comments: 21,
+//     createdAt: "2025-04-03T14:15:00Z",
+//     featured: false,
+//     progress: 15,
+//     status: "Recruiting",
+//     team: [{ name: "James Wilson", avatar: "/placeholder.svg?height=40&width=40", role: "Smart Contract Developer" }],
+//     updates: [
+//       { date: "2025-04-08", content: "Published initial smart contract design" },
+//       { date: "2025-04-03", content: "Project idea published" },
+//     ],
+//     resources: [{ type: "document", name: "Smart Contract Architecture", url: "#" }],
+//   },
+// ]
 
 const MOCK_COMMENTS = [
   {
@@ -155,7 +156,11 @@ const MOCK_COMMENTS = [
 ]
 
 export default function ProjectDetailPage() {
+
+  
   const params = useParams()
+
+  
   const router = useRouter()
   const [idea, setIdea] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -172,9 +177,10 @@ export default function ProjectDetailPage() {
       setLoading(true)
       try {
         await new Promise((resolve) => setTimeout(resolve, 500))
-        const foundIdea = MOCK_IDEAS.find((idea) => idea.id === params.id)
+        const foundIdea = await projectaxiosinstance.get(`/project/getProject/${params.id}`)
+      console.log(foundIdea,"details page")
         if (foundIdea) {
-          setIdea(foundIdea)
+          setIdea(foundIdea.data)
           setComments(MOCK_COMMENTS)
         } else {
           router.push("/share-ideas")
@@ -204,6 +210,7 @@ export default function ProjectDetailPage() {
   const handleSave = () => {
     setSaved(!saved)
   }
+
 
   const handleSubmitComment = (e) => {
     e.preventDefault()

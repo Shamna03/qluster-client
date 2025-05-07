@@ -9,9 +9,11 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/Comp
 import { useRouter } from "next/navigation"
 
 export default function IdeaCard({ idea }) {
+  
+  
   const [liked, setLiked] = useState(false)
   const [saved, setSaved] = useState(false)
-  const [likeCount, setLikeCount] = useState(idea.likes)
+  const [likeCount, setLikeCount] = useState(idea.likes|| 0)
   const router = useRouter()
 
   const handleLike = (e) => {
@@ -40,7 +42,9 @@ export default function IdeaCard({ idea }) {
   }
 
   const handleCardClick = () => {
-    router.push(`/share-ideas/${idea.id}`)
+    console.log(idea._id);
+    
+    router.push(`/share-ideas/${idea._id}`)
   }
 
  
@@ -57,6 +61,8 @@ export default function IdeaCard({ idea }) {
     return `${Math.floor(diffInSeconds / 31536000)} years ago`
   }
 
+  
+
   return (
     <Card
       className="h-full flex flex-col border-purple-100 dark:border-purple-900/50 hover:shadow-lg transition-shadow duration-300 overflow-hidden group cursor-pointer"
@@ -64,13 +70,13 @@ export default function IdeaCard({ idea }) {
     >
       <CardHeader className="pb-2 flex flex-row items-center space-y-0 gap-2">
         <Avatar className="h-8 w-8 ring-2 ring-purple-100 dark:ring-purple-900/50">
-          <AvatarImage src={idea.author.avatar || "/placeholder.svg"} alt={idea.author.name} />
+          <AvatarImage src={idea?.owner?.avatar || "/placeholder.svg"} alt={idea?.owner?.name} />
           <AvatarFallback className="bg-gradient-to-br from-[#37113c] to-[#611f69] text-white">
-            {idea.author.name.charAt(0)}
+            {idea?.owner?.name?.charAt(0)}
           </AvatarFallback>
         </Avatar>
         <div className="flex flex-col">
-          <span className="text-sm font-medium">{idea.author.name}</span>
+          <span className="text-sm font-medium">{idea?.owner?.name}</span>
           <span className="text-xs text-muted-foreground">{formatRelativeTime(idea.createdAt)}</span>
         </div>
 
@@ -158,7 +164,7 @@ export default function IdeaCard({ idea }) {
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
-            <span className="text-xs text-muted-foreground">{idea.comments}</span>
+            <span className="text-xs text-muted-foreground">{idea?.comments}</span>
           </div>
 
           <div className="flex items-center gap-2">

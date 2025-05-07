@@ -23,107 +23,109 @@ import { Input } from "@/Components/ui/input"
 import { Badge } from "@/Components/ui/badge"
 import projectaxiosinstance from "@/api/projectaxiosinstance"
 import useAuthStore from "@/store/useAuthStore"
+import useProjectStore from "@/store/useProjectstore"
+import { useQuery } from "@tanstack/react-query"
 
 // Mock data (same as before)
-const MOCK_IDEAS = [
-  {
-    id: "1",
-    title: "AI-Powered Code Review Assistant",
-    description:
-      "An AI tool that automatically reviews code, suggests improvements, and identifies potential bugs before deployment. The system learns from previous reviews and adapts to team coding standards over time.",
-    techStack: ["Python", "TensorFlow", "React", "Node.js"],
-    category: "AI/ML",
-    requiredRoles: ["ML Engineer", "Full Stack Developer", "DevOps"],
-    author: {
-      name: "Alex Johnson",
-      avatar: "/placeholder.svg?height=40&width=40",
-    },
-    likes: 42,
-    comments: 15,
-    createdAt: "2025-04-05T10:30:00Z",
-    featured: true,
-  },
-  {
-    id: "2",
-    title: "Decentralized Developer Marketplace",
-    description:
-      "A blockchain-based platform connecting developers with clients, featuring smart contracts for secure payments and project delivery. Includes reputation system and dispute resolution.",
-    techStack: ["Solidity", "Ethereum", "React", "GraphQL"],
-    category: "Blockchain",
-    requiredRoles: ["Blockchain Developer", "Frontend Developer", "Smart Contract Auditor"],
-    author: {
-      name: "Sophia Chen",
-      avatar: "/placeholder.svg?height=40&width=40",
-    },
-    likes: 38,
-    comments: 21,
-    createdAt: "2025-04-03T14:15:00Z",
-  },
-  {
-    id: "3",
-    title: "Collaborative Coding Environment",
-    description:
-      "Real-time collaborative code editor with integrated video chat, version control, and AI-assisted pair programming features. Supports multiple programming languages and frameworks.",
-    techStack: ["WebRTC", "Socket.io", "TypeScript", "MongoDB"],
-    category: "Developer Tools",
-    requiredRoles: ["Backend Developer", "Frontend Developer", "UX Designer"],
-    author: {
-      name: "Marcus Williams",
-      avatar: "/placeholder.svg?height=40&width=40",
-    },
-    likes: 56,
-    comments: 32,
-    createdAt: "2025-04-01T09:45:00Z",
-  },
-  {
-    id: "4",
-    title: "Cross-Platform Mobile Development Framework",
-    description:
-      "A lightweight framework for building high-performance native mobile apps from a single codebase. Focuses on developer experience and runtime performance.",
-    techStack: ["Rust", "WebAssembly", "Kotlin", "Swift"],
-    category: "Mobile",
-    requiredRoles: ["Mobile Developer", "Systems Programmer", "UI Designer"],
-    author: {
-      name: "Priya Patel",
-      avatar: "/placeholder.svg?height=40&width=40",
-    },
-    likes: 29,
-    comments: 18,
-    createdAt: "2025-03-28T16:20:00Z",
-  },
-  {
-    id: "5",
-    title: "Serverless Deployment Pipeline",
-    description:
-      "An end-to-end CI/CD pipeline specifically designed for serverless applications. Includes testing, security scanning, and gradual rollout capabilities.",
-    techStack: ["AWS Lambda", "GitHub Actions", "Terraform", "Python"],
-    category: "DevOps",
-    requiredRoles: ["DevOps Engineer", "Cloud Architect", "Backend Developer"],
-    author: {
-      name: "Jordan Lee",
-      avatar: "/placeholder.svg?height=40&width=40",
-    },
-    likes: 34,
-    comments: 12,
-    createdAt: "2025-03-25T11:10:00Z",
-  },
-  {
-    id: "6",
-    title: "Accessibility Testing Framework",
-    description:
-      "An automated testing framework for identifying and fixing accessibility issues in web applications. Provides detailed reports and suggestions for improvements.",
-    techStack: ["JavaScript", "Puppeteer", "ARIA", "HTML"],
-    category: "Web Development",
-    requiredRoles: ["Frontend Developer", "Accessibility Specialist", "QA Engineer"],
-    author: {
-      name: "Taylor Morgan",
-      avatar: "/placeholder.svg?height=40&width=40",
-    },
-    likes: 47,
-    comments: 23,
-    createdAt: "2025-03-22T08:45:00Z",
-  },
-]
+// const MOCK_IDEAS = [
+//   {
+//     id: "1",
+//     title: "AI-Powered Code Review Assistant",
+//     description:
+//       "An AI tool that automatically reviews code, suggests improvements, and identifies potential bugs before deployment. The system learns from previous reviews and adapts to team coding standards over time.",
+//     techStack: ["Python", "TensorFlow", "React", "Node.js"],
+//     category: "AI/ML",
+//     requiredRoles: ["ML Engineer", "Full Stack Developer", "DevOps"],
+//     author: {
+//       name: "Alex Johnson",
+//       avatar: "/placeholder.svg?height=40&width=40",
+//     },
+//     likes: 42,
+//     comments: 15,
+//     createdAt: "2025-04-05T10:30:00Z",
+//     featured: true,
+//   },
+//   {
+//     id: "2",
+//     title: "Decentralized Developer Marketplace",
+//     description:
+//       "A blockchain-based platform connecting developers with clients, featuring smart contracts for secure payments and project delivery. Includes reputation system and dispute resolution.",
+//     techStack: ["Solidity", "Ethereum", "React", "GraphQL"],
+//     category: "Blockchain",
+//     requiredRoles: ["Blockchain Developer", "Frontend Developer", "Smart Contract Auditor"],
+//     author: {
+//       name: "Sophia Chen",
+//       avatar: "/placeholder.svg?height=40&width=40",
+//     },
+//     likes: 38,
+//     comments: 21,
+//     createdAt: "2025-04-03T14:15:00Z",
+//   },
+//   {
+//     id: "3",
+//     title: "Collaborative Coding Environment",
+//     description:
+//       "Real-time collaborative code editor with integrated video chat, version control, and AI-assisted pair programming features. Supports multiple programming languages and frameworks.",
+//     techStack: ["WebRTC", "Socket.io", "TypeScript", "MongoDB"],
+//     category: "Developer Tools",
+//     requiredRoles: ["Backend Developer", "Frontend Developer", "UX Designer"],
+//     author: {
+//       name: "Marcus Williams",
+//       avatar: "/placeholder.svg?height=40&width=40",
+//     },
+//     likes: 56,
+//     comments: 32,
+//     createdAt: "2025-04-01T09:45:00Z",
+//   },
+//   {
+//     id: "4",
+//     title: "Cross-Platform Mobile Development Framework",
+//     description:
+//       "A lightweight framework for building high-performance native mobile apps from a single codebase. Focuses on developer experience and runtime performance.",
+//     techStack: ["Rust", "WebAssembly", "Kotlin", "Swift"],
+//     category: "Mobile",
+//     requiredRoles: ["Mobile Developer", "Systems Programmer", "UI Designer"],
+//     author: {
+//       name: "Priya Patel",
+//       avatar: "/placeholder.svg?height=40&width=40",
+//     },
+//     likes: 29,
+//     comments: 18,
+//     createdAt: "2025-03-28T16:20:00Z",
+//   },
+//   {
+//     id: "5",
+//     title: "Serverless Deployment Pipeline",
+//     description:
+//       "An end-to-end CI/CD pipeline specifically designed for serverless applications. Includes testing, security scanning, and gradual rollout capabilities.",
+//     techStack: ["AWS Lambda", "GitHub Actions", "Terraform", "Python"],
+//     category: "DevOps",
+//     requiredRoles: ["DevOps Engineer", "Cloud Architect", "Backend Developer"],
+//     author: {
+//       name: "Jordan Lee",
+//       avatar: "/placeholder.svg?height=40&width=40",
+//     },
+//     likes: 34,
+//     comments: 12,
+//     createdAt: "2025-03-25T11:10:00Z",
+//   },
+//   {
+//     id: "6",
+//     title: "Accessibility Testing Framework",
+//     description:
+//       "An automated testing framework for identifying and fixing accessibility issues in web applications. Provides detailed reports and suggestions for improvements.",
+//     techStack: ["JavaScript", "Puppeteer", "ARIA", "HTML"],
+//     category: "Web Development",
+//     requiredRoles: ["Frontend Developer", "Accessibility Specialist", "QA Engineer"],
+//     author: {
+//       name: "Taylor Morgan",
+//       avatar: "/placeholder.svg?height=40&width=40",
+//     },
+//     likes: 47,
+//     comments: 23,
+//     createdAt: "2025-03-22T08:45:00Z",
+//   },
+// ]
 
 const categories = [
   "All",
@@ -144,14 +146,26 @@ const sortOptions = [
 ]
 
 export default function ShareIdeasPage() {
+  const {fetchProjects, projects} = useProjectStore()
+ 
   const [showForm, setShowForm] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("All")
   const [sortBy, setSortBy] = useState("trending")
-  const [ideas, setIdeas] = useState(MOCK_IDEAS)
+  const [ideas, setIdeas] = useState(projects||[])
   const [isScrolled, setIsScrolled] = useState(false)
   const [showCategoryMenu, setShowCategoryMenu] = useState(false)
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+  
+  useEffect(() => {
+    setIdeas(projects);
+  }, [projects]);
+  
 
+  
+  
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -217,7 +231,7 @@ export default function ShareIdeasPage() {
   const regularIdeas = sortedIdeas.filter((idea) => !idea.featured)
 
   const user=useAuthStore((state)=>state.user)
-  console.log(user,"user 220 share idea")
+  
 
 
   const handleAddIdea = async(newIdea) => {
