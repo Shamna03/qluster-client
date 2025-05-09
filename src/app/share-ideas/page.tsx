@@ -294,7 +294,7 @@ try {
                       <Lightbulb className="h-6 w-6 text-white" />
                     </div>
                     <h1 className="text-4xl font-extrabold bg-gradient-to-r from-[#37113c] to-[#611f69] bg-clip-text text-transparent">
-                      Project Ideas Hub
+                      Project Ideas Hub 
                     </h1>
                   </div>
                   <p className="text-muted-foreground mt-3 max-w-2xl">
@@ -538,7 +538,7 @@ try {
           >
             {regularIdeas.length > 0 ? (
               regularIdeas.map((idea, index) => (
-                <motion.div key={idea.id} variants={itemVariants} className="h-full">
+                <motion.div key={idea._id} variants={itemVariants} className="h-full">
                   <div className="h-full transform transition-transform duration-300 hover:scale-[1.02] hover:-rotate-1">
                     <IdeaCard idea={idea} />
                   </div>

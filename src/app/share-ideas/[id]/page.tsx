@@ -163,6 +163,7 @@ export default function ProjectDetailPage() {
   
   const router = useRouter()
   const [idea, setIdea] = useState(null)
+  console.log(idea,"ideaaa")
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState("overview")
   const [comments, setComments] = useState([])
@@ -828,7 +829,7 @@ export default function ProjectDetailPage() {
                 <CardDescription>Explore other projects in {idea.category}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                {MOCK_IDEAS.filter((i) => i.id !== idea.id && i.category === idea.category).map((similarIdea) => (
+                {/* {MOCK_IDEAS.filter((i) => i.id !== idea.id && i.category === idea.category).map((similarIdea) => (
                   <div
                     key={similarIdea.id}
                     className="bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer"
@@ -850,7 +851,7 @@ export default function ProjectDetailPage() {
                       </div>
                     </div>
                   </div>
-                ))}
+                ))} */}
 
                 <Button variant="outline" className="w-full">
                   View More Projects
