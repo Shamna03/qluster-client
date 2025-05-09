@@ -214,7 +214,7 @@ export default function ShareIdeasPage() {
   const featuredIdea = ideas.find((idea) => idea.featured)
   const regularIdeas = sortedIdeas.filter((idea) => !idea.featured)
 
-  const handleAddIdea = (newIdea) => {
+  const handleAddIdea = (newIdea:any) => {
     setIdeas([
       {
         id: (ideas.length + 1).toString(),
@@ -359,7 +359,7 @@ export default function ShareIdeasPage() {
                   placeholder="Search project ideas..."
                   className="pl-10 bg-white/80 dark:bg-gray-800/80 border-purple-200 dark:border-purple-900/50 focus-visible:ring-[#611f69]/20 rounded-lg"
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={(e:any) => setSearchQuery(e.target.value)}
                 />
               </div>
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
