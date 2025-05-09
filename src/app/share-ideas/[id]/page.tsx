@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, SetStateAction } from "react"
 import { useParams, useRouter } from "next/navigation"
 import {
   Heart,
@@ -34,8 +34,13 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/Com
 import { Progress } from "@/Components/ui/progress"
 import { motion, AnimatePresence } from "framer-motion"
 import projectaxiosinstance from "@/api/projectaxiosinstance"
+import { Project } from "@/types/project"
 
-const Textarea = ({ className, ...props }) => {
+interface TextProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+  className: string;
+}
+
+const Textarea: React.FC<TextProps> = ({ className, ...props }) => {
   return (
     <textarea
       className={`flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
@@ -154,6 +159,17 @@ const MOCK_COMMENTS = [
     likes: 3,
   },
 ]
+interface Comment {
+  _id: string;
+  author: {
+    name: string;
+    avatar: string;
+  };
+  content: string;
+  createdAt: string;
+  likes: number;
+}
+
 
 export default function ProjectDetailPage() {
 
@@ -162,11 +178,11 @@ export default function ProjectDetailPage() {
 
   
   const router = useRouter()
-  const [idea, setIdea] = useState(null)
+  const [idea, setIdea] = useState<Project|null>(null)
   console.log(idea,"ideaaa")
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState("overview")
-  const [comments, setComments] = useState([])
+  const [comments, setComments] = useState<Comment[]>([])
   const [newComment, setNewComment] = useState("")
   const [liked, setLiked] = useState(false)
   const [saved, setSaved] = useState(false)
@@ -182,7 +198,7 @@ export default function ProjectDetailPage() {
       console.log(foundIdea,"details page")
         if (foundIdea) {
           setIdea(foundIdea.data)
-          setComments(MOCK_COMMENTS)
+          setComments([])
         } else {
           router.push("/share-ideas")
         }
@@ -213,12 +229,12 @@ export default function ProjectDetailPage() {
   }
 
 
-  const handleSubmitComment = (e) => {
+  const handleSubmitComment = (e: { preventDefault: () => void }) => {
     e.preventDefault()
     if (!newComment.trim()) return
 
     const newCommentObj = {
-      id: `c${comments.length + 1}`,
+      _id: `c${comments.length + 1}`,
       author: {
         name: "You",
         avatar: "/placeholder.svg?height=40&width=40",
@@ -227,7 +243,9 @@ export default function ProjectDetailPage() {
       createdAt: new Date().toISOString(),
       likes: 0,
     }
-
+    if(!newCommentObj){
+      return
+    }
     setComments([newCommentObj, ...comments])
     setNewComment("")
 
@@ -239,9 +257,9 @@ export default function ProjectDetailPage() {
     }
   }
 
-  const formatRelativeTime = (dateString) => {
-    const date = new Date(dateString)
-    const now = new Date()
+  const formatRelativeTime = (dateString:string) => {
+    const date: any = new Date(dateString)
+    const now:any = new Date()
     const diffInSeconds = Math.floor((now - date) / 1000)
 
     if (diffInSeconds < 60) return "just now"
@@ -252,7 +270,7 @@ export default function ProjectDetailPage() {
     return `${Math.floor(diffInSeconds / 31536000)} years ago`
   }
 
-  const formatDate = (dateString) => {
+  const formatDate = (dateString:string) => {
     const date = new Date(dateString)
     return date.toLocaleDateString("en-US", {
       year: "numeric",
@@ -707,7 +725,7 @@ export default function ProjectDetailPage() {
                               placeholder="Add a comment..."
                               className="flex-1 min-h-[80px] border-purple-200 dark:border-purple-900/50 focus-visible:ring-[#611f69]/20"
                               value={newComment}
-                              onChange={(e) => setNewComment(e.target.value)}
+                              onChange={(e: { target: { value: SetStateAction<string> } }) => setNewComment(e.target.value)}
                             />
                             <Button
                               type="submit"
@@ -722,8 +740,8 @@ export default function ProjectDetailPage() {
 
                       <div className="space-y-6">
                         {comments.length > 0 ? (
-                          comments.map((comment, index) => (
-                            <div key={comment.id} className="flex gap-3">
+                          comments.map((comment: Comment, index) => (
+                            <div key={comment._id} className="flex gap-3">
                               <Avatar className="h-8 w-8">
                                 <AvatarImage
                                   src={comment.author.avatar || "/placeholder.svg"}

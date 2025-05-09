@@ -1,15 +1,8 @@
 import projectaxiosinstance from "@/api/projectaxiosinstance";
 import { create } from "zustand";
+import { Project } from "@/types/project";
 
-interface Project {
-title:string;
-description:string;
-techStack:string;
-problem:string;
-solution:string;
-category:string;
-requiredRoles:string;
-}
+
 
 interface ProjectStore {
   projects: Project[];

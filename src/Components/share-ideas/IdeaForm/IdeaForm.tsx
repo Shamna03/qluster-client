@@ -25,7 +25,7 @@ import {
   CheckCircle,
   BarChart,
   Smartphone,
-  LightbulbIcon,
+  Lightbulb as LightbulbIcon,
 } from "lucide-react"
 import { Button } from "@/Components/ui/button"
 import { Card, CardContent } from "@/Components/ui/card"
@@ -34,6 +34,28 @@ import { Tabs, TabsList, TabsTrigger } from "@/Components/ui/tabs"
 import { Badge } from "@/Components/ui/badge"
 import { motion, AnimatePresence } from "framer-motion"
 
+interface IdeaFormProps {
+  onSubmit: (values: IdeaFormValues) => void
+  onCancel: () => void
+}
+
+interface IdeaFormValues {
+  title: string
+  description: string
+  category: string
+  problem: string
+  solution: string
+  techStack: string[]
+  requiredRoles: string[]
+}
+
+interface FormStep {
+  number: number
+  title: string
+  icon: React.ReactNode
+  description: string
+  validationSchema: Yup.ObjectSchema<any>
+}
 
 const categories = [
   "AI/ML",
@@ -75,29 +97,27 @@ const finalValidationSchema = Yup.object({
   requiredRoles: Yup.array().min(1, "At least one role is required"),
 })
 
-export default function IdeaForm({ onSubmit, onCancel }) {
-  const [activeStep, setActiveStep] = useState(1)
-  const [techInput, setTechInput] = useState("")
-  const [roleInput, setRoleInput] = useState("")
-  const [completedSteps, setCompletedSteps] = useState([])
-  const formikRef = useRef(null)
-  const techInputRef = useRef(null)
-  const roleInputRef = useRef(null)
+export default function IdeaForm({ onSubmit, onCancel }: IdeaFormProps) {
+  const [activeStep, setActiveStep] = useState<number>(1)
+  const [techInput, setTechInput] = useState<string>("")
+  const [roleInput, setRoleInput] = useState<string>("")
+  const [completedSteps, setCompletedSteps] = useState<number[]>([])
+  const formikRef = useRef<any>(null)
+  const techInputRef = useRef<HTMLInputElement>(null)
+  const roleInputRef = useRef<HTMLInputElement>(null)
 
   // Focus the appropriate input when changing steps
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (activeStep === 4) {
-        if (techInputRef.current) {
-          techInputRef.current.focus()
-        }
+      if (activeStep === 3 && techInputRef.current) {
+        techInputRef.current.focus()
       }
     }, 500) // Delay to allow animation to complete
 
     return () => clearTimeout(timer)
   }, [activeStep])
 
-  const steps = [
+  const steps: FormStep[] = [
     {
       number: 1,
       title: "Basic Information",
@@ -128,7 +148,7 @@ export default function IdeaForm({ onSubmit, onCancel }) {
     },
   ]
 
-  const validateCurrentStep = async () => {
+  const validateCurrentStep = async (): Promise<boolean> => {
     if (!formikRef.current) return false
 
     const currentSchema = steps.find((step) => step.number === activeStep)?.validationSchema
@@ -139,28 +159,27 @@ export default function IdeaForm({ onSubmit, onCancel }) {
       return true
     } catch (err) {
       // Touch all fields to show validation errors
-      const touchedFields = {}
-      err.inner.forEach((error) => {
-        touchedFields[error.path] = true
-      })
-      formikRef.current.setTouched({ ...formikRef.current.touched, ...touchedFields })
-
+      const touchedFields: Record<string, boolean> = {}
+      if (err instanceof Yup.ValidationError) {
+        err.inner.forEach((error) => {
+         if (error.path) {
+      touchedFields[error.path] = true;
+    }
+        })
+        formikRef.current.setTouched({ ...formikRef.current.touched, ...touchedFields })
+      }
       return false
     }
   }
 
-  console.log("steps ",activeStep)
-  const handleNext = async () => {
+  const handleNext = async (): Promise<void> => {
     const isValid = await validateCurrentStep()
     if (isValid) {
-      // if (!completedSteps.includes(activeStep)) {
-      //   setCompletedSteps([...completedSteps, activeStep])
-      // }
       setActiveStep(Math.min(activeStep + 1, 4))
     }
   }
 
-  const handleBack = () => {
+  const handleBack = (): void => {
     setActiveStep(Math.max(activeStep - 1, 1))
   }
 
@@ -170,8 +189,6 @@ export default function IdeaForm({ onSubmit, onCancel }) {
     animate: { opacity: 1, x: 0 },
     exit: { opacity: 0, x: -100 },
   }
-  
-
 
   return (
     <Card className="border border-purple-200 dark:border-purple-900/50 shadow-lg overflow-hidden">
@@ -231,7 +248,7 @@ export default function IdeaForm({ onSubmit, onCancel }) {
           </div>
         </div>
 
-        <Formik
+        <Formik<IdeaFormValues>
           innerRef={formikRef}
           initialValues={{
             title: "",
@@ -246,7 +263,6 @@ export default function IdeaForm({ onSubmit, onCancel }) {
           onSubmit={onSubmit}
         >
           {({ values, setFieldValue, isSubmitting, errors, touched }) => (
-          
             <Form className="p-6">
               <AnimatePresence mode="wait">
                 {activeStep === 1 && (
@@ -259,7 +275,6 @@ export default function IdeaForm({ onSubmit, onCancel }) {
                     transition={{ type: "tween", duration: 0.3 }}
                     className="space-y-6"
                   >
-                    
                     <div className="space-y-1">
                       <h3 className="text-lg font-semibold flex items-center gap-2 text-[#611f69] dark:text-purple-300">
                         <Target className="h-5 w-5" />
@@ -861,7 +876,7 @@ export default function IdeaForm({ onSubmit, onCancel }) {
                   </Button>
                 )}
 
-                {activeStep <= 3 && 
+                {activeStep <= 3 && (
                   <Button
                     type="button"
                     onClick={handleNext}
@@ -870,8 +885,9 @@ export default function IdeaForm({ onSubmit, onCancel }) {
                     Next
                     <ArrowRight className="h-4 w-4 ml-2" />
                   </Button>
-                }
-                 {activeStep === 4 && <Button
+                )}
+                {activeStep === 4 && (
+                  <Button
                     type="submit"
                     disabled={isSubmitting}
                     className="bg-gradient-to-r from-[#37113c] to-[#611f69] hover:from-[#4a1751] hover:to-[#7a2785] text-white"
@@ -879,7 +895,7 @@ export default function IdeaForm({ onSubmit, onCancel }) {
                     Submit Idea
                     <Rocket className="h-4 w-4 ml-2" />
                   </Button>
-                }
+                )}
               </div>
             </Form>
           )}
