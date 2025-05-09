@@ -20,8 +20,28 @@ import {
   SelectValue,
 } from "@/Components/ui/select"
 
-// Mock data
-const MOCK_APPLICATIONS = [
+type ApplicationStatus = "pending" | "approved" | "rejected"
+type TabValue = "all" | ApplicationStatus
+
+interface ApplicationOwner {
+  name: string
+  avatar: string
+}
+
+interface Application {
+  id: string
+  projectId: string
+  projectTitle: string
+  projectDescription: string
+  role: string
+  status: ApplicationStatus
+  submittedAt: string
+  category: string
+  owner: ApplicationOwner
+  feedback?: string
+}
+
+const MOCK_APPLICATIONS: Application[] = [
   {
     id: "a1",
     projectId: "4",
@@ -98,8 +118,7 @@ const MOCK_APPLICATIONS = [
   },
 ]
 
-// Format relative time
-const formatRelativeTime = (dateString) => {
+const formatRelativeTime = (dateString: string): string => {
   const date = new Date(dateString)
   const now = new Date()
   const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000)
@@ -114,11 +133,10 @@ const formatRelativeTime = (dateString) => {
 
 export default function ApplicationsPage() {
   const router = useRouter()
-  const [searchQuery, setSearchQuery] = useState("")
-  const [statusFilter, setStatusFilter] = useState("all")
-  const [activeTab, setActiveTab] = useState("all")
+  const [searchQuery, setSearchQuery] = useState<string>("")
+  const [statusFilter, setStatusFilter] = useState<"all" | ApplicationStatus>("all")
+  const [activeTab, setActiveTab] = useState<TabValue>("all")
 
-  // Filter applications based on search query, status, and tab
   const filteredApplications = MOCK_APPLICATIONS.filter((application) => {
     const matchesSearch =
       application.projectTitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -133,8 +151,7 @@ export default function ApplicationsPage() {
     return matchesSearch && matchesStatus && matchesTab
   })
 
-  // Status badge styling
-  const getStatusStyles = (status) => {
+  const getStatusStyles = (status: ApplicationStatus): string => {
     switch (status) {
       case "pending":
         return "bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300"
@@ -147,8 +164,7 @@ export default function ApplicationsPage() {
     }
   }
 
-  // Category badge styling
-  const getCategoryStyles = (category) => {
+  const getCategoryStyles = (category: string): string => {
     return "bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-300"
   }
 
@@ -182,12 +198,12 @@ export default function ApplicationsPage() {
                   placeholder="Search applications..."
                   className="pl-10 border-slate-200 dark:border-slate-700 focus:ring-indigo-500 dark:focus:ring-indigo-400"
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
                 />
               </div>
             </div>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <Select value={statusFilter} onValueChange={(value: "all" | ApplicationStatus) => setStatusFilter(value)}>
                 <SelectTrigger className="w-[180px] border-slate-200 dark:border-slate-700">
                   <SelectValue placeholder="Filter by status" />
                 </SelectTrigger>
@@ -210,7 +226,7 @@ export default function ApplicationsPage() {
         </div>
 
         {/* Applications Tabs */}
-        <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab} className="mb-6">
+        <Tabs defaultValue="all" value={activeTab} onValueChange={(value: TabValue) => setActiveTab(value)} className="mb-6">
           <TabsList className="bg-slate-100 dark:bg-slate-800">
             <TabsTrigger 
               value="all" 
