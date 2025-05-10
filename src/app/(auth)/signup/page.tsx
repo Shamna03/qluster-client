@@ -1,7 +1,7 @@
 "use client"
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { Eye, EyeOff, Lock, Mail, User, ChevronRight } from "lucide-react"
+import { Eye, EyeOff, Lock, Mail, User, ChevronRight, LoaderCircle } from "lucide-react"
 import { Button } from "@/Components/ui/button"
 import { Formik, Form, Field, ErrorMessage } from "formik"
 import * as Yup from "yup"
@@ -104,7 +104,6 @@ export default function Page() {
 
       <main className="flex-1 flex items-center justify-center p-4 sm:p-6 md:p-8 z-10">
         <div className="w-full max-w-6xl flex flex-col lg:flex-row items-center gap-12">
-          {/* Left side - Branding */}
           <div className="w-full lg:w-1/2 text-white space-y-8 text-center lg:text-left">
             <div className="relative">
               <div className="absolute -top-20 -left-20 w-40 h-40 bg-white/5 rounded-full blur-3xl"></div>
@@ -128,15 +127,12 @@ export default function Page() {
 
           {/* Right side - Signup form */}
           <div className="w-full lg:w-1/2 relative">
-            {/* Decorative elements */}
             <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/5 rounded-full blur-3xl"></div>
             <div className="relative backdrop-blur-md bg-white/10 dark:bg-black/20 border border-white/20 dark:border-white/10 rounded-2xl shadow-2xl overflow-hidden">
-              {/* Card header with subtle gradient */}
               <div className="relative h-16 bg-gradient-to-r from-[#7a2d85]/30 to-[#4a1850]/30 flex items-center px-6">
                 <h2 className="text-xl font-semibold text-white">Create your account</h2>
               </div>
 
-              {/* Form content */}
               <div className="p-6 md:p-8">
                 <Formik
                   initialValues={initialValues}
@@ -171,8 +167,7 @@ export default function Page() {
                           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <Mail className="h-5 w-5 text-white/50" />
                           </div>
-                          <Field
-                            id="email"
+                          <Field id="email"
                             name="email"
                             type="email"
                             autoComplete="email"
@@ -218,8 +213,7 @@ export default function Page() {
                           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <Lock className="h-5 w-5 text-white/50" />
                           </div>
-                          <Field
-                            id="confirmPassword"
+                          <Field id="confirmPassword"
                             name="confirmPassword"
                             type={showConfirmPassword ? "text" : "password"}
                             autoComplete="new-password"
@@ -248,34 +242,10 @@ export default function Page() {
                         >
                           {isLoading ? (
                             <div className="flex items-center justify-center">
-                              <svg
-                                className="animate-spin -ml-1 mr-2 h-4 w-4 text-[#611f69]"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                              >
-                                <circle
-                                  className="opacity-25"
-                                  cx="12"
-                                  cy="12"
-                                  r="10"
-                                  stroke="currentColor"
-                                  strokeWidth="4"
-                                ></circle>
-                                <path
-                                  className="opacity-75"
-                                  fill="currentColor"
-                                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                                ></path>
-                              </svg>
+                              <LoaderCircle className="animate-spin -ml-1 mr-2 h-4 w-4 text-[#611f69]" />
                               Creating account...
                             </div>
-                          ) : (
-                            <div className="flex items-center justify-center">
-                              Create account
-                              <ChevronRight className="ml-1 h-4 w-4" />
-                            </div>
-                          )}
+                          ) : ( <div className="flex items-center justify-center"> Create account <ChevronRight className="ml-1 h-4 w-4" /> </div> )}
                         </Button>
                       </div>
                     </Form>

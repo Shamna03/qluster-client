@@ -64,7 +64,6 @@ const ChannelChatpage = () => {
   const [activeDirectMessage, setActiveDirectMessage] = useState<User | null>(null)
 
   const messagesEndRef = useRef<HTMLDivElement>(null)
-  const { theme, setTheme } = useTheme()
   const { user } = useAuthStore()
   const projectId = "680cc17c99cae0e58aab2e08"
   const queryClient = useQueryClient()
@@ -279,7 +278,7 @@ const ChannelChatpage = () => {
 
   // Contributors detail
   const isValidMongoId = (id: string) => /^[a-f\d]{24}$/i.test(id)
-  const projectContributorsId = project?.contributors || []
+  const projectContributorsId = project?.contributors || []  
   const { data: contributors, error: contributorsErr, refetch, } = useQuery({
     queryKey: ["other-users", projectContributorsId],
     queryFn: async () => {
@@ -310,9 +309,10 @@ const ChannelChatpage = () => {
     )
   }
 
-  if (error || err || errr) {
+  if (error || err || errr ||contributorsErr) {
     return <div>Error loading channels: {error?.message || err?.message || errr?.message}</div>
   }
+  
 
   return (
     <div className="flex h-screen bg-white dark:bg-[#200a23] text-gray-900 dark:text-white w-full">
@@ -590,9 +590,8 @@ const ChannelChatpage = () => {
         ) : (
           <div className="flex items-center justify-center h-full text-gray-500 dark:text-gray-400">
             <div className="text-center">
-              <MessageSquare className="h-12 w-12 mx-auto mb-4 opacity-50" />
+              <MessageSquare className="h-10 w-10 mx-auto mb-4 opacity-50" />
               <h3 className="text-lg font-medium mb-2">No conversation selected</h3>
-              <p className="max-w-md">Select a channel or direct message from the sidebar to start chatting</p>
             </div>
           </div>
         )}

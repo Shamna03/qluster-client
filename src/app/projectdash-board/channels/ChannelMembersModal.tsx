@@ -31,7 +31,6 @@ const ChannelMembersModal = ({isOpen, onClose, channelId, channelName, currentMe
   const [filteredAvailableUsers, setFilteredAvailableUsers] = useState<User[]>(availableUsers)
   const [activeTab, setActiveTab] = useState<"current" | "add">("current")
   const queryClient = useQueryClient()
-console.log(filteredAvailableUsers);
 const {user} = useAuthStore()
 
   useEffect(() => {
@@ -82,6 +81,7 @@ const {user} = useAuthStore()
   })
 
   if (!isOpen) return null
+// console.log(filteredAvailableUsers);
 
 
   return (
