@@ -64,7 +64,7 @@ const KanbanPage = () => {
         [source.droppableId]: { ...sourceColumn, items: sourceItems },
       });
     } else {
-      destItems.splice(destination.index, 0, movedItem);
+      destItems.splice(destination.index, 0, movedItem)
       setColumns({
         ...columns,
         [source.droppableId]: { ...sourceColumn, items: sourceItems },
