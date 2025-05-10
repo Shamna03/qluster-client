@@ -70,7 +70,7 @@ export default function LoginPage() {
 
   const handleSubmit = async (values: typeof initialValues) => {
     setIsLoading(true)
-    console.log(values)
+    console.log(values,"handle submit values")
      mutate(values)
     setIsLoading(false)
   }
