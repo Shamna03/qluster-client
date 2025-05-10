@@ -1,6 +1,5 @@
 import { Techstacks } from "@/Components/home/Techstacks";
 import { Landingpage } from "@/Components/home/Landingpage";
-import { Feturescard } from "@/Components/home/Futeres";
 import { FeaturesSection } from "@/Components/home/Features";
 
 const Home = () => {
@@ -9,7 +8,6 @@ const Home = () => {
       <Landingpage />
       <Techstacks />
       <FeaturesSection />
-      {/* <Feturescard /> */}
     </div>
   );
 };
