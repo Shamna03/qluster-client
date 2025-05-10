@@ -33,7 +33,7 @@ const Navbar: React.FC = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-  
+
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
   useEffect(() => {
     if (theme === 'dark') {

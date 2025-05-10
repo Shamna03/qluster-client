@@ -504,15 +504,15 @@ const ProfileView = () => {
                                   ?.slice(0, 3)
                                   .map((endorser: { _id: string, name: string, profilePicture: string }) => (
                                     <Avatar
-                                      key={endorser._id}
+                                      key={endorser?._id}
                                       className="h-6 w-6 border-2 border-white dark:border-gray-900"
                                     >
                                       <AvatarImage
-                                        src={endorser.profilePicture}
-                                        alt={endorser.name}
+                                        src={endorser?.profilePicture}
+                                        alt={endorser?.name}
                                       />
                                       <AvatarFallback className="bg-[#611f69]/10 text-[#611f69]">
-                                        {endorser.name?.charAt(0) || '?'}
+                                        {endorser?.name?.charAt(0) || '?'}
                                       </AvatarFallback>
                                     </Avatar>
                                   ))}
