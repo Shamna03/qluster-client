@@ -1,20 +1,7 @@
 "use client"
 
 import { useState, useRef, useEffect } from "react"
-import {
-  Send,
-  Plus,
-  Hash,
-  Users,
-  ChevronDown,
-  ChevronRight,
-  Trash2,
-  Moon,
-  Sun,
-  FileUp,
-  LoaderCircle,
-  MessageSquare,
-} from "lucide-react"
+import { Send, Plus, Hash, Users, ChevronDown, ChevronRight, Trash2, Moon, Sun, FileUp, LoaderCircle, MessageSquare, } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar"
 import { Button } from "@/Components/ui/button"
 import { cn } from "@/lib/utils"
@@ -25,10 +12,10 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import channelAxiosInstance from "@/api/channelAxiosInstance"
 import ChannelMembersModal from "./ChannelMembersModal"
 import axiosInstance from "@/api/axiosInstance"
-import ProjectBrief from "./ProjectBrief"
 import axios from "axios"
 import { useRouter } from "next/navigation"
 import DirectMessageChat from "./peerChat"
+import NotePad from "./notePad"
 
 const socket: Socket = io("http://localhost:5004", {
   withCredentials: true,
@@ -69,7 +56,7 @@ const ChannelChatpage = () => {
     channels: true,
     directMessages: true,
   })
-  const [activeTab, setActiveTab] = useState<"messages" | "brief">("messages")
+  const [activeTab, setActiveTab] = useState<"messages" | "notes">("messages")
   const [isConnected, setIsConnected] = useState(socket.connected)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [isMembersModalOpen, setIsMembersModalOpen] = useState(false)
@@ -147,7 +134,6 @@ const ChannelChatpage = () => {
       senderId: user._id,
       chat: input,
     }
-
     socket.emit("sendMessage", messagePayload, (response: any) => {
       if (response.error) {
         setErrorMessage(`Failed to send message: ${response.error}`)
@@ -243,14 +229,21 @@ const ChannelChatpage = () => {
       messages,
     }))
   }
+  // //get notePad
+  // const {data:note} =useQuery ( {
+  //   queryKey: ["notepad",activeChannel?._id],
+  //   queryFn :async()=>{
+  //   const {data} = await axios.get(`http://localhost:5004/api/notepad/getnotepad/${activeChannel?._id}`)
+  //   return data.data?.content
+  //   },
+  //   enabled: !!activeChannel?._id,
+  // })
+  // // console.log(note,"=====================note");
+  
 
   // Channel participants detail
   const participantIds = activeChannel?.participants || []
-  const {
-    data: users,
-    error: err,
-    isLoading,
-  } = useQuery({
+  const { data: users, error: err, isLoading, } = useQuery({
     queryKey: ["other-users", participantIds],
     queryFn: async () => {
       const userPromises = participantIds.map((params) =>
@@ -261,11 +254,7 @@ const ChannelChatpage = () => {
     enabled: participantIds.length > 0,
   })
 
-  const {
-    data: channelsData,
-    error,
-    isPending,
-  } = useQuery({
+  const { data: channelsData, error, isPending,isLoading:load } = useQuery({
     queryKey: ["getChannel"],
     queryFn: async () => {
       const { data } = await channelAxiosInstance.get(`/getchannel/${projectId}`)
@@ -279,11 +268,7 @@ const ChannelChatpage = () => {
     },
   })
 
-  const {
-    data: project,
-    error: errr,
-    isPending: pending,
-  } = useQuery({
+  const { data: project, error: errr, isPending: pending, } = useQuery({
     queryKey: ["getSpecificProject"],
     queryFn: async () => {
       const { data } = await axios.get(`http://localhost:5002/api/project/getProject/${projectId}`)
@@ -295,11 +280,7 @@ const ChannelChatpage = () => {
   // Contributors detail
   const isValidMongoId = (id: string) => /^[a-f\d]{24}$/i.test(id)
   const projectContributorsId = project?.contributors || []
-  const {
-    data: contributors,
-    error: contributorsErr,
-    refetch,
-  } = useQuery({
+  const { data: contributors, error: contributorsErr, refetch, } = useQuery({
     queryKey: ["other-users", projectContributorsId],
     queryFn: async () => {
       const contributorPromises = projectContributorsId
@@ -320,11 +301,8 @@ const ChannelChatpage = () => {
     enabled: projectContributorsId.length > 0,
   })
 
-  const toggleTheme = () => {
-    setTheme(theme === "light" ? "dark" : "light")
-  }
 
-  if (isPending || isLoading || pending) {
+  if (isPending || isLoading || pending || load) {
     return (
       <div className="flex justify-center items-center h-screen w-full">
         <LoaderCircle className="text-purple-900 animate-spin" />
@@ -332,8 +310,8 @@ const ChannelChatpage = () => {
     )
   }
 
-  if (error || err) {
-    return <div>Error loading channels: {error?.message || err?.message}</div>
+  if (error || err || errr) {
+    return <div>Error loading channels: {error?.message || err?.message || errr?.message}</div>
   }
 
   return (
@@ -345,11 +323,7 @@ const ChannelChatpage = () => {
               className="flex items-center px-2 py-1 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white cursor-pointer"
               onClick={() => toggleSection("channels")}
             >
-              {expandedSections.channels ? (
-                <ChevronDown className="h-4 w-4 mr-1" />
-              ) : (
-                <ChevronRight className="h-4 w-4 mr-1" />
-              )}
+              {expandedSections.channels ? ( <ChevronDown className="h-4 w-4 mr-1" /> ) : ( <ChevronRight className="h-4 w-4 mr-1" /> )}
               <span className="text-xs font-semibold uppercase">Channels</span>
             </div>
 
@@ -360,10 +334,7 @@ const ChannelChatpage = () => {
                     key={channel._id}
                     className={cn(
                       "flex items-center px-2 py-1 rounded cursor-pointer hover:bg-gray-200 dark:hover:bg-[#4a1e52]",
-                      activeView === "channel" && activeChannel?._id === channel._id
-                        ? "bg-gray-200 dark:bg-[#611f69]"
-                        : "",
-                    )}
+                      activeView === "channel" && activeChannel?._id === channel._id ? "bg-gray-200 dark:bg-[#611f69]" : "", )}
                     onClick={() => handleChannelClick(channel)}
                   >
                     <Hash className="h-4 w-4 mr-2 text-gray-500 dark:text-gray-400" />
@@ -391,10 +362,8 @@ const ChannelChatpage = () => {
                     <div className="flex justify-end mt-1 space-x-2">
                       <button
                         className="text-xs text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
-                        onClick={() => setIsAddingChannel(false)}
-                      >
-                        Cancel
-                      </button>
+                        onClick={() => setIsAddingChannel(false)} > Cancel
+                         </button>
                       <button className="text-xs text-[#611f69] hover:text-[#7c3aed]" onClick={handleAddChannel}>
                         Create
                       </button>
@@ -498,13 +467,12 @@ const ChannelChatpage = () => {
                 </button>
                 <button
                   className={`px-4 py-2 flex items-center text-sm font-medium ${
-                    activeTab === "brief"
+                    activeTab === "notes"
                       ? "text-[#611f69] border-b-2 border-[#611f69]"
-                      : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
-                  }`}
-                  onClick={() => setActiveTab("brief")}
+                      : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300" }`}
+                  onClick={() => setActiveTab("notes")}
                 >
-                  <span>Project brief</span>
+                  <span>Note</span>
                 </button>
               </div>
             </div>
@@ -541,12 +509,10 @@ const ChannelChatpage = () => {
                             <p className="text-sm mt-1">{message.chat}</p>
                             {message.media && (
                               <div className="mt-2">
-                                <a
-                                  href={message.media}
+                                <a href={message.media}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="text-blue-500 hover:underline"
-                                >
+                                  className="text-blue-500 hover:underline" >
                                   View Media
                                 </a>
                               </div>
@@ -569,7 +535,7 @@ const ChannelChatpage = () => {
                 <div ref={messagesEndRef} />
               </div>
             )}
-            {activeTab === "brief" && <ProjectBrief />}
+            {activeTab === "notes" && <NotePad  channelId={activeChannel._id}/>}
 
             {activeTab === "messages" && (
               <div className="p-4 border-t border-gray-200 dark:border-[#4a1e52]">
@@ -581,8 +547,7 @@ const ChannelChatpage = () => {
                   >
                     <Plus className="h-4 w-4" />
                   </Button>
-                  <input
-                    type="text"
+                  <input type="text"
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     placeholder={`Message #${activeChannel.channelName}`}
@@ -601,8 +566,7 @@ const ChannelChatpage = () => {
                   >
                     <FileUp className="h-4 w-4" />
                   </Button>
-                  <Button
-                    onClick={handleSendMessage}
+                  <Button onClick={handleSendMessage}
                     disabled={!input.trim()}
                     variant="ghost"
                     size="icon"
