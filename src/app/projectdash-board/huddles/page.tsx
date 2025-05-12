@@ -1,9 +1,16 @@
 import React from 'react'
+import VideoCallPage from '@/Components/video-call/video-call'
 
-const page = () => {
+const Videochat = () => {
   return (
-    <div className='text-black'>video call</div>
+    <div className='p-16'>
+      
+      <VideoCallPage/>
+    </div>
   )
 }
 
-export default page
+export default Videochat
+
+
+

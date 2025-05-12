@@ -62,8 +62,11 @@ const DropDown = ({isScrolled }:{isScrolled:Boolean}) => {
               if(item === "Logout"){
                 handleLogout()
               }
-              if(item == "Profile"){
+              else if(item == "Profile"){
                 router.push("/my-profile")
+              }
+              else if(item === "Settings"){
+                router.push("/settings")
               }
             }}>
               <a

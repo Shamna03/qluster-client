@@ -2,11 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
-import {
-  Github,Linkedin,Globe,MapPin,Mail,Award,Code,
-  ChevronRight,CheckCircle,PlusCircle,Edit,X,Pencil,Trash2,
-  Users,
-  Check,
+import { Github,Linkedin,Globe,MapPin,Mail,Award,Code, ChevronRight,CheckCircle,PlusCircle,Edit,X,Pencil,Trash2, Users, Check,
 } from "lucide-react"
 import { Button } from "@/Components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/Components/ui/tabs"
@@ -21,111 +17,113 @@ import useAuthStore from "@/store/useAuthStore"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import axiosInstance from "@/api/axiosInstance"
 import Loading from "@/app/share-ideas/loading"
+import { useRouter } from "next/router"
+import { useParams } from "next/navigation"
 
-const otherUserData = {
-  _id: "1",
-  name: "Alex Morgan",
-  email: "alex.morgan@example.com",
-  profilePicture: "",
-  coverImage: "",
-  bio: "Full-stack developer passionate about creating intuitive and efficient web applications. Specializing in React, Node.js, and modern JavaScript frameworks. Always exploring new technologies and approaches to solve complex problems.",
-  skills: [
-    "React",
-    "Next.js",
-    "TypeScript",
-    "Node.js",
-    "MongoDB",
-    "Express",
-    "GraphQL",
-    "Tailwind CSS",
-    "UI/UX Design",
-  ],
-  role: "otherUser",
-  portfolio: "https://",
-  github: "https://github.com",
-  linkedin: "https://linkedin.com",
-  location: "San Francisco, CA",
-  projectsOwned: [
-    {
-      _id: "p1",
-      title: "Quantum Task Manager",
-      description:
-        "A futuristic task management application with AI-powered prioritization and team collaboration features.",
-      image: "/placeholder.svg?height=300&width=600",
-      technologies: ["React", "Node.js", "MongoDB", "Socket.io"],
-      link: "#",
-      stars: 48,
-      contributors: 5,
-    },
-    {
-      _id: "p2",
-      title: "Neural Code Assistant",
-      description: "AI-powered code completion and suggestion tool that integrates with popular IDEs.",
-      image: "/placeholder.svg?height=300&width=600",
-      technologies: ["Python", "TensorFlow", "VS Code API"],
-      link: "#",
-      stars: 127,
-      contributors: 12,
-    },
-  ],
-  projectsContributed: [
-    {
-      _id: "p3",
-      title: "Open Source Design System",
-      description: "A comprehensive design system with accessible components for modern web applications.",
-      technologies: ["React", "Storybook", "Figma API"],
-      link: "#",
-      stars: 342,
-      contributors: 28,
-    },
-    {
-      _id: "p4",
-      title: "Blockchain Explorer",
-      description: "A visual explorer for blockchain transactions with real-time updates and analytics.",
-      technologies: ["Vue.js", "Web3.js", "D3.js"],
-      link: "#",
-      stars: 89,
-      contributors: 7,
-    },
-  ],
-  endorsements: [
-    {
-      skill: "React",
-      endorsedBy: { _id: "u1", name: "Jamie Smith", profilePicture: "/placeholder.svg?height=50&width=50" },
-    },
-    {
-      skill: "TypeScript",
-      endorsedBy: { _id: "u2", name: "Taylor Johnson", profilePicture: "/placeholder.svg?height=50&width=50" },
-    },
-    {
-      skill: "Node.js",
-      endorsedBy: { _id: "u3", name: "Casey Williams", profilePicture: "/placeholder.svg?height=50&width=50" },
-    },
-    {
-      skill: "React",
-      endorsedBy: { _id: "u4", name: "Jordan Lee", profilePicture: "/placeholder.svg?height=50&width=50" },
-    },
-    {
-      skill: "MongoDB",
-      endorsedBy: { _id: "u5", name: "Riley Brown", profilePicture: "/placeholder.svg?height=50&width=50" },
-    },
-  ],
-  isVerified: true, //email
-  createdAt: "2023-01-15T00:00:00.000Z",
-}
+// const otherUserData = {
+//   _id: "1",
+//   name: "Alex Morgan",
+//   email: "alex.morgan@example.com",
+//   profilePicture: "",
+//   coverImage: "",
+//   bio: "Full-stack developer passionate about creating intuitive and efficient web applications. Specializing in React, Node.js, and modern JavaScript frameworks. Always exploring new technologies and approaches to solve complex problems.",
+//   skills: [
+//     "React",
+//     "Next.js",
+//     "TypeScript",
+//     "Node.js",
+//     "MongoDB",
+//     "Express",
+//     "GraphQL",
+//     "Tailwind CSS",
+//     "UI/UX Design",
+//   ],
+//   role: "otherUser",
+//   portfolio: "https://",
+//   github: "https://github.com",
+//   linkedin: "https://linkedin.com",
+//   location: "San Francisco, CA",
+//   projectsOwned: [
+//     {
+//       _id: "p1",
+//       title: "Quantum Task Manager",
+//       description:
+//         "A futuristic task management application with AI-powered prioritization and team collaboration features.",
+//       image: "/placeholder.svg?height=300&width=600",
+//       technologies: ["React", "Node.js", "MongoDB", "Socket.io"],
+//       link: "#",
+//       stars: 48,
+//       contributors: 5,
+//     },
+//     {
+//       _id: "p2",
+//       title: "Neural Code Assistant",
+//       description: "AI-powered code completion and suggestion tool that integrates with popular IDEs.",
+//       image: "/placeholder.svg?height=300&width=600",
+//       technologies: ["Python", "TensorFlow", "VS Code API"],
+//       link: "#",
+//       stars: 127,
+//       contributors: 12,
+//     },
+//   ],
+//   projectsContributed: [
+//     {
+//       _id: "p3",
+//       title: "Open Source Design System",
+//       description: "A comprehensive design system with accessible components for modern web applications.",
+//       technologies: ["React", "Storybook", "Figma API"],
+//       link: "#",
+//       stars: 342,
+//       contributors: 28,
+//     },
+//     {
+//       _id: "p4",
+//       title: "Blockchain Explorer",
+//       description: "A visual explorer for blockchain transactions with real-time updates and analytics.",
+//       technologies: ["Vue.js", "Web3.js", "D3.js"],
+//       link: "#",
+//       stars: 89,
+//       contributors: 7,
+//     },
+//   ],
+//   endorsements: [
+//     {
+//       skill: "React",
+//       endorsedBy: { _id: "u1", name: "Jamie Smith", profilePicture: "/placeholder.svg?height=50&width=50" },
+//     },
+//     {
+//       skill: "TypeScript",
+//       endorsedBy: { _id: "u2", name: "Taylor Johnson", profilePicture: "/placeholder.svg?height=50&width=50" },
+//     },
+//     {
+//       skill: "Node.js",
+//       endorsedBy: { _id: "u3", name: "Casey Williams", profilePicture: "/placeholder.svg?height=50&width=50" },
+//     },
+//     {
+//       skill: "React",
+//       endorsedBy: { _id: "u4", name: "Jordan Lee", profilePicture: "/placeholder.svg?height=50&width=50" },
+//     },
+//     {
+//       skill: "MongoDB",
+//       endorsedBy: { _id: "u5", name: "Riley Brown", profilePicture: "/placeholder.svg?height=50&width=50" },
+//     },
+//   ],
+//   isVerified: true, //email
+//   createdAt: "2023-01-15T00:00:00.000Z",
+// }
 
 const Profile= () => {
   const [activeTab, setActiveTab] = useState("overview")
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
-//   const { user, setUser } = useAuthStore()
   const [imageModal,setImageModal] = useState("")
-  const params = "67f90f6399308f4cfca747d8" ////////////////////////
+  const router = useParams()
+const { id } = router
 
  
  const {data:otherUser,error:err,isPending,refetch}=useQuery({
     queryKey:["other-otherUser"],
     queryFn: async ()=>{
-        const {data} = await axiosInstance.get(`/user/others-profile/${params}`)
+        const {data} = await axiosInstance.get(`/user/others-profile/${id}`)
         return data.data
     }
  })
@@ -143,7 +141,7 @@ const Profile= () => {
     })
 const {mutate} =useMutation({
     mutationFn : async (skill) =>{
-        const {data} = await axiosInstance.post(`/endorse/endorse/${params}`,{skill})
+        const {data} = await axiosInstance.post(`/endorse/endorse/${id}`,{skill})
         return data
     },onSuccess:(data,)=>{
         alert(data.message)
@@ -152,7 +150,7 @@ const {mutate} =useMutation({
 })
 const {mutate:removeEndorsed} =useMutation({
     mutationFn : async (skill) =>{
-        const {data} = await axiosInstance.post(`/endorse/remove-endorsement/${params}`,{skill})
+        const {data} = await axiosInstance.post(`/endorse/remove-endorsement/${id}`,{skill})
         return data
     },onSuccess:(data,)=>{
         alert(data.message)
@@ -170,8 +168,6 @@ const {mutate:removeEndorsed} =useMutation({
 //   console.log( endorse);
 //   console.log(error);
 //   console.log(err,"other");
-
-console.log(otherUser);
 
   
 
@@ -212,12 +208,8 @@ console.log(otherUser);
           >
             <div className="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-white dark:border-gray-900 overflow-hidden bg-card shadow-xl"  onClick={()=>setImageModal("profilePicture")}>
               <img
-                src={
-                  otherUser?.profilePicture ||
-                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIS4VuIKs3YjObiyW8M0NzDAkx8BEhLzLhEA&s" ||
-                  "/placeholder.svg"
-                }
-                alt={otherUser?.name}
+                src={ otherUser?.profilePicture || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIS4VuIKs3YjObiyW8M0NzDAkx8BEhLzLhEA&s" || "/placeholder.svg" }
+                // alt={otherUser?.name}
                 className="w-full h-full object-cover "
               />
                 </div>
@@ -261,7 +253,7 @@ console.log(otherUser);
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2">
-                  <h1 className="text-3xl font-bold text-slate-100">{otherUser?.name || otherUserData?.name}</h1>
+                  <h1 className="text-3xl font-bold text-slate-100">{otherUser?.name }</h1>
 
                 </div>
                { otherUser?.location && <div className="flex items-center gap-2 mt-1 text-gray-500 dark:text-gray-300">
@@ -341,7 +333,7 @@ console.log(otherUser);
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-3xl font-semibold text-gray-800 dark:text-white">{otherUserData.projectsOwned.length}</p>
+              <p className="text-3xl font-semibold text-gray-800 dark:text-white">{otherUser.projectsOwned.length}</p>
             </CardContent>
           </Card>
           <Card className="bg-white/80 dark:bg-gray-900/50 backdrop-blur-sm border border-gray-200 dark:border-gray-800 hover:border-[#611f69]/30 dark:hover:border-[#611f69]/30 transition-all">
@@ -365,7 +357,7 @@ console.log(otherUser);
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-3xl font-semibold text-gray-800 dark:text-white">{otherUserData.endorsements.length}</p>
+              <p className="text-3xl font-semibold text-gray-800 dark:text-white">{otherUser.endorsements.length}</p>
             </CardContent>
           </Card>
         </motion.div>
@@ -436,13 +428,13 @@ console.log(otherUser);
                     View All <ChevronRight size={16} />
                   </Button>
                 </CardHeader>
-                <CardContent>
+                {/* <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {otherUserData.projectsOwned.slice(0, 2).map((project) => (
                       <ProjectCard key={project._id} project={project}  />
                     ))}
                   </div>
-                </CardContent>
+                </CardContent> */}
               </Card>
             </TabsContent>
 
@@ -455,17 +447,17 @@ console.log(otherUser);
                     Projects that {otherUser?.name} has created
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
+                {/* <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {otherUserData.projectsOwned.map((project) => (
                       <ProjectCard key={project._id} project={project} />
                     ))}
                   </div>
-                </CardContent>
+                </CardContent> */}
               </Card>
 
               {/* Projects Contributed */}
-              <Card className="bg-white/80 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800">
+              {/* <Card className="bg-white/80 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800">
                 <CardHeader>
                   <CardTitle className="text-gray-800 dark:text-white">Contributions</CardTitle>
                   <CardDescription className="text-gray-600 dark:text-gray-400">
@@ -479,7 +471,7 @@ console.log(otherUser);
                     ))}
                   </div>
                 </CardContent>
-              </Card>
+              </Card> */}
             </TabsContent>
 {/* =================================================================================================================== */}
             <TabsContent value="skills" className="space-y-8">
