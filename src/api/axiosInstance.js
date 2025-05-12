@@ -14,7 +14,7 @@ axiosInstance.interceptors.response.use(
     
     if (error.response.status === 401 || error.response.status === 403) {
       console.error("Unauthorized! Redirecting to login...");
-      localStorage.clear(); 
+      localStorage.clear();  
       window.location.href ="/"; 
       alert("Session expired! Please log in again.");
 
