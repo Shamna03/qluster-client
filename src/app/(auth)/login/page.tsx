@@ -225,7 +225,6 @@ export default function LoginPage() {
               </div>
             </div>
           </div>
-          {/* Left side - Branding */}
           <div className="w-full lg:w-1/2 text-white space-y-8 text-center lg:text-left pl-24">
             <div className="relative">
               <div className="absolute -top-20 -left-20 w-40 h-40 bg-white/5 rounded-full blur-3xl"></div>
