@@ -126,10 +126,22 @@ const VideoCallPage = () => {
 
       setInCall(true);
       setCurrentCallUser(user);
-    } catch (error) {
-      console.error("Error starting call:", error);
-      alert("Could not access camera and microphone.");
-    }
+    // } catch (error) {
+    //   console.error("Error starting call:", error);
+    //   alert(`Could not access camera and microphone: ${error.name} - ${error.message}`);
+
+    // }
+
+    } catch (error: unknown) {
+  console.error("Error starting call:", error);
+
+  if (error instanceof Error) {
+    alert(`Could not access camera and microphone: ${error.name} - ${error.message}`);
+  } else {
+    alert("Could not access camera and microphone due to an unknown error.");
+  }
+}
+
   };
 
   const acceptCall = async (): Promise<void> => {
@@ -218,13 +230,13 @@ const VideoCallPage = () => {
 
   if (!connected) {
     return (
-      <div className="flex items-center justify-center h-screen bg-gray-100">
+      <div className="flex items-center justify-center h-screen  ">
         <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-          <h1 className="text-2xl font-bold text-center mb-6 text-blue-600">Let's Talk</h1>
+          <h1 className="text-2xl font-bold text-center mb-6 text-[#793185]">Video Connect</h1>
           <div className="space-y-4">
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                Enter Your Connecting Name
+                Enter Your display Name
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -236,7 +248,7 @@ const VideoCallPage = () => {
                   placeholder="Enter your name"
                   value={myName}
                   onChange={(e) => setMyName(e.target.value)}
-                  className="pl-10 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="pl-10 w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[#6c3873]"
                 />
               </div>
             </div>
@@ -244,7 +256,7 @@ const VideoCallPage = () => {
               onClick={handleJoin}
               disabled={!myName.trim()}
               className={`w-full py-2 px-4 rounded-md text-white font-medium ${
-                myName.trim() ? "bg-blue-600 hover:bg-blue-700" : "bg-blue-300 cursor-not-allowed"
+                myName.trim() ? "bg-[#782883] hover:bg-[#794f7e]" : "bg-[#d0a5d5] cursor-not-allowed"
               } transition-colors`}
             >
               Join Meeting
@@ -286,7 +298,7 @@ const VideoCallPage = () => {
 
       <div className="container mx-auto p-4">
         <header className="bg-white shadow rounded-lg p-4 mb-6">
-          <h1 className="text-xl font-bold text-blue-600">Video Chat</h1>
+          <h1 className="text-xl font-bold text-[#782883] ">Video Chat</h1>
           <p className="text-gray-600">Connected as: {myName}</p>
         </header>
 
@@ -294,7 +306,7 @@ const VideoCallPage = () => {
           {/* Users List */}
           <div className="bg-white shadow rounded-lg p-4">
             <div className="flex items-center mb-4">
-              <Users size={20} className="text-blue-600 mr-2" />
+              <Users size={20} className="text-[#782883] mr-2" />
               <h2 className="text-lg font-semibold">Available Users</h2>
             </div>
             {users.length === 0 ? (
@@ -308,7 +320,7 @@ const VideoCallPage = () => {
                   <div key={user.id} className="flex justify-between items-center p-3 hover:bg-gray-50 rounded-md border border-gray-200">
                     <div className="flex items-center">
                       <div className="bg-blue-100 p-2 rounded-full mr-3">
-                        <User size={20} className="text-blue-600" />
+                        <User size={20} className="text-[#782883]" />
                       </div>
                       <span className="font-medium">{user.name}</span>
                     </div>
@@ -381,14 +393,14 @@ const VideoCallPage = () => {
               <div className="flex justify-center mt-6 gap-4">
                 <button
                   onClick={toggleAudio}
-                  className={`p-3 rounded-full ${audioEnabled ? "bg-blue-100 text-blue-600" : "bg-red-100 text-red-600"}`}
+                  className={`p-3 rounded-full ${audioEnabled ? "bg-blue-100 text-[#782883]" : "bg-red-100 text-red-600"}`}
                   disabled={!inCall && !localStream}
                 >
                   {audioEnabled ? <Mic size={24} /> : <MicOff size={24} />}
                 </button>
                 <button
                   onClick={toggleVideo}
-                  className={`p-3 rounded-full ${videoEnabled ? "bg-blue-100 text-blue-600" : "bg-red-100 text-red-600"}`}
+                  className={`p-3 rounded-full ${videoEnabled ? "bg-blue-100 text-[#782883]" : "bg-red-100 text-red-600"}`}
                   disabled={!inCall && !localStream}
                 >
                   {videoEnabled ? <Video size={24} /> : <VideoOff size={24} />}
@@ -411,3 +423,8 @@ const VideoCallPage = () => {
 };
 
 export default VideoCallPage;
+
+
+
+
+
