@@ -14,114 +14,21 @@ import {
   Lightbulb,
   DoorClosedIcon as CloseIcon,
 } from "lucide-react"
-import IdeaForm from "@/Components/share-ideas/IdeaForm"
+import IdeaForm from "@/Components/share-ideas/IdeaForm/IdeaForm"
 import IdeaCard from "@/Components/share-ideas/IdeaCard"
 import FeaturedIdea from "@/Components/share-ideas/FeaturedIdea"
 import { Button } from "@/Components/ui/button"
 import { Tabs, TabsList, TabsTrigger } from "@/Components/ui/tabs"
 import { Input } from "@/Components/ui/input"
 import { Badge } from "@/Components/ui/badge"
+import projectaxiosinstance from "@/api/projectaxiosinstance"
+import useAuthStore from "@/store/useAuthStore"
+import useProjectStore from "@/store/useProjectstore"
+import { IdeaFormValues, Project } from "@/types/project"
+import { User } from "@/types"
 
-// Mock data (same as before)
-const MOCK_IDEAS = [
-  {
-    id: "1",
-    title: "AI-Powered Code Review Assistant",
-    description:
-      "An AI tool that automatically reviews code, suggests improvements, and identifies potential bugs before deployment. The system learns from previous reviews and adapts to team coding standards over time.",
-    techStack: ["Python", "TensorFlow", "React", "Node.js"],
-    category: "AI/ML",
-    requiredRoles: ["ML Engineer", "Full Stack Developer", "DevOps"],
-    author: {
-      name: "Alex Johnson",
-      avatar: "/placeholder.svg?height=40&width=40",
-    },
-    likes: 42,
-    comments: 15,
-    createdAt: "2025-04-05T10:30:00Z",
-    featured: true,
-  },
-  {
-    id: "2",
-    title: "Decentralized Developer Marketplace",
-    description:
-      "A blockchain-based platform connecting developers with clients, featuring smart contracts for secure payments and project delivery. Includes reputation system and dispute resolution.",
-    techStack: ["Solidity", "Ethereum", "React", "GraphQL"],
-    category: "Blockchain",
-    requiredRoles: ["Blockchain Developer", "Frontend Developer", "Smart Contract Auditor"],
-    author: {
-      name: "Sophia Chen",
-      avatar: "/placeholder.svg?height=40&width=40",
-    },
-    likes: 38,
-    comments: 21,
-    createdAt: "2025-04-03T14:15:00Z",
-  },
-  {
-    id: "3",
-    title: "Collaborative Coding Environment",
-    description:
-      "Real-time collaborative code editor with integrated video chat, version control, and AI-assisted pair programming features. Supports multiple programming languages and frameworks.",
-    techStack: ["WebRTC", "Socket.io", "TypeScript", "MongoDB"],
-    category: "Developer Tools",
-    requiredRoles: ["Backend Developer", "Frontend Developer", "UX Designer"],
-    author: {
-      name: "Marcus Williams",
-      avatar: "/placeholder.svg?height=40&width=40",
-    },
-    likes: 56,
-    comments: 32,
-    createdAt: "2025-04-01T09:45:00Z",
-  },
-  {
-    id: "4",
-    title: "Cross-Platform Mobile Development Framework",
-    description:
-      "A lightweight framework for building high-performance native mobile apps from a single codebase. Focuses on developer experience and runtime performance.",
-    techStack: ["Rust", "WebAssembly", "Kotlin", "Swift"],
-    category: "Mobile",
-    requiredRoles: ["Mobile Developer", "Systems Programmer", "UI Designer"],
-    author: {
-      name: "Priya Patel",
-      avatar: "/placeholder.svg?height=40&width=40",
-    },
-    likes: 29,
-    comments: 18,
-    createdAt: "2025-03-28T16:20:00Z",
-  },
-  {
-    id: "5",
-    title: "Serverless Deployment Pipeline",
-    description:
-      "An end-to-end CI/CD pipeline specifically designed for serverless applications. Includes testing, security scanning, and gradual rollout capabilities.",
-    techStack: ["AWS Lambda", "GitHub Actions", "Terraform", "Python"],
-    category: "DevOps",
-    requiredRoles: ["DevOps Engineer", "Cloud Architect", "Backend Developer"],
-    author: {
-      name: "Jordan Lee",
-      avatar: "/placeholder.svg?height=40&width=40",
-    },
-    likes: 34,
-    comments: 12,
-    createdAt: "2025-03-25T11:10:00Z",
-  },
-  {
-    id: "6",
-    title: "Accessibility Testing Framework",
-    description:
-      "An automated testing framework for identifying and fixing accessibility issues in web applications. Provides detailed reports and suggestions for improvements.",
-    techStack: ["JavaScript", "Puppeteer", "ARIA", "HTML"],
-    category: "Web Development",
-    requiredRoles: ["Frontend Developer", "Accessibility Specialist", "QA Engineer"],
-    author: {
-      name: "Taylor Morgan",
-      avatar: "/placeholder.svg?height=40&width=40",
-    },
-    likes: 47,
-    comments: 23,
-    createdAt: "2025-03-22T08:45:00Z",
-  },
-]
+
+
 
 const categories = [
   "All",
@@ -141,15 +48,32 @@ const sortOptions = [
   { value: "popular", label: "Most Popular", icon: <Users className="h-4 w-4" /> },
 ]
 
+interface IdeaFormProps {
+  onSubmit: (values: IdeaFormValues) => Promise<void>;
+}
+
+
 export default function ShareIdeasPage() {
+  const {fetchProjects, projects} = useProjectStore()
+ 
   const [showForm, setShowForm] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("All")
   const [sortBy, setSortBy] = useState("trending")
-  const [ideas, setIdeas] = useState(MOCK_IDEAS)
+  const [ideas, setIdeas] = useState<Project[]>([])
   const [isScrolled, setIsScrolled] = useState(false)
   const [showCategoryMenu, setShowCategoryMenu] = useState(false)
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+  
+  useEffect(() => {
+    setIdeas(projects);
+  }, [projects]);
+  
 
+  
+  
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -187,10 +111,11 @@ export default function ShareIdeasPage() {
 
   const filteredIdeas = ideas.filter(
     (idea) =>
-      (selectedCategory === "All" || idea.category === selectedCategory) &&
+      (selectedCategory === "All" || idea.category.includes(selectedCategory)) &&
       (idea.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        idea.description.toLowerCase().includes(searchQuery.toLowerCase())),
+       idea.description.toLowerCase().includes(searchQuery.toLowerCase()))
   )
+  
 
   const sortedIdeas = [...filteredIdeas].sort((a, b) => {
     if (sortBy === "newest") {
@@ -214,23 +139,86 @@ export default function ShareIdeasPage() {
   const featuredIdea = ideas.find((idea) => idea.featured)
   const regularIdeas = sortedIdeas.filter((idea) => !idea.featured)
 
-  const handleAddIdea = (newIdea:any) => {
-    setIdeas([
-      {
-        id: (ideas.length + 1).toString(),
-        ...newIdea,
-        likes: 0,
-        comments: 0,
-        createdAt: new Date().toISOString(),
-        author: {
-          name: "You",
-          avatar: "/placeholder.svg?height=40&width=40",
-        },
+  const user=useAuthStore((state)=>state.user)
+  
+
+  // const handleAddIdea = async (newIdea: IdeaFormValues) => {
+  //   if (!user || !user._id) {
+  //     console.error("User not logged in or ID missing")
+  //     return
+  //   }
+  
+  //   newIdea.createdby = user._id // now safe
+  
+  //   try {
+  //     const res = await projectaxiosinstance.post("project/createProject", newIdea)
+  //     console.log(res.data.data)
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  
+  //   setIdeas([
+  //     {
+  //       ...newIdea,
+  //       likes: 0,
+  //       comments: 0,
+  //       createdAt: new Date().toISOString(),
+  //       author: {
+  //         name: "You",
+  //         avatar: "/placeholder.svg?height=40&width=40",
+  //         title: "",
+  //         company: "",
+  //         github: "",
+  //         website: "",
+  //       },
+  //     },
+  //     ...ideas,
+  //   ])
+  //   setShowForm(false)
+  // }
+
+  const handleAddIdea = async (values: any) => {
+    if (!user || !user._id) {
+      console.error("User not logged in or ID missing");
+      return;
+    }
+  
+    const newIdea: Project = {
+      _id: crypto.randomUUID(), // Or leave undefined if backend handles it
+      createdby: user._id,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      likes: 0,
+      comments: 0,
+      featured: false,
+      progress: 0,
+      author: {
+        name: user.name || "You",
+        avatar: "/placeholder.svg",
+        title: "",
+        company: "",
+        github: "",
+        website: "",
       },
-      ...ideas,
-    ])
-    setShowForm(false)
-  }
+      team: [],
+      updates: [],
+      resources: [],
+      ...values, // includes title, description, techStack, etc.
+      status: values.status || "Planning",
+    };
+  
+    try {
+      const res = await projectaxiosinstance.post("project/createProject", newIdea);
+      console.log(res.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  
+    setIdeas([newIdea, ...ideas]);
+    setShowForm(false);
+  };
+  
+  
 
   const motivationalPhrases = [
     "Build together, grow together",
@@ -264,7 +252,7 @@ export default function ShareIdeasPage() {
                       <Lightbulb className="h-6 w-6 text-white" />
                     </div>
                     <h1 className="text-4xl font-extrabold bg-gradient-to-r from-[#37113c] to-[#611f69] bg-clip-text text-transparent">
-                      Project Ideas Hub
+                      Project Ideas Hub 
                     </h1>
                   </div>
                   <p className="text-muted-foreground mt-3 max-w-2xl">
@@ -316,7 +304,7 @@ export default function ShareIdeasPage() {
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.4 }}
+                    transition={{ duration: 0.4 }}  
                     className="mt-8"
                   >
                     <IdeaForm onSubmit={handleAddIdea} onCancel={() => setShowForm(false)} />
@@ -381,6 +369,7 @@ export default function ShareIdeasPage() {
                         <TabsTrigger
                           value="more"
                           className="text-xs rounded-md"
+                          
                           onClick={() => setShowCategoryMenu(!showCategoryMenu)}
                         >
                           More...
@@ -508,7 +497,7 @@ export default function ShareIdeasPage() {
           >
             {regularIdeas.length > 0 ? (
               regularIdeas.map((idea, index) => (
-                <motion.div key={idea.id} variants={itemVariants} className="h-full">
+                <motion.div key={idea._id} variants={itemVariants} className="h-full">
                   <div className="h-full transform transition-transform duration-300 hover:scale-[1.02] hover:-rotate-1">
                     <IdeaCard idea={idea} />
                   </div>

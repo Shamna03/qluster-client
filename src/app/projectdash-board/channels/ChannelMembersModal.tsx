@@ -5,9 +5,9 @@ import { motion, AnimatePresence } from "framer-motion"
 import { X, Search, UserPlus, UserMinus, LoaderCircle } from "lucide-react"
 import { Button } from "@/Components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar"
-import { Input } from "@/Components/ui/input"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import channelAxiosInstance from "@/api/channelAxiosInstance"
+import useAuthStore from "@/store/useAuthStore"
 
 interface User {
   _id: string
@@ -31,7 +31,7 @@ const ChannelMembersModal = ({isOpen, onClose, channelId, channelName, currentMe
   const [filteredAvailableUsers, setFilteredAvailableUsers] = useState<User[]>(availableUsers)
   const [activeTab, setActiveTab] = useState<"current" | "add">("current")
   const queryClient = useQueryClient()
-console.log(filteredAvailableUsers);
+const {user} = useAuthStore()
 
   useEffect(() => {
     if (searchQuery) {
@@ -81,6 +81,7 @@ console.log(filteredAvailableUsers);
   })
 
   if (!isOpen) return null
+// console.log(filteredAvailableUsers);
 
 
   return (
@@ -107,12 +108,13 @@ console.log(filteredAvailableUsers);
           <div className="p-4 border-b border-gray-200 dark:border-gray-800">
             <div className="relative mb-4">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500 dark:text-gray-400" />
-              <Input
+              <input
                 type="text"
                 placeholder="Find members..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 w-full bg-gray-100 dark:bg-gray-800 border-none"
+                // className="pl-10 w-full bg-gray-100 dark:bg-gray-800 border-none"
+                className="pl-10 w-full h-10 rounded-md border border-input bg-gray-100 dark:bg-gray-800 px-3 py-2 text-sm ring-offset-background  placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               />
             </div>
 
@@ -147,7 +149,7 @@ console.log(filteredAvailableUsers);
             {activeTab === "current" ? (
               <div className="space-y-2">
                 {filteredMembers.length > 0 ? (
-                  filteredMembers.map((member) => (
+                  filteredMembers.map((member:any) => (
                     <div
                       key={member._id}
                       className="flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-md"
@@ -172,7 +174,7 @@ console.log(filteredAvailableUsers);
                         className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
                       >
                         <UserMinus className="h-4 w-4 mr-1" />
-                        Remove
+                       { member._id === user?._id?"Remove":"Left"}
                       </Button>
                     </div>
                   ))

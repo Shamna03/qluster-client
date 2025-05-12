@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { Eye, EyeOff, Lock, Mail, ChevronRight, Github } from "lucide-react"
+import { Eye, EyeOff, Lock, Mail, ChevronRight, Github, LoaderCircle } from "lucide-react"
 import { Button } from "@/Components/ui/button"
 import { Formik, Form, Field, ErrorMessage } from "formik"
 import * as Yup from "yup"
@@ -70,7 +70,7 @@ export default function LoginPage() {
 
   const handleSubmit = async (values: typeof initialValues) => {
     setIsLoading(true)
-    console.log(values)
+    console.log(values,"handle submit values")
      mutate(values)
     setIsLoading(false)
   }
@@ -101,7 +101,6 @@ export default function LoginPage() {
           ))}
         </div>
 
-        {/* Geometric shapes */}
         <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-[#9d3ba9]/10 rounded-bl-full blur-3xl" />
         <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-[#4a1850]/20 rounded-tr-full blur-3xl" />
 
@@ -113,16 +112,13 @@ export default function LoginPage() {
         <div className="w-full max-w-6xl flex flex-col lg:flex-row items-center gap-12">
 
 
-          {/* Right side - Login form */}
           <div className="w-full lg:w-1/2 relative">
             <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/5 rounded-full blur-3xl"></div>
             <div className="relative backdrop-blur-md bg-white/10 dark:bg-black/20 border border-white/20 dark:border-white/10 rounded-2xl shadow-2xl overflow-hidden">
-              {/* Card header with subtle gradient */}
               <div className="relative h-16 bg-gradient-to-r from-[#7a2d85]/30 to-[#4a1850]/30 flex items-center px-6">
                 <h2 className="text-xl font-semibold text-white">Log in to your account</h2>
               </div>
 
-              {/* Form content */}
               <div className="p-6 md:p-8">
                 <Formik
                   initialValues={initialValues}
@@ -131,7 +127,6 @@ export default function LoginPage() {
                 >
                   {({ errors, touched }) => (
                     <Form className="space-y-5">
-                      {/* Email field */}
                       <div className="space-y-2">
                         <div className="relative">
                           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -196,41 +191,16 @@ export default function LoginPage() {
                         >
                           {isLoading ? (
                             <div className="flex items-center justify-center">
-                              <svg
-                                className="animate-spin -ml-1 mr-2 h-4 w-4 text-[#611f69]"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                              >
-                                <circle
-                                  className="opacity-25"
-                                  cx="12"
-                                  cy="12"
-                                  r="10"
-                                  stroke="currentColor"
-                                  strokeWidth="4"
-                                ></circle>
-                                <path
-                                  className="opacity-75"
-                                  fill="currentColor"
-                                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                                ></path>
-                              </svg>
+                              <LoaderCircle className="animate-spin h-4 w-4 text-[#611f69] mr-2" />
                               Signing in...
                             </div>
-                          ) : (
-                            <div className="flex items-center justify-center">
-                              Sign in
-                              <ChevronRight className="ml-1 h-4 w-4" />
-                            </div>
-                          )}
+                          ) : ( <div className="flex items-center justify-center"> Sign in <ChevronRight className="ml-1 h-4 w-4" /> </div> )}
                         </Button>
                       </div>
                     </Form>
                   )}
                 </Formik>
 
-                {/* Divider */}
                 <div className="mt-8 flex items-center">
                   <div className="flex-grow h-px bg-white/10"></div>
                   <span className="px-3 text-sm text-white/50">or continue with</span>

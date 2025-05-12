@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, FormEvent } from "react"
+import { useState, useEffect, SetStateAction } from "react"
 import { useParams, useRouter } from "next/navigation"
 import {
   Heart,
@@ -33,71 +33,14 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/Components/ui/tabs"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/Components/ui/card"
 import { Progress } from "@/Components/ui/progress"
 import { motion, AnimatePresence } from "framer-motion"
-import Link from 'next/link'
+import projectaxiosinstance from "@/api/projectaxiosinstance"
+import { Project } from "@/types/project"
 
-interface Author {
-  name: string
-  avatar: string
-  title: string
-  company: string
-  github?: string
-  website?: string
+interface TextProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+  className: string;
 }
 
-interface TeamMember {
-  name: string
-  avatar: string
-  role: string
-}
-
-interface Update {
-  date: string
-  content: string
-}
-
-interface Resource {
-  type: string
-  name: string
-  url: string
-}
-
-interface Idea {
-  id: string
-  title: string
-  description: string
-  problem: string
-  solution: string
-  techStack: string[]
-  category: string
-  requiredRoles: string[]
-  author: Author
-  likes: number
-  comments: number
-  createdAt: string
-  featured: boolean
-  progress: number
-  status: string
-  team: TeamMember[]
-  updates: Update[]
-  resources: Resource[]
-}
-
-interface Comment {
-  id: string
-  author: {
-    name: string
-    avatar: string
-  }
-  content: string
-  createdAt: string
-  likes: number
-}
-
-interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
-  className?: string
-}
-
-const Textarea: React.FC<TextareaProps> = ({ className, ...props }) => {
+const Textarea: React.FC<TextProps> = ({ className, ...props }) => {
   return (
     <textarea
       className={`flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
@@ -106,83 +49,83 @@ const Textarea: React.FC<TextareaProps> = ({ className, ...props }) => {
   )
 }
 
-const MOCK_IDEAS: Idea[] = [
-  {
-    id: "1",
-    title: "AI-Powered Code Review Assistant",
-    description:
-      "An AI tool that automatically reviews code, suggests improvements, and identifies potential bugs before deployment. The system learns from previous reviews and adapts to team coding standards over time.",
-    problem:
-      "Manual code reviews are time-consuming and can miss subtle issues. Developers need a way to get instant feedback on their code quality and potential bugs.",
-    solution:
-      "Our AI-powered assistant analyzes code against best practices, team standards, and common bug patterns to provide instant, actionable feedback.",
-    techStack: ["Python", "TensorFlow", "React", "Node.js", "Docker", "AWS"],
-    category: "AI/ML",
-    requiredRoles: ["ML Engineer", "Full Stack Developer", "DevOps", "UI/UX Designer"],
-    author: {
-      name: "Alex Johnson",
-      avatar: "/placeholder.svg?height=40&width=40",
-      title: "Senior AI Engineer",
-      company: "TechInnovate",
-      github: "alexj",
-      website: "alexjohnson.dev",
-    },
-    likes: 42,
-    comments: 15,
-    createdAt: "2025-04-05T10:30:00Z",
-    featured: true,
-    progress: 25,
-    status: "Planning",
-    team: [
-      { name: "Sarah Chen", avatar: "/placeholder.svg?height=40&width=40", role: "ML Engineer" },
-      { name: "Michael Rodriguez", avatar: "/placeholder.svg?height=40&width=40", role: "Full Stack Developer" },
-    ],
-    updates: [
-      { date: "2025-04-10", content: "Project kickoff meeting scheduled for next week" },
-      { date: "2025-04-07", content: "Added initial project requirements document" },
-      { date: "2025-04-05", content: "Project idea published" },
-    ],
-    resources: [
-      { type: "document", name: "Project Requirements", url: "#" },
-      { type: "repository", name: "Initial Prototype", url: "#" },
-    ],
-  },
-  {
-    id: "2",
-    title: "Decentralized Developer Marketplace",
-    description:
-      "A blockchain-based platform connecting developers with clients, featuring smart contracts for secure payments and project delivery. Includes reputation system and dispute resolution.",
-    problem:
-      "Traditional freelance platforms charge high fees and don't provide adequate security for both clients and developers.",
-    solution:
-      "Our decentralized marketplace uses blockchain technology and smart contracts to ensure secure, transparent transactions with lower fees.",
-    techStack: ["Solidity", "Ethereum", "React", "GraphQL", "IPFS", "Web3.js"],
-    category: "Blockchain",
-    requiredRoles: ["Blockchain Developer", "Frontend Developer", "Smart Contract Auditor", "UX Researcher"],
-    author: {
-      name: "Sophia Chen",
-      avatar: "/placeholder.svg?height=40&width=40",
-      title: "Blockchain Architect",
-      company: "DAppWorks",
-      github: "sophiac",
-      website: "sophiachen.io",
-    },
-    likes: 38,
-    comments: 21,
-    createdAt: "2025-04-03T14:15:00Z",
-    featured: false,
-    progress: 15,
-    status: "Recruiting",
-    team: [{ name: "James Wilson", avatar: "/placeholder.svg?height=40&width=40", role: "Smart Contract Developer" }],
-    updates: [
-      { date: "2025-04-08", content: "Published initial smart contract design" },
-      { date: "2025-04-03", content: "Project idea published" },
-    ],
-    resources: [{ type: "document", name: "Smart Contract Architecture", url: "#" }],
-  },
-]
+// const MOCK_IDEAS = [
+//   {
+//     id: "1",
+//     title: "AI-Powered Code Review Assistant",
+//     description:
+//       "An AI tool that automatically reviews code, suggests improvements, and identifies potential bugs before deployment. The system learns from previous reviews and adapts to team coding standards over time.",
+//     problem:
+//       "Manual code reviews are time-consuming and can miss subtle issues. Developers need a way to get instant feedback on their code quality and potential bugs.",
+//     solution:
+//       "Our AI-powered assistant analyzes code against best practices, team standards, and common bug patterns to provide instant, actionable feedback.",
+//     techStack: ["Python", "TensorFlow", "React", "Node.js", "Docker", "AWS"],
+//     category: "AI/ML",
+//     requiredRoles: ["ML Engineer", "Full Stack Developer", "DevOps", "UI/UX Designer"],
+//     author: {
+//       name: "Alex Johnson",
+//       avatar: "/placeholder.svg?height=40&width=40",
+//       title: "Senior AI Engineer",
+//       company: "TechInnovate",
+//       github: "alexj",
+//       website: "alexjohnson.dev",
+//     },
+//     likes: 42,
+//     comments: 15,
+//     createdAt: "2025-04-05T10:30:00Z",
+//     featured: true,
+//     progress: 25,
+//     status: "Planning",
+//     team: [
+//       { name: "Sarah Chen", avatar: "/placeholder.svg?height=40&width=40", role: "ML Engineer" },
+//       { name: "Michael Rodriguez", avatar: "/placeholder.svg?height=40&width=40", role: "Full Stack Developer" },
+//     ],
+//     updates: [
+//       { date: "2025-04-10", content: "Project kickoff meeting scheduled for next week" },
+//       { date: "2025-04-07", content: "Added initial project requirements document" },
+//       { date: "2025-04-05", content: "Project idea published" },
+//     ],
+//     resources: [
+//       { type: "document", name: "Project Requirements", url: "#" },
+//       { type: "repository", name: "Initial Prototype", url: "#" },
+//     ],
+//   },
+//   {
+//     id: "2",
+//     title: "Decentralized Developer Marketplace",
+//     description:
+//       "A blockchain-based platform connecting developers with clients, featuring smart contracts for secure payments and project delivery. Includes reputation system and dispute resolution.",
+//     problem:
+//       "Traditional freelance platforms charge high fees and don't provide adequate security for both clients and developers.",
+//     solution:
+//       "Our decentralized marketplace uses blockchain technology and smart contracts to ensure secure, transparent transactions with lower fees.",
+//     techStack: ["Solidity", "Ethereum", "React", "GraphQL", "IPFS", "Web3.js"],
+//     category: "Blockchain",
+//     requiredRoles: ["Blockchain Developer", "Frontend Developer", "Smart Contract Auditor", "UX Researcher"],
+//     author: {
+//       name: "Sophia Chen",
+//       avatar: "/placeholder.svg?height=40&width=40",
+//       title: "Blockchain Architect",
+//       company: "DAppWorks",
+//       github: "sophiac",
+//       website: "sophiachen.io",
+//     },
+//     likes: 38,
+//     comments: 21,
+//     createdAt: "2025-04-03T14:15:00Z",
+//     featured: false,
+//     progress: 15,
+//     status: "Recruiting",
+//     team: [{ name: "James Wilson", avatar: "/placeholder.svg?height=40&width=40", role: "Smart Contract Developer" }],
+//     updates: [
+//       { date: "2025-04-08", content: "Published initial smart contract design" },
+//       { date: "2025-04-03", content: "Project idea published" },
+//     ],
+//     resources: [{ type: "document", name: "Smart Contract Architecture", url: "#" }],
+//   },
+// ]
 
-const MOCK_COMMENTS: Comment[] = [
+const MOCK_COMMENTS = [
   {
     id: "c1",
     author: {
@@ -216,30 +159,46 @@ const MOCK_COMMENTS: Comment[] = [
     likes: 3,
   },
 ]
+interface Comment {
+  _id: string;
+  author: {
+    name: string;
+    avatar: string;
+  };
+  content: string;
+  createdAt: string;
+  likes: number;
+}
 
-const ProjectDetailPage: React.FC = () => {
-  const params = useParams<{ id: string }>()
+
+export default function ProjectDetailPage() {
+
+  
+  const params = useParams()
+
+  
   const router = useRouter()
-  const [idea, setIdea] = useState<Idea | null>(null)
-  const [loading, setLoading] = useState<boolean>(true)
-  const [activeTab, setActiveTab] = useState<string>("overview")
+  const [idea, setIdea] = useState<Project|null>(null)
+  console.log(idea,"ideaaa")
+  const [loading, setLoading] = useState(true)
+  const [activeTab, setActiveTab] = useState("overview")
   const [comments, setComments] = useState<Comment[]>([])
-  const [newComment, setNewComment] = useState<string>("")
-  const [liked, setLiked] = useState<boolean>(false)
-  const [saved, setSaved] = useState<boolean>(false)
-  const [showAllUpdates, setShowAllUpdates] = useState<boolean>(false)
-  const [showTeamSection, setShowTeamSection] = useState<boolean>(true)
-
+  const [newComment, setNewComment] = useState("")
+  const [liked, setLiked] = useState(false)
+  const [saved, setSaved] = useState(false)
+  const [showAllUpdates, setShowAllUpdates] = useState(false)
+  const [showTeamSection, setShowTeamSection] = useState(true)
 
   useEffect(() => {
     const fetchIdea = async () => {
       setLoading(true)
       try {
         await new Promise((resolve) => setTimeout(resolve, 500))
-        const foundIdea = MOCK_IDEAS.find((idea) => idea.id === params.id)
+        const foundIdea = await projectaxiosinstance.get(`/project/getProject/${params.id}`)
+      console.log(foundIdea,"details page")
         if (foundIdea) {
-          setIdea(foundIdea)
-          setComments(MOCK_COMMENTS)
+          setIdea(foundIdea.data)
+          setComments([])
         } else {
           router.push("/share-ideas")
         }
@@ -269,12 +228,13 @@ const ProjectDetailPage: React.FC = () => {
     setSaved(!saved)
   }
 
-  const handleSubmitComment = (e: FormEvent<HTMLFormElement>) => {
+
+  const handleSubmitComment = (e: { preventDefault: () => void }) => {
     e.preventDefault()
     if (!newComment.trim()) return
 
-    const newCommentObj: Comment = {
-      id: `c${comments.length + 1}`,
+    const newCommentObj = {
+      _id: `c${comments.length + 1}`,
       author: {
         name: "You",
         avatar: "/placeholder.svg?height=40&width=40",
@@ -283,7 +243,9 @@ const ProjectDetailPage: React.FC = () => {
       createdAt: new Date().toISOString(),
       likes: 0,
     }
-
+    if(!newCommentObj){
+      return
+    }
     setComments([newCommentObj, ...comments])
     setNewComment("")
 
@@ -295,10 +257,10 @@ const ProjectDetailPage: React.FC = () => {
     }
   }
 
-  const formatRelativeTime = (dateString: string): string => {
-    const date = new Date(dateString)
-    const now = new Date()
-    const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000)
+  const formatRelativeTime = (dateString:string) => {
+    const date: any = new Date(dateString)
+    const now:any = new Date()
+    const diffInSeconds = Math.floor((now - date) / 1000)
 
     if (diffInSeconds < 60) return "just now"
     if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} minutes ago`
@@ -308,7 +270,7 @@ const ProjectDetailPage: React.FC = () => {
     return `${Math.floor(diffInSeconds / 31536000)} years ago`
   }
 
-  const formatDate = (dateString: string): string => {
+  const formatDate = (dateString:string) => {
     const date = new Date(dateString)
     return date.toLocaleDateString("en-US", {
       year: "numeric",
@@ -446,15 +408,10 @@ const ProjectDetailPage: React.FC = () => {
                   </div>
                 </div>
 
-
-                <Link href={`/share-ideas/${params.id}/join`}>
-                  <Button
-                    className="bg-gradient-to-r from-[#37113c] to-[#611f69] hover:from-[#4a1751] hover:to-[#7a2785] text-white"
-                  >
-                    <UserPlus className="mr-2 h-4 w-4" />
-                    Join This Project
-                  </Button>
-                </Link>
+                <Button className="bg-gradient-to-r from-[#37113c] to-[#611f69] hover:from-[#4a1751] hover:to-[#7a2785] text-white">
+                  <UserPlus className="mr-2 h-4 w-4" />
+                  Join This Project
+                </Button>
 
                 <div className="flex gap-2">
                   <Button variant="outline" className="flex-1" onClick={handleLike}>
@@ -768,7 +725,7 @@ const ProjectDetailPage: React.FC = () => {
                               placeholder="Add a comment..."
                               className="flex-1 min-h-[80px] border-purple-200 dark:border-purple-900/50 focus-visible:ring-[#611f69]/20"
                               value={newComment}
-                              onChange={(e) => setNewComment(e.target.value)}
+                              onChange={(e: { target: { value: SetStateAction<string> } }) => setNewComment(e.target.value)}
                             />
                             <Button
                               type="submit"
@@ -783,8 +740,8 @@ const ProjectDetailPage: React.FC = () => {
 
                       <div className="space-y-6">
                         {comments.length > 0 ? (
-                          comments.map((comment) => (
-                            <div key={comment.id} className="flex gap-3">
+                          comments.map((comment: Comment, index) => (
+                            <div key={comment._id} className="flex gap-3">
                               <Avatar className="h-8 w-8">
                                 <AvatarImage
                                   src={comment.author.avatar || "/placeholder.svg"}
@@ -830,15 +787,15 @@ const ProjectDetailPage: React.FC = () => {
             </Tabs>
           </div>
 
+          {/* Right column - Sidebar */}
           <div className="space-y-6">
+            {/* Join Project Card */}
             <Card className="bg-gradient-to-br from-purple-50 to-white dark:from-gray-900 dark:to-[#1a0d1e] border-purple-200 dark:border-purple-900/50 overflow-hidden">
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#37113c] to-[#611f69]" />
               <CardHeader>
-                <Link href="/join">
-                  <CardTitle className="text-lg font-semibold text-[#611f69] dark:text-purple-300 cursor-pointer">
-                    Join This Project
-                  </CardTitle>
-                </Link>
+                <CardTitle className="text-lg font-semibold text-[#611f69] dark:text-purple-300">
+                  Join This Project
+                </CardTitle>
                 <CardDescription>Collaborate with talented developers and bring this idea to life</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -881,6 +838,7 @@ const ProjectDetailPage: React.FC = () => {
               </CardContent>
             </Card>
 
+            {/* Similar Projects Card */}
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg font-semibold text-[#611f69] dark:text-purple-300">
@@ -889,7 +847,7 @@ const ProjectDetailPage: React.FC = () => {
                 <CardDescription>Explore other projects in {idea.category}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                {MOCK_IDEAS.filter((i) => i.id !== idea.id && i.category === idea.category).map((similarIdea) => (
+                {/* {MOCK_IDEAS.filter((i) => i.id !== idea.id && i.category === idea.category).map((similarIdea) => (
                   <div
                     key={similarIdea.id}
                     className="bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer"
@@ -911,7 +869,7 @@ const ProjectDetailPage: React.FC = () => {
                       </div>
                     </div>
                   </div>
-                ))}
+                ))} */}
 
                 <Button variant="outline" className="w-full">
                   View More Projects
@@ -924,5 +882,3 @@ const ProjectDetailPage: React.FC = () => {
     </div>
   )
 }
-
-export default ProjectDetailPage

@@ -1,16 +1,16 @@
 import axios from "axios";
 
-const channelAxiosInstance = axios.create({
-  baseURL: "http://localhost:5004/api/channel",
+const Kanbanaxiosinstance = axios.create({
+  baseURL: "http://localhost:5003/api",
   withCredentials: true,     
   headers: { "Content-Type": "application/json" },
 });
 
 
-channelAxiosInstance.interceptors.response.use(
+Kanbanaxiosinstance.interceptors.response.use(
   (response) => response,
   async (error) => {
-    console.log("channelAxiosInstance" , error);
+    console.log("inst" , error);
     
     if (error.response.status === 401 || error.response.status === 403) {
       console.error("Unauthorized! Redirecting to login...");
@@ -23,4 +23,6 @@ channelAxiosInstance.interceptors.response.use(
   }
 );
 
-export default channelAxiosInstance
+export default Kanbanaxiosinstance
+
+
