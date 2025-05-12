@@ -69,7 +69,6 @@ const NotePad = ({ channelId }:{channelId:string}) => {
     queryFn: async () => {
       console.log("Fetching notepad for channelId:", channelId); 
       const {data} = await axios.get(`http://localhost:5004/api/notepad/getnotepad/${channelId}`);
-      console.log("API response:", data); 
       return data.data.content; 
     },
     enabled: !!channelId,
