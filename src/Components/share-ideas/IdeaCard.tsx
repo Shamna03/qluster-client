@@ -7,14 +7,38 @@ import { Button } from "@/Components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/Components/ui/card"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/Components/ui/tooltip"
 import { useRouter } from "next/navigation"
+import { Project } from "@/types/project"
 
-export default function IdeaCard({ idea }) {
+interface Owner {
+  name: string
+  avatar?: string
+}
+
+interface Idea {
+  _id: string
+  id?: string
+  title: string
+  description: string
+  category: string
+  techStack: string[]
+  requiredRoles: string[]
+  likes?: number
+  comments?: number
+  createdAt: string
+  owner?: Owner
+}
+
+interface IdeaCardProps {
+  idea: Project
+}
+
+export default function IdeaCard({ idea }: IdeaCardProps) {
   const [liked, setLiked] = useState(false)
   const [saved, setSaved] = useState(false)
-  const [likeCount, setLikeCount] = useState(idea.likes)
+  const [likeCount, setLikeCount] = useState(idea.likes || 0)
   const router = useRouter()
 
-  const handleLike = (e) => {
+  const handleLike = (e: React.MouseEvent) => {
     e.stopPropagation() 
     if (liked) {
       setLikeCount(likeCount - 1)
@@ -24,30 +48,29 @@ export default function IdeaCard({ idea }) {
     setLiked(!liked)
   }
 
-  const handleSave = (e) => {
+  const handleSave = (e: React.MouseEvent) => {
     e.stopPropagation() 
     setSaved(!saved)
   }
 
-  const handleShare = (e) => {
+  const handleShare = (e: React.MouseEvent) => {
     e.stopPropagation() 
-    
+    // Implement share functionality
   }
 
-  const handleComment = (e) => {
+  const handleComment = (e: React.MouseEvent) => {
     e.stopPropagation() 
-    router.push(`/share-ideas/${idea.id}#comments`)
+    router.push(`/share-ideas/${idea._id}#comments`)
   }
 
   const handleCardClick = () => {
-    router.push(`/share-ideas/${idea.id}`)
+    router.push(`/share-ideas/${idea._id}`)
   }
 
- 
-  const formatRelativeTime = (dateString) => {
+  const formatRelativeTime = (dateString: string): string => {
     const date = new Date(dateString)
     const now = new Date()
-    const diffInSeconds = Math.floor((now - date) / 1000)
+    const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000)
 
     if (diffInSeconds < 60) return "just now"
     if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} minutes ago`
@@ -59,18 +82,18 @@ export default function IdeaCard({ idea }) {
 
   return (
     <Card
-      className="h-full flex flex-col border-purple-100 dark:border-purple-900/50 hover:shadow-lg transition-shadow duration-300 overflow-hidden group cursor-pointer"
+      className="h-full flex flex-col border-purple-100 dark:border-purple-900/50 hover:shadow-lg transition-shadow duration-300 overflow-hidden group cursor-pointer relative"
       onClick={handleCardClick}
     >
       <CardHeader className="pb-2 flex flex-row items-center space-y-0 gap-2">
         <Avatar className="h-8 w-8 ring-2 ring-purple-100 dark:ring-purple-900/50">
-          <AvatarImage src={idea.author.avatar || "/placeholder.svg"} alt={idea.author.name} />
+          <AvatarImage src={idea?.author?.avatar || "/placeholder.svg"} alt={idea?.author?.name} />
           <AvatarFallback className="bg-gradient-to-br from-[#37113c] to-[#611f69] text-white">
-            {idea.author.name.charAt(0)}
+            {idea?.author?.name?.charAt(0)}
           </AvatarFallback>
         </Avatar>
         <div className="flex flex-col">
-          <span className="text-sm font-medium">{idea.author.name}</span>
+          <span className="text-sm font-medium">{idea?.author?.name}</span>
           <span className="text-xs text-muted-foreground">{formatRelativeTime(idea.createdAt)}</span>
         </div>
 
@@ -158,7 +181,7 @@ export default function IdeaCard({ idea }) {
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
-            <span className="text-xs text-muted-foreground">{idea.comments}</span>
+            <span className="text-xs text-muted-foreground">{idea?.comments || 0}</span>
           </div>
 
           <div className="flex items-center gap-2">
