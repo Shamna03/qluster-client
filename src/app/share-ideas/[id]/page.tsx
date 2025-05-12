@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, FormEvent } from "react"
 import { useParams, useRouter } from "next/navigation"
 import {
   Heart,
@@ -33,8 +33,71 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/Components/ui/tabs"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/Components/ui/card"
 import { Progress } from "@/Components/ui/progress"
 import { motion, AnimatePresence } from "framer-motion"
+import Link from 'next/link'
 
-const Textarea = ({ className, ...props }) => {
+interface Author {
+  name: string
+  avatar: string
+  title: string
+  company: string
+  github?: string
+  website?: string
+}
+
+interface TeamMember {
+  name: string
+  avatar: string
+  role: string
+}
+
+interface Update {
+  date: string
+  content: string
+}
+
+interface Resource {
+  type: string
+  name: string
+  url: string
+}
+
+interface Idea {
+  id: string
+  title: string
+  description: string
+  problem: string
+  solution: string
+  techStack: string[]
+  category: string
+  requiredRoles: string[]
+  author: Author
+  likes: number
+  comments: number
+  createdAt: string
+  featured: boolean
+  progress: number
+  status: string
+  team: TeamMember[]
+  updates: Update[]
+  resources: Resource[]
+}
+
+interface Comment {
+  id: string
+  author: {
+    name: string
+    avatar: string
+  }
+  content: string
+  createdAt: string
+  likes: number
+}
+
+interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+  className?: string
+}
+
+const Textarea: React.FC<TextareaProps> = ({ className, ...props }) => {
   return (
     <textarea
       className={`flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
@@ -43,7 +106,7 @@ const Textarea = ({ className, ...props }) => {
   )
 }
 
-const MOCK_IDEAS = [
+const MOCK_IDEAS: Idea[] = [
   {
     id: "1",
     title: "AI-Powered Code Review Assistant",
@@ -119,7 +182,7 @@ const MOCK_IDEAS = [
   },
 ]
 
-const MOCK_COMMENTS = [
+const MOCK_COMMENTS: Comment[] = [
   {
     id: "c1",
     author: {
@@ -154,18 +217,19 @@ const MOCK_COMMENTS = [
   },
 ]
 
-export default function ProjectDetailPage() {
-  const params = useParams()
+const ProjectDetailPage: React.FC = () => {
+  const params = useParams<{ id: string }>()
   const router = useRouter()
-  const [idea, setIdea] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState("overview")
-  const [comments, setComments] = useState([])
-  const [newComment, setNewComment] = useState("")
-  const [liked, setLiked] = useState(false)
-  const [saved, setSaved] = useState(false)
-  const [showAllUpdates, setShowAllUpdates] = useState(false)
-  const [showTeamSection, setShowTeamSection] = useState(true)
+  const [idea, setIdea] = useState<Idea | null>(null)
+  const [loading, setLoading] = useState<boolean>(true)
+  const [activeTab, setActiveTab] = useState<string>("overview")
+  const [comments, setComments] = useState<Comment[]>([])
+  const [newComment, setNewComment] = useState<string>("")
+  const [liked, setLiked] = useState<boolean>(false)
+  const [saved, setSaved] = useState<boolean>(false)
+  const [showAllUpdates, setShowAllUpdates] = useState<boolean>(false)
+  const [showTeamSection, setShowTeamSection] = useState<boolean>(true)
+
 
   useEffect(() => {
     const fetchIdea = async () => {
@@ -205,11 +269,11 @@ export default function ProjectDetailPage() {
     setSaved(!saved)
   }
 
-  const handleSubmitComment = (e) => {
+  const handleSubmitComment = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!newComment.trim()) return
 
-    const newCommentObj = {
+    const newCommentObj: Comment = {
       id: `c${comments.length + 1}`,
       author: {
         name: "You",
@@ -231,10 +295,10 @@ export default function ProjectDetailPage() {
     }
   }
 
-  const formatRelativeTime = (dateString) => {
+  const formatRelativeTime = (dateString: string): string => {
     const date = new Date(dateString)
     const now = new Date()
-    const diffInSeconds = Math.floor((now - date) / 1000)
+    const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000)
 
     if (diffInSeconds < 60) return "just now"
     if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} minutes ago`
@@ -244,7 +308,7 @@ export default function ProjectDetailPage() {
     return `${Math.floor(diffInSeconds / 31536000)} years ago`
   }
 
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: string): string => {
     const date = new Date(dateString)
     return date.toLocaleDateString("en-US", {
       year: "numeric",
@@ -382,10 +446,15 @@ export default function ProjectDetailPage() {
                   </div>
                 </div>
 
-                <Button className="bg-gradient-to-r from-[#37113c] to-[#611f69] hover:from-[#4a1751] hover:to-[#7a2785] text-white">
-                  <UserPlus className="mr-2 h-4 w-4" />
-                  Join This Project
-                </Button>
+
+                <Link href={`/share-ideas/${params.id}/join`}>
+                  <Button
+                    className="bg-gradient-to-r from-[#37113c] to-[#611f69] hover:from-[#4a1751] hover:to-[#7a2785] text-white"
+                  >
+                    <UserPlus className="mr-2 h-4 w-4" />
+                    Join This Project
+                  </Button>
+                </Link>
 
                 <div className="flex gap-2">
                   <Button variant="outline" className="flex-1" onClick={handleLike}>
@@ -714,7 +783,7 @@ export default function ProjectDetailPage() {
 
                       <div className="space-y-6">
                         {comments.length > 0 ? (
-                          comments.map((comment, index) => (
+                          comments.map((comment) => (
                             <div key={comment.id} className="flex gap-3">
                               <Avatar className="h-8 w-8">
                                 <AvatarImage
@@ -761,15 +830,15 @@ export default function ProjectDetailPage() {
             </Tabs>
           </div>
 
-          {/* Right column - Sidebar */}
           <div className="space-y-6">
-            {/* Join Project Card */}
             <Card className="bg-gradient-to-br from-purple-50 to-white dark:from-gray-900 dark:to-[#1a0d1e] border-purple-200 dark:border-purple-900/50 overflow-hidden">
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#37113c] to-[#611f69]" />
               <CardHeader>
-                <CardTitle className="text-lg font-semibold text-[#611f69] dark:text-purple-300">
-                  Join This Project
-                </CardTitle>
+                <Link href="/join">
+                  <CardTitle className="text-lg font-semibold text-[#611f69] dark:text-purple-300 cursor-pointer">
+                    Join This Project
+                  </CardTitle>
+                </Link>
                 <CardDescription>Collaborate with talented developers and bring this idea to life</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -812,7 +881,6 @@ export default function ProjectDetailPage() {
               </CardContent>
             </Card>
 
-            {/* Similar Projects Card */}
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg font-semibold text-[#611f69] dark:text-purple-300">
@@ -856,3 +924,5 @@ export default function ProjectDetailPage() {
     </div>
   )
 }
+
+export default ProjectDetailPage

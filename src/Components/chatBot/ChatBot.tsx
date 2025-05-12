@@ -1,16 +1,22 @@
 "use client"
 
 import type React from "react"
+
 import { useState, useRef, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Send, Bot, User, X, Maximize2, Minimize2, ChevronDown, ChevronUp, Loader2, Ellipsis } from "lucide-react"
+import { Send, Bot, User, X, Maximize2, Minimize2,  Loader2, Ellipsis } from "lucide-react"
 import { Button } from "@/Components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/Components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar"
 import { Badge } from "@/Components/ui/badge"
 import { cn } from "@/lib/utils"
-import { headers } from "next/headers"
-import axios from "axios"
+import { io } from "socket.io-client"
+import useAuthStore from "@/store/useAuthStore"
+import { usePathname } from "next/navigation"
+
+const socket = io("http://localhost:5005",{
+  withCredentials:true
+})
 
 interface Message {
   id: string
@@ -23,26 +29,52 @@ const ChatBot = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
-      content: "Hello! I'm your AI assistant. How can I help you today?",
+      content: "Hello! I'm your Qluster AI assistant. How can I help you today?",
       role: "assistant",
       timestamp: new Date(),
     },
   ])
-  const [input, setInput] = useState<string>("")
+  const [input, setInput] = useState("")
   const [isTyping, setIsTyping] = useState(false)
   const [isMinimized, setIsMinimized] = useState(false)
   const [isExpanded, setIsExpanded] = useState(false)
   const [isChatOpen, setIsChatOpen] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const {user }= useAuthStore()
+  
 
   // Scroll to bottom whenever messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }, [messages])
 
+  // Socket.io event listeners
+  useEffect(() => {
+    if(!socket.connected){
+      console.log("🧪 socket connected?", socket.connected)
+
+    }
+
+    // Listen for replies from the AI
+    socket.on("reply", (data) => {
+      const aiResponse: Message = {
+        id: Date.now().toString(),
+        content: data,
+        role: "assistant",
+        timestamp: new Date(),
+      }
+      setMessages((prev) => [...prev, aiResponse])
+      setIsTyping(false)
+    })
+
+    // Cleanup on unmount
+    return () => {
+      socket.off("reply")
+    }
+  }, [])
+
   const handleSendMessage = async () => {
     if (!input.trim()) return
-console.log(input);
 
     // Add user message
     const userMessage: Message = {
@@ -52,35 +84,16 @@ console.log(input);
       timestamp: new Date(),
     }
     setMessages((prev) => [...prev, userMessage])
+
+    // Send message to server via socket
+    socket.emit("message", input)
+
+    // Clear input and show typing indicator
     setInput("")
     setIsTyping(true)
-
-    // Simulate AI response (replace with actual API call)
-    setTimeout(() => {
-      const aiResponse: Message = {
-        id: (Date.now() + 1).toString(),
-        content: getAIResponse(input),
-        role: "assistant",
-        timestamp: new Date(),
-      }
-      setMessages((prev) => [...prev, aiResponse])
-      setIsTyping(false)
-    }, 1500)
   }
 
-  // Simple response generator - replace with actual AI integration
-  const getAIResponse = (userInput: string): string => {
-    const responses = [
-      "I understand your question about " + userInput.substring(0, 20) + "... Let me help with that.",
-      "That's an interesting point about " + userInput.substring(0, 15) + ". Here's what I think...",
-      "Thanks for asking about that. Based on my knowledge, I would suggest...",
-      "I'm analyzing your question about " + userInput.substring(0, 20) + ". Here's what I found...",
-      "Great question! From my perspective, the answer would be...",
-    ]
-    return responses[Math.floor(Math.random() * responses.length)]
-  }
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {    
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault()
       handleSendMessage()
@@ -97,23 +110,8 @@ console.log(input);
       setIsMinimized(false)
     }
   }
-  const generateBotResponse = async ()=>{
-     messages.map(({ role, content }) => ({ role,parts: [{ text: content }]}))
-      try {
-        const response = await axios.post(process.env.NEXT_PUBLIC_CHAT_BOT_URL!,{ messages: messages },
-          { headers: {'Content-Type': 'application/json',},}
-        );
-        const result = response.data
-        console.log('Chatbot Response:', result)
-        return result;
-    } catch (error) {
-        console.log(error);
-        
-        
-    }
-}
-console.log(messages);
 
+  const pathName = usePathname()
   return (
     <>
       {/* Chat button */}
@@ -125,9 +123,9 @@ console.log(messages);
         >
           <Button
             onClick={toggleChat}
-            className="h-14 w-14 rounded-full bg-[#611f69] hover:bg-[#611f69]/90 text-white shadow-lg"
+            className={`h-14 w-14 rounded-full bg-[#611f69] hover:bg-[#611f69]/90 text-white shadow-lg animate-bounce  ${pathName === "/projectdash-board/channels" ? "mb-10" : ""}`}
           >
-            <Bot size={24} />
+            <Bot size={24}  className="animate-pulse"/>
           </Button>
         </motion.div>
       )}
@@ -154,20 +152,15 @@ console.log(messages);
                 <div className="flex items-center gap-2">
                   <Avatar className="h-8 w-8 bg-[#611f69]/10">
                     <AvatarImage src="/placeholder.svg" />
-                    <AvatarFallback className="bg-[#611f69]/20 text-[#8f1c9c]">
+                    <AvatarFallback className="bg-[#611f69]/10 text-[#611f69]">
                       <Bot size={16} />
                     </AvatarFallback>
                   </Avatar>
-                  <div>
-                    <CardTitle className="text-base text-gray-800 dark:text-white">AI Assistant</CardTitle>
                     {!isMinimized && (
-                      <Badge
-                        variant="outline"
-                        className="text-xs bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 border-none"
-                      >
-                        Online
-                      </Badge>
+                      <p className="bg-green-700 h-[10px] w-[10px] mt-6 ml-6 rounded-full absolute "></p>
                     )}
+                  <div>
+                    <CardTitle className="text-base text-gray-800 dark:text-white">Qluster AI</CardTitle>
                   </div>
                 </div>
                 <div className="flex items-center gap-1">
@@ -181,14 +174,6 @@ console.log(messages);
                       {isExpanded ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
                     </Button>
                   )}
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800"
-                    onClick={() => setIsMinimized(!isMinimized)}
-                  >
-                    {isMinimized ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                  </Button>
                   <Button
                     variant="ghost"
                     size="icon"
@@ -233,7 +218,7 @@ console.log(messages);
                           {message.role === "user" && (
                             <Avatar className="h-8 w-8 mt-1">
                               <AvatarFallback className="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
-                                <User size={16} />
+                               {user?.profilePicture ?<img src={user?.profilePicture}/>: <User size={16} />}
                               </AvatarFallback>
                             </Avatar>
                           )}
@@ -250,11 +235,12 @@ console.log(messages);
                             </AvatarFallback>
                           </Avatar>
                           <div>
-                            <div className="rounded-lg p-3 bg-gray-100 dark:bg-gray-800">
-                              <div className="flex items-center gap-1">                        
-                               < Ellipsis className=" animate-pulse"/>
+                            <div className="rounded-lg p-3 bg-transparent">
+                              <div className="flex items-center gap-1">
+                             < Ellipsis className=" animate-pulse"/>
                               </div>
                             </div>
+                            <p className="text-xs text-gray-500 mt-1 ml-1">Qluster is typing...</p>
                           </div>
                         </div>
                       </div>
@@ -265,14 +251,13 @@ console.log(messages);
                   {/* Input area */}
                   <CardFooter className="p-4 border-t border-gray-200 dark:border-gray-800">
                     <div className="flex w-full gap-2">
-                    <textarea
-                          value={input ?? ""}
-                          onChange={(e) => setInput(e.target.value)}
-                          onKeyDown={handleKeyDown}
-                          placeholder="Type your message..."
-                          className={cn("flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
-                            "min-h-[40px] resize-none focus-visible:ring-[#611f69] ")}
-                    />
+                      <textarea
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                        onKeyDown={handleKeyDown}
+                        placeholder="Ask me anything..."
+                        className={cn("flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+                            "min-h-[40px] resize-none focus-visible:ring-[#611f69] ")}                      />
                       <Button
                         onClick={handleSendMessage}
                         disabled={!input.trim() || isTyping}

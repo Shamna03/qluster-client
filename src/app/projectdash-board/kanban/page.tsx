@@ -1,50 +1,43 @@
 "use client";
-
-import React, { useState } from "react";
-import {
-  DragDropContext,
-  Droppable,
-  Draggable,
-  DropResult,
-} from "@hello-pangea/dnd";
-import { ClipboardList, Headphones, House, LogOut, Settings } from "lucide-react";
-import ChatBot from "@/Components/chatBot/ChatBot";
+import React, { useState } from 'react'
+import { DragDropContext, Droppable, Draggable, DropResult, } from "@hello-pangea/dnd";
 
 type Task = {
-  id: string;
-  content: string;
-};
+    id: string;
+    content: string;
+  };
+  
+  type ColumnType = {
+    title: string;
+    items: Task[];
+  };
+  
+  type Columns = {
+    [key: string]: ColumnType;
+  };
+  
+  const initialData: Columns = {
+    todo: {
+      title: "To Do",
+      items: [
+        { id: "task-1", content: "Design UI" },
+        { id: "task-2", content: "Set up Firebase" },
+      ],
+    },
+    inProgress: {
+      title: "In Progress",
+      items: [{ id: "task-3", content: "Build Navbar" }],
+    },
+    done: {
+      title: "Done",
+      items: [{ id: "task-4", content: "Initial Setup" }],
+    },
+  };
+const kanbanpage = () => {
+    const [columns, setColumns] = useState<Columns>(initialData);
+   const [newTaskContent, setNewTaskContent] = useState<{ [key: string]: string }>({});
 
-type ColumnType = {
-  title: string;
-  items: Task[];
-};
-
-type Columns = {
-  [key: string]: ColumnType;
-};
-
-const initialData: Columns = {
-  todo: {
-    title: "To Do",
-    items: [
-      { id: "task-1", content: "Design UI" },
-      { id: "task-2", content: "Set up Firebase" },
-    ],
-  },
-  inProgress: {
-    title: "In Progress",
-    items: [{ id: "task-3", content: "Build Navbar" }],
-  },
-  done: {
-    title: "Done",
-    items: [{ id: "task-4", content: "Initial Setup" }],
-  },
-};
-
-const KanbanBoard = () => {
-  const [columns, setColumns] = useState<Columns>(initialData);
-  const [newTaskContent, setNewTaskContent] = useState<{ [key: string]: string }>({});
+  
 
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
@@ -112,29 +105,7 @@ const KanbanBoard = () => {
   };
 
   return (
-    <div className="flex min-h-screen dark:bg-[#200a23] text-white bg-white dark:text-black">
-      {/* Sidebar */}
-      <div className="w-64 bg-[#37113c]  p-6  flex flex-col">
-        <h2 className="text-2xl font-bold mb-8 text-white ">Qluster</h2>
-        <nav className="flex flex-col gap-4 text-sm">
-          <a href="#" className="hover:text-[#c084fc] flex items-center gap-2   text-white dark:hover:text-[#7c3aed]">
-            <House className="h-4 w-4" /> Dashboard
-          </a>
-          <a href="#" className="hover:text-[#c084fc] flex items-center gap-2   text-white dark:hover:text-[#7c3aed]">
-            <ClipboardList className="h-4 w-4" /> My Boards
-          </a>
-          <a href="#" className="hover:text-[#c084fc] flex items-center gap-2   text-white dark:hover:text-[#7c3aed]">
-            <Headphones className="h-4 w-4" /> Huddles
-          </a>
-          <a href="#" className="hover:text-[#c084fc] flex items-center gap-2   text-white dark:hover:text-[#7c3aed]">
-            <ClipboardList className="h-4 w-4" /> Settings 
-          </a>
-        
-        </nav>
-      </div>
-
-      {/* Main Content */}
-      <div className="flex-1 p-6 overflow-x-auto ">
+        <div className="flex-1 p-6 overflow-x-auto ">
         <h1 className="text-3xl font-bold mb-6  dark:text-white text-black">Kanban Board</h1>
         <DragDropContext onDragEnd={onDragEnd}>
           <div className="flex gap-6 overflow-x-auto pb-4">
@@ -195,10 +166,8 @@ const KanbanBoard = () => {
           </div>
         </DragDropContext>
       
-        <ChatBot/>
       </div>
-    </div>
-  );
-};
+  )
+}
 
-export default KanbanBoard;
+export default kanbanpage

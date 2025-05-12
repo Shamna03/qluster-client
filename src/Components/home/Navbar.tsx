@@ -33,7 +33,7 @@ const Navbar: React.FC = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-  
+
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
   useEffect(() => {
     if (theme === 'dark') {
@@ -71,9 +71,8 @@ const Navbar: React.FC = () => {
           <ChevronDown className="ml-1 w-4 h-4 group-hover:text-primary transition-colors" />
         </div>
         <Link href="/share-ideas"><h1 className="cursor-pointer hover:text-primary transition-colors">Projects</h1></Link>
-        <Link href={"/view-developers"}><h1 className="cursor-pointer hover:text-primary transition-colors">Developers</h1></Link>
-        <h1 className="cursor-pointer hover:text-primary transition-colors">Contact Us</h1>
-       
+      <Link href="/view-developers"  className="cursor-pointer hover:text-primary transition-colors">Developers</Link>
+        <Link href="/contact" className="cursor-pointer hover:text-primary transition-colors">Contact Us</Link>
       </div>
 
       <button
