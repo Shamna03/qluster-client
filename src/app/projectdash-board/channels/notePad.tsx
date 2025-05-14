@@ -106,8 +106,8 @@ const NotePad = ({ channelId }:{channelId:string}) => {
   // Debounce mutations
   const debouncedMutate = useMemo(() => debounce(mutate, 500), [mutate]);
 
-  console.log("Query status:", { isLoading, isError, error, isSuccess, data });
-  console.log("Mutation status:", { mutateError, mutateErrorObj });
+  // console.log("Query status:", { isLoading, isError, error, isSuccess, data });
+  // console.log("Mutation status:", { mutateError, mutateErrorObj });
 
   if (isLoading) return (
         <div className="flex justify-center items-center h-screen w-full">

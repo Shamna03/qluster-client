@@ -228,17 +228,7 @@ const ChannelChatpage = () => {
       messages,
     }))
   }
-  // //get notePad
-  // const {data:note} =useQuery ( {
-  //   queryKey: ["notepad",activeChannel?._id],
-  //   queryFn :async()=>{
-  //   const {data} = await axios.get(`http://localhost:5004/api/notepad/getnotepad/${activeChannel?._id}`)
-  //   return data.data?.content
-  //   },
-  //   enabled: !!activeChannel?._id,
-  // })
-  // // console.log(note,"=====================note");
-  
+
 
   // Channel participants detail
   const participantIds = activeChannel?.participants || []

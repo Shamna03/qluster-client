@@ -15,7 +15,7 @@ const Navbar: React.FC = () => {
   const {user,setUser} = useAuthStore()
   // console.log(user);
   
-  const isAuthenticated = localStorage.getItem("isAuthenticated")
+  const isAuthenticated = typeof window !== "undefined" ? localStorage.getItem("isAuthenticated") : null;
   
 
 
@@ -33,8 +33,15 @@ const Navbar: React.FC = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-
-  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+  
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedTheme = localStorage.getItem('theme');
+      setTheme(savedTheme === 'dark' ? 'dark' : 'light');
+    }
+  }, []);
+  // const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
   useEffect(() => {
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');

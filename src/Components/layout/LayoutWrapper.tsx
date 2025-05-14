@@ -21,7 +21,13 @@ import useAuthStore from "@/store/useAuthStore";
   // const shouldHide = hideLayout.includes(pathname);
 
 
-  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedTheme = localStorage.getItem('theme');
+      setTheme(savedTheme === 'dark' ? 'dark' : 'light');
+    }
+  }, []);
   useEffect(() => {
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
