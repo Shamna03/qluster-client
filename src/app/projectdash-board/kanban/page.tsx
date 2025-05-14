@@ -38,29 +38,35 @@ const KanbanPage = () => {
 
 
   useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const res = await Kanbanaxiosinstance.get("/task/getAllTask");
-        const updatedColumns = { ...columnTitles };
+  const fetchTasks = async () => {
+    try {
+      const res = await Kanbanaxiosinstance.get("/task/getAllTask");
 
-        res.data.forEach((task: any) => {
-          const column = task.columnId;
-          if (updatedColumns[column]) {
-            updatedColumns[column].items.push({
-              _id: task._id,
-              title: task.title,
-            });
-          }
-        });
+      
+      const freshColumns: Columns = {
+        todo: { title: "To Do", items: [] },
+        inProgress: { title: "In Progress", items: [] },
+        done: { title: "Done", items: [] },
+      };
 
-        setColumns(updatedColumns);
-      } catch (error) {
-        console.error("Error fetching tasks:", error);
-      }
-    };
+      res.data.forEach((task: any) => {
+        const column = task.columnId;
+        if (freshColumns[column]) {
+          freshColumns[column].items.push({
+            _id: task._id,
+            title: task.title,
+          });
+        }
+      });
 
-    fetchTasks();
-  }, []);
+      setColumns(freshColumns); // ✅ Set fresh, non-duplicated data
+    } catch (error) {
+      console.error("Error fetching tasks:", error);
+    }
+  };
+
+  fetchTasks();
+}, []);
 
   const onDragEnd = async (result: DropResult) => {
     const { source, destination } = result;
@@ -128,14 +134,14 @@ const KanbanPage = () => {
     <div className="flex-1 p-6 overflow-x-auto">
       <h1 className="text-3xl font-bold mb-6 dark:text-white text-black">Kanban Board</h1>
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="flex gap-6 overflow-x-auto pb-4">
+        <div className="flex gap-6 overflow-x-auto pb-4 items-start">
           {Object.entries(columns).map(([columnId, column]) => (
             <Droppable key={columnId} droppableId={columnId}>
               {(provided) => (
                 <div
                   ref={provided.innerRef}
                   {...provided.droppableProps}
-                  className="dark:bg-[#47214e] bg-[#e4e4e7] dark:text-white text-black rounded-xl shadow-lg p-4 w-72 flex-shrink-0"
+                  className="dark:bg-[#47214e] bg-[#e4e4e7] dark:text-white text-black rounded-xl shadow-lg p-4 w-72 flex-shrink-0 "
                 >
                   <h2 className="text-xl font-semibold mb-4 border-b border-[#611f69] dark:border-gray-400 pb-2">
                     {column.title}
@@ -189,7 +195,7 @@ const KanbanPage = () => {
         </div>
       </DragDropContext>
       {isModalOpen && selectedTask && (
-  <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+  <div className="fixed inset-0 backdrop-blur-xs bg-opacity-50 flex justify-center items-center z-50">
     <div className="bg-white dark:bg-[#1e1e2f] text-black dark:text-white rounded-xl p-6 w-[400px] relative shadow-2xl animate-fade-in">
       
       {/* Close Button */}
