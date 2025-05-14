@@ -138,7 +138,7 @@ const KanbanPage = () => {
           {Object.entries(columns).map(([columnId, column]) => (
             <Droppable key={columnId} droppableId={columnId}>
               {(provided) => (
-                <div
+                <div 
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                   className="dark:bg-[#47214e] bg-[#e4e4e7] dark:text-white text-black rounded-xl shadow-lg p-4  w-full sm:w-[300px] flex-shrink-0 "
