@@ -1,9 +1,14 @@
-import Image from "next/image";
+import { Techstacks } from "@/Components/home/Techstacks";
+import { Landingpage } from "@/Components/home/Landingpage";
+import { FeaturesSection } from "@/Components/home/Features";
 
-export default function Home() {
+const Home = () => {
   return (
-    <div className="">hyy
-      
+    <div className="bg-white dark:bg-[#18181b]">
+      <Landingpage />
+      <Techstacks />
+      <FeaturesSection />
     </div>
   );
-}
+};
+export default Home;
