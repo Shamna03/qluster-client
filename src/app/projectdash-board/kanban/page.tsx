@@ -134,14 +134,14 @@ const KanbanPage = () => {
     <div className="flex-1 p-6 overflow-x-auto">
       <h1 className="text-3xl font-bold mb-6 dark:text-white text-black">Kanban Board</h1>
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="flex gap-6 overflow-x-auto pb-4 items-start">
+        <div className="flex gap-6 overflow-x-auto pb-4 items-start flex-wrap md:flex-nowrap">
           {Object.entries(columns).map(([columnId, column]) => (
             <Droppable key={columnId} droppableId={columnId}>
               {(provided) => (
                 <div
                   ref={provided.innerRef}
                   {...provided.droppableProps}
-                  className="dark:bg-[#47214e] bg-[#e4e4e7] dark:text-white text-black rounded-xl shadow-lg p-4 w-72 flex-shrink-0 "
+                  className="dark:bg-[#47214e] bg-[#e4e4e7] dark:text-white text-black rounded-xl shadow-lg p-4  w-full sm:w-[300px] flex-shrink-0 "
                 >
                   <h2 className="text-xl font-semibold mb-4 border-b border-[#611f69] dark:border-gray-400 pb-2">
                     {column.title}
